@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, Send, X, Minimize, Maximize, Robot } from "lucide-react";
+import { MessageCircle, Send, X, Minimize, Maximize, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getAIResponse } from "@/services/ai";
 
@@ -92,7 +92,7 @@ const ChatWidget = () => {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-nutrition-600 text-white">
             <div className="flex items-center gap-2">
-              <Robot className="w-5 h-5" />
+              <Bot className="w-5 h-5" />
               <h3 className="font-medium">NutriCare AI Assistant</h3>
             </div>
             <div className="flex items-center gap-1">
