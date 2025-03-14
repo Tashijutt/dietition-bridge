@@ -8,9 +8,9 @@ const Hero = () => {
   
   useEffect(() => {
     const animateElements = () => {
-      const headingElement = containerRef.current?.querySelector('h1');
-      const subheadingElement = containerRef.current?.querySelector('p');
-      const ctaElement = containerRef.current?.querySelector('.cta-container');
+      const headingElement = containerRef.current?.querySelector('h1') as HTMLElement | null;
+      const subheadingElement = containerRef.current?.querySelector('p') as HTMLElement | null;
+      const ctaElement = containerRef.current?.querySelector('.cta-container') as HTMLElement | null;
       
       if (headingElement) {
         headingElement.classList.add('animate-fade-up');
