@@ -1,15 +1,10 @@
 
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import HomeDietitianSection from "@/components/HomeDietitianSection";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
-
-// Let's create a hook to detect page scroll for animations
+import DietitianDirectory from "@/components/DietitianDirectory";
 import { useEffect, useState } from "react";
 
-const Index = () => {
+const Dietitians = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -24,15 +19,12 @@ const Index = () => {
   return (
     <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
       <Header />
-      <main className="flex-grow">
-        <Hero />
-        <Features />
-        <HomeDietitianSection />
+      <main className="flex-grow pt-20">
+        <DietitianDirectory />
       </main>
       <Footer />
-      <ChatWidget />
     </div>
   );
 };
 
-export default Index;
+export default Dietitians;

@@ -58,7 +58,7 @@ const Hero = () => {
           
           <div className="cta-container flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 opacity-0">
             <Link 
-              to="#dietitians"
+              to="/dietitians"
               className="group w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-nutrition-600 text-white font-medium rounded-full shadow-md hover:shadow-xl hover:bg-nutrition-700 transition-all duration-300"
             >
               Find a Dietitian

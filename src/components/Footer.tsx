@@ -34,16 +34,11 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {['Home', 'About Us', 'Find a Dietitian', 'Blog', 'FAQs'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-gray-400 hover:text-white transition-colors inline-block py-1"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li><Link to="/" className="text-gray-400 hover:text-white transition-colors inline-block py-1">Home</Link></li>
+              <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors inline-block py-1">About Us</Link></li>
+              <li><Link to="/dietitians" className="text-gray-400 hover:text-white transition-colors inline-block py-1">Find a Dietitian</Link></li>
+              <li><Link to="/blog" className="text-gray-400 hover:text-white transition-colors inline-block py-1">Blog</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors inline-block py-1">FAQs</Link></li>
             </ul>
           </div>
           

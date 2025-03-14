@@ -25,15 +25,16 @@ const Header = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Dietitians', path: '#dietitians' },
+    { name: 'Dietitians', path: '/dietitians' },
     { name: 'Chat with AI', path: '/chat' },
-    { name: 'About', path: '#about' },
-    { name: 'Contact', path: '#contact' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Blog', path: '/blog' },
   ];
 
   const isActive = (path: string) => {
-    if (path.startsWith('#')) {
-      return false;
+    if (path === '/') {
+      return location.pathname === '/';
     }
     return location.pathname === path;
   };
@@ -83,7 +84,7 @@ const Header = () => {
             <span className="text-sm font-medium">Chat Now</span>
           </Link>
           <Link
-            to="#"
+            to="/signin"
             className="px-5 py-2 rounded-full bg-nutrition-600 text-white hover:bg-nutrition-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium"
           >
             Sign In
@@ -131,7 +132,7 @@ const Header = () => {
                 <span className="font-medium">Chat Now</span>
               </Link>
               <Link
-                to="#"
+                to="/signin"
                 className="px-4 py-3 rounded-full bg-nutrition-600 text-white text-center font-medium"
               >
                 Sign In
