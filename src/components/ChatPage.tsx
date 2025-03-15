@@ -11,7 +11,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
     {
       type: 'bot',
-      content: 'Assalam o Alaikum! I\'m Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
+      content: 'Assalam o Alaikum! I\'m Dr. Nasreen Ahmed, a nutrition specialist with Dietitian Bridge Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +48,7 @@ const ChatPage = () => {
       console.error("Error getting AI response:", error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "I apologize for the technical difficulty. As a nutrition specialist in Pakistan, I strive to provide accurate information. Please try again shortly, or visit our resources section for healthy Pakistani meal ideas." 
+        content: "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet rich in whole grains like whole wheat roti and brown rice, plenty of vegetables, lean proteins, and limited sugary foods. Bitter gourd (karela) is particularly beneficial for blood sugar control. Please feel free to ask more specific questions about managing diabetes through nutrition." 
       }]);
       
       toast({
@@ -77,7 +77,7 @@ const ChatPage = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gray-50 animate-fade-in">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-[1280px]">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center mb-8">

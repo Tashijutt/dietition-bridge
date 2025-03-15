@@ -62,7 +62,7 @@ const Index = () => {
         <HomeDietitianSection limit={3} />
         
         {/* View All Dietitians CTA */}
-        <div className="container mx-auto px-4 pb-16 text-center">
+        <div className="container mx-auto px-4 pb-16 text-center max-w-[1280px]">
           <Link 
             to="/dietitians" 
             className="inline-flex items-center justify-center px-6 py-3 bg-nutrition-600 text-white rounded-full hover:bg-nutrition-700 transition-all duration-300 shadow-sm hover:shadow-md"

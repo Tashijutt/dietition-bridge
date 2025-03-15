@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { MapPin, Search, Phone, Mail, ExternalLink } from "lucide-react";
+import { MapPin, Search, Phone, Mail, ExternalLink, Grid, List, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from 'react-intersection-observer';
 
@@ -93,6 +93,7 @@ const DietitianDirectory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("All Cities");
   const [filteredDietitians, setFilteredDietitians] = useState(DIETITIANS);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -119,7 +120,7 @@ const DietitianDirectory = () => {
 
   return (
     <section id="dietitians" className="py-20">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-[1280px]">
         <div 
           ref={ref}
           className={cn(
@@ -173,98 +174,225 @@ const DietitianDirectory = () => {
                 ))}
               </select>
             </div>
+            
+            {/* View Mode Toggle */}
+            <div className="flex items-center space-x-2 border border-gray-300 rounded-md p-1">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  "flex items-center justify-center p-1.5 rounded",
+                  viewMode === 'grid' 
+                    ? "bg-nutrition-600 text-white" 
+                    : "bg-transparent text-gray-500 hover:bg-gray-100"
+                )}
+                aria-label="Grid view"
+              >
+                <Grid className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={cn(
+                  "flex items-center justify-center p-1.5 rounded",
+                  viewMode === 'list' 
+                    ? "bg-nutrition-600 text-white" 
+                    : "bg-transparent text-gray-500 hover:bg-gray-100"
+                )}
+                aria-label="List view"
+              >
+                <List className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Dietitians Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredDietitians.length > 0 ? (
-            filteredDietitians.map((dietitian, index) => (
-              <div 
-                key={dietitian.id}
-                className={cn(
-                  "glass-card overflow-hidden transition-all duration-500 hover:shadow-md",
-                  inView ? "animate-fade-up" : "opacity-0"
-                )}
-                style={{ animationDelay: `${300 + index * 100}ms` }}
-              >
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <img 
-                    src={dietitian.image} 
-                    alt={dietitian.name} 
-                    className="w-full h-48 object-cover"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-0 left-0 p-4 text-white">
-                    <div className="flex items-center space-x-2">
-                      <MapPin className="h-4 w-4" />
-                      <span className="text-sm">{dietitian.city}</span>
+        {/* Dietitians Grid or List View */}
+        {viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredDietitians.length > 0 ? (
+              filteredDietitians.map((dietitian, index) => (
+                <div 
+                  key={dietitian.id}
+                  className={cn(
+                    "glass-card overflow-hidden transition-all duration-500 hover:shadow-md",
+                    inView ? "animate-fade-up" : "opacity-0"
+                  )}
+                  style={{ animationDelay: `${300 + index * 100}ms` }}
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <img 
+                      src={dietitian.image} 
+                      alt={dietitian.name} 
+                      className="w-full h-48 object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute bottom-0 left-0 p-4 text-white">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4" />
+                        <span className="text-sm">{dietitian.city}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-1 text-gray-900">{dietitian.name}</h3>
+                    <p className="text-sm text-gray-600 mb-3">{dietitian.qualifications}</p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {dietitian.specializations.map((spec, i) => (
+                        <span 
+                          key={i} 
+                          className="px-2.5 py-1 bg-nutrition-50 text-nutrition-700 text-xs font-medium rounded-full"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                    
+                    <p className="text-sm text-gray-600 mb-4 flex items-start">
+                      <MapPin className="h-4 w-4 mr-2 mt-0.5 text-gray-400" />
+                      {dietitian.clinic}
+                    </p>
+                    
+                    <div className="flex flex-col space-y-2">
+                      <a 
+                        href={`mailto:${dietitian.contact.email}`}
+                        className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                      >
+                        <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                        {dietitian.contact.email}
+                      </a>
+                      <a 
+                        href={`tel:${dietitian.contact.phone}`}
+                        className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                      >
+                        <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                        {dietitian.contact.phone}
+                      </a>
+                    </div>
+                    
+                    <button 
+                      className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
+                    >
+                      Book Appointment
+                      <ExternalLink className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-lg text-gray-600">No dietitians found matching your search criteria.</p>
+                <button 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedCity("All Cities");
+                  }}
+                  className="mt-4 px-4 py-2 text-sm text-nutrition-600 hover:text-nutrition-700"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filteredDietitians.length > 0 ? (
+              filteredDietitians.map((dietitian, index) => (
+                <div 
+                  key={dietitian.id}
+                  className={cn(
+                    "glass-card overflow-hidden transition-all duration-500 hover:shadow-md",
+                    inView ? "animate-fade-up" : "opacity-0"
+                  )}
+                  style={{ animationDelay: `${300 + index * 100}ms` }}
+                >
+                  <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/4 relative">
+                      <img 
+                        src={dietitian.image} 
+                        alt={dietitian.name} 
+                        className="w-full h-full object-cover md:h-60"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-0 right-0 p-2 bg-nutrition-600 text-white text-xs font-medium">
+                        {dietitian.city}
+                      </div>
+                    </div>
+                    
+                    <div className="md:w-3/4 p-6">
+                      <div className="flex flex-col md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <h3 className="text-xl font-semibold mb-1 text-gray-900">{dietitian.name}</h3>
+                          <p className="text-sm text-gray-600 mb-3">{dietitian.qualifications}</p>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
+                          {dietitian.specializations.map((spec, i) => (
+                            <span 
+                              key={i} 
+                              className="px-2.5 py-1 bg-nutrition-50 text-nutrition-700 text-xs font-medium rounded-full"
+                            >
+                              {spec}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <p className="text-sm text-gray-600 mb-2 flex items-start">
+                            <MapPin className="h-4 w-4 mr-2 mt-0.5 text-gray-400" />
+                            {dietitian.clinic}
+                          </p>
+                          
+                          <div className="flex flex-col space-y-2">
+                            <a 
+                              href={`mailto:${dietitian.contact.email}`}
+                              className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                            >
+                              <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                              {dietitian.contact.email}
+                            </a>
+                            <a 
+                              href={`tel:${dietitian.contact.phone}`}
+                              className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                            >
+                              <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                              {dietitian.contact.phone}
+                            </a>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-center md:justify-end">
+                          <button 
+                            className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
+                          >
+                            Book Appointment
+                            <ExternalLink className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-1 text-gray-900">{dietitian.name}</h3>
-                  <p className="text-sm text-gray-600 mb-3">{dietitian.qualifications}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {dietitian.specializations.map((spec, i) => (
-                      <span 
-                        key={i} 
-                        className="px-2.5 py-1 bg-nutrition-50 text-nutrition-700 text-xs font-medium rounded-full"
-                      >
-                        {spec}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <p className="text-sm text-gray-600 mb-4 flex items-start">
-                    <MapPin className="h-4 w-4 mr-2 mt-0.5 text-gray-400" />
-                    {dietitian.clinic}
-                  </p>
-                  
-                  <div className="flex flex-col space-y-2">
-                    <a 
-                      href={`mailto:${dietitian.contact.email}`}
-                      className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
-                    >
-                      <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                      {dietitian.contact.email}
-                    </a>
-                    <a 
-                      href={`tel:${dietitian.contact.phone}`}
-                      className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
-                    >
-                      <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                      {dietitian.contact.phone}
-                    </a>
-                  </div>
-                  
-                  <button 
-                    className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
-                  >
-                    Book Appointment
-                    <ExternalLink className="h-4 w-4" />
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-lg text-gray-600">No dietitians found matching your search criteria.</p>
+                <button 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedCity("All Cities");
+                  }}
+                  className="mt-4 px-4 py-2 text-sm text-nutrition-600 hover:text-nutrition-700"
+                >
+                  Clear filters
+                </button>
               </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-lg text-gray-600">No dietitians found matching your search criteria.</p>
-              <button 
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedCity("All Cities");
-                }}
-                className="mt-4 px-4 py-2 text-sm text-nutrition-600 hover:text-nutrition-700"
-              >
-                Clear filters
-              </button>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

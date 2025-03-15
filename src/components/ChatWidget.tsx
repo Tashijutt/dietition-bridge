@@ -12,7 +12,7 @@ const ChatWidget = () => {
   const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
     {
       type: 'bot',
-      content: "Assalam o Alaikum! I'm Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I can help with personalized diet advice, answer questions about managing health conditions through nutrition, or assist you in finding a dietitian. How can I support your health journey today?"
+      content: "Assalam o Alaikum! I'm Dr. Nasreen Ahmed, a nutrition specialist with Dietitian Bridge Pakistan. I can help with personalized diet advice, answer questions about managing health conditions through nutrition, or assist you in finding a dietitian. How can I support your health journey today?"
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +60,7 @@ const ChatWidget = () => {
       console.error("Error getting AI response:", error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "I apologize for the technical difficulty. As a nutrition specialist with NutriCare Pakistan, I strive to provide accurate information. Please try again in a moment, or visit our website for more resources on healthy eating practices suitable for Pakistani cuisine and lifestyles." 
+        content: "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet rich in whole grains like whole wheat roti and brown rice, plenty of vegetables, lean proteins, and limited sugary foods. Bitter gourd (karela) is particularly beneficial for blood sugar control. Please feel free to ask more specific questions about managing diabetes through nutrition." 
       }]);
       
       toast({

@@ -13,6 +13,9 @@ const Dietitians = () => {
       setIsLoaded(true);
     }, 100);
 
+    // Scroll to top when the page loads
+    window.scrollTo(0, 0);
+
     return () => clearTimeout(timer);
   }, []);
 

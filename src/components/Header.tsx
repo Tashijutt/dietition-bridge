@@ -46,13 +46,13 @@ const Header = () => {
         isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent"
       )}
     >
-      <div className="container mx-auto px-4 lg:px-8 flex justify-between items-center">
+      <div className="container mx-auto px-4 lg:px-8 flex justify-between items-center max-w-[1280px]">
         <Link 
           to="/" 
           className="flex items-center space-x-2 text-xl font-bold text-nutrition-600 transition-transform duration-300 hover:scale-105"
         >
           <Heart className="h-6 w-6 text-nutrition-600 fill-nutrition-500" />
-          <span className="tracking-tight">NutriCare</span>
+          <span className="tracking-tight">Dietitian Bridge</span>
           <sup className="text-xs font-normal text-health-600">Pakistan</sup>
         </Link>
 
@@ -108,7 +108,7 @@ const Header = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white pt-20 animate-fade-in">
-          <nav className="container mx-auto px-4 py-8 flex flex-col space-y-6">
+          <nav className="container mx-auto px-4 py-8 flex flex-col space-y-6 max-w-[1280px]">
             {navItems.map((item) => (
               <Link
                 key={item.name}

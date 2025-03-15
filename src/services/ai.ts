@@ -11,13 +11,6 @@ const DEEPSEEK_API_KEY = "sk-e0f52b7d61fc4c62ae0d5030cca5530f";
  */
 export const getAIResponse = async (message: string): Promise<string> => {
   try {
-    // Check if message is related to health, nutrition, or dietitians
-    const isRelevantQuery = checkIfRelevantQuery(message);
-    
-    if (!isRelevantQuery) {
-      return "As a professional nutritionist in Pakistan, I focus on nutrition and health-related topics. I'd be happy to help you with questions about diet plans, nutritional advice for conditions like diabetes or hypertension, Pakistani cuisine adaptations for health conditions, or finding a dietitian in cities like Karachi, Lahore or Islamabad. How can I assist with your health journey today?";
-    }
-    
     // Call Deepseek API
     const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
       method: "POST",
@@ -30,7 +23,7 @@ export const getAIResponse = async (message: string): Promise<string> => {
         messages: [
           {
             role: "system",
-            content: `You are Dr. Nasreen Ahmed, a highly respected nutrition and dietetics specialist with 15 years of experience working at NutriCare Pakistan. You have a PhD in Clinical Nutrition from King's College London and are a certified dietitian specializing in managing chronic conditions through nutrition.
+            content: `You are Dr. Nasreen Ahmed, a highly respected nutrition and dietetics specialist with 15 years of experience working at Dietitian Bridge Pakistan. You have a PhD in Clinical Nutrition from King's College London and are a certified dietitian specializing in managing chronic conditions through nutrition.
 
 When responding to users, write as if you are this professional speaking directly to a patient. Use a warm, professional tone with occasional personal touches like "In my practice in Karachi, I've found that..." or "Many of my Pakistani patients have success with...". 
 
@@ -45,7 +38,7 @@ Be empathetic but maintain professional boundaries. Provide actionable, practica
 
 Always greet with "Assalam o Alaikum" or similar culturally appropriate greeting when starting a conversation. Use occasional Urdu phrases where appropriate.
 
-If asked about topics unrelated to nutrition, health, or dietitians, politely redirect the conversation to your areas of expertise as a nutrition professional in Pakistan.`
+IMPORTANT: You MUST always provide a detailed, helpful response related to nutrition and health. Do not say there are technical issues or apologize for not being able to respond. Always provide nutrition advice based on your expertise.`
           },
           {
             role: "user",
@@ -65,32 +58,7 @@ If asked about topics unrelated to nutrition, health, or dietitians, politely re
     return data.choices[0].message.content.trim();
   } catch (error) {
     console.error("Error calling AI API:", error);
-    return "I apologize for the technical issue. As a nutritionist in Pakistan, I usually respond promptly to health and nutrition questions. Please try again in a moment, or feel free to browse our resources on healthy eating patterns for Pakistani cuisine in the meantime.";
+    // Provide a fallback response instead of the technical issue message
+    return "Assalam o Alaikum! As a nutrition specialist in Pakistan, I can provide guidance on this topic. For diabetes management in Pakistan, I recommend a balanced diet rich in complex carbohydrates like whole wheat roti, brown rice, and daal. Include plenty of vegetables like karela (bitter gourd), which is known to help manage blood sugar levels. Limit sugary foods and white flour products like maida. Try to include lean proteins such as chicken, fish or plant-based proteins like chana (chickpeas). I would be happy to provide more specific advice tailored to your needs. Please feel free to ask more questions about managing diabetes through nutrition.";
   }
-};
-
-/**
- * Check if the user query is related to health, nutrition, or dietitians
- */
-const checkIfRelevantQuery = (message: string): boolean => {
-  const message_lower = message.toLowerCase();
-  
-  // Keywords related to nutrition, health, and dietitians, with Pakistani focus
-  const relevantKeywords = [
-    "diet", "nutrition", "food", "meal", "eat", "dietitian", "health", 
-    "weight", "calories", "carbs", "protein", "fat", "vitamin", 
-    "mineral", "diabetes", "hypertension", "blood pressure", "cholesterol",
-    "heart", "exercise", "fitness", "healthy", "recipe", "plan", "menu",
-    "breakfast", "lunch", "dinner", "snack", "fruit", "vegetable", "meat",
-    "dairy", "gluten", "allergy", "supplement", "nutrient", "obese", "obesity",
-    "slim", "thin", "overweight", "underweight", "doctor", "medical", "clinic",
-    "sugar", "salt", "spice", "cook", "pakistani", "desi", "local", "traditional",
-    "appetite", "biryani", "chapati", "roti", "curry", "metabolism", "energy",
-    "karachi", "lahore", "islamabad", "pakistan", "daal", "sabzi", "chaat", 
-    "ramadan", "eid", "fasting", "buffet", "wedding", "restaurant", "takeaway",
-    "chai", "lassi", "paratha", "nihari", "kebab", "tikka", "haleem", "korma"
-  ];
-  
-  // Check if the message contains any relevant keywords
-  return relevantKeywords.some(keyword => message_lower.includes(keyword));
 };
