@@ -1,5 +1,5 @@
 
-import { Heart, Users, Brain, BookOpen } from "lucide-react";
+import { Activity, UtensilsCrossed, CalendarClock } from "lucide-react";
 import { useInView } from 'react-intersection-observer';
 import { cn } from "@/lib/utils";
 
@@ -37,28 +37,22 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
 const Features = () => {
   const features = [
     {
-      icon: <Heart className="w-7 h-7" />,
-      title: "Personalized Diet Plans",
-      description: "Get customized nutrition plans based on your specific health conditions and dietary preferences.",
+      icon: <Activity className="w-7 h-7" />,
+      title: "Daily Exercise",
+      description: "Custom fitness plans to keep you active and energized.",
       delay: 100,
     },
     {
-      icon: <Users className="w-7 h-7" />,
-      title: "Find Dietitians",
-      description: "Connect with qualified dietitians across major cities in Pakistan through our searchable directory.",
+      icon: <UtensilsCrossed className="w-7 h-7" />,
+      title: "Healthy Diets",
+      description: "Expert guides for balanced, nutrient-rich meals.",
       delay: 200,
     },
     {
-      icon: <Brain className="w-7 h-7" />,
-      title: "AI Nutrition Assistant",
-      description: "Get instant answers to your nutrition questions from our AI-powered chatbot, available 24/7.",
+      icon: <CalendarClock className="w-7 h-7" />,
+      title: "Routine Plans",
+      description: "Simplified meal planning to fit your lifestyle.",
       delay: 300,
-    },
-    {
-      icon: <BookOpen className="w-7 h-7" />,
-      title: "Educational Resources",
-      description: "Access articles and resources about healthy eating tailored to Pakistani dietary habits.",
-      delay: 400,
     },
   ];
 
@@ -68,7 +62,7 @@ const Features = () => {
   });
 
   return (
-    <section id="about" className="py-20 bg-gray-50">
+    <section id="services" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div 
           ref={ref}
@@ -78,14 +72,14 @@ const Features = () => {
           )}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            How NutriCare Pakistan Helps You
+            Our Services
           </h2>
           <p className="text-xl text-gray-600">
-            Our platform bridges the gap between patients and dietitians, providing personalized nutrition guidance for better health outcomes.
+            We provide comprehensive nutrition and wellness solutions tailored to your individual needs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Feature
               key={index}

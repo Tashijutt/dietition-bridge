@@ -15,7 +15,7 @@ export const getAIResponse = async (message: string): Promise<string> => {
     const isRelevantQuery = checkIfRelevantQuery(message);
     
     if (!isRelevantQuery) {
-      return "I'm specialized in nutrition and health-related topics. I can help you with questions about diet plans, nutritional advice, health conditions like diabetes or hypertension, or finding a dietitian. How can I assist you with your health or nutrition concerns?";
+      return "As a professional nutritionist, I focus on nutrition and health-related topics. I'd be happy to help you with questions about diet plans, nutritional advice, health conditions like diabetes or hypertension, or finding a dietitian. How can I assist with your health journey today?";
     }
     
     // Call Deepseek API
@@ -30,16 +30,20 @@ export const getAIResponse = async (message: string): Promise<string> => {
         messages: [
           {
             role: "system",
-            content: `You are a professional nutrition assistant working for NutriCare Pakistan. Your expertise is in providing nutrition advice, diet plans, and information related to managing health conditions like diabetes, hypertension, and weight management.
+            content: `You are Dr. Nasreen Ahmed, a highly respected nutrition and dietetics specialist with 15 years of experience working at NutriCare Pakistan. You have a PhD in Clinical Nutrition from King's College London and are a certified dietitian specializing in managing chronic conditions through nutrition.
+
+When responding to users, write as if you are this professional speaking directly to a patient. Use a warm, professional tone with occasional personal touches like "In my practice, I've found that..." or "Many of my patients have success with...". 
 
 Focus on these areas:
 1. Personalized diet recommendations for different health conditions
-2. Pakistani food and cuisine in your examples
-3. Answering questions about nutrition science
-4. Providing information about dietitians and their specialties
-5. General wellness and health advice related to nutrition
+2. Pakistani food and cuisine in your examples (mention specific dishes when relevant)
+3. Evidence-based nutrition science
+4. Professional guidance about finding the right dietitian for specific needs
+5. General wellness advice related to nutrition
 
-Be professional, empathetic, and concise. Provide practical, actionable advice. Do not provide medical diagnoses or treatment. If asked about topics unrelated to nutrition, health, or dietitians, politely redirect the conversation to your areas of expertise.`
+Be empathetic but maintain professional boundaries. Provide actionable, practical advice based on established nutritional science. Avoid sounding like an AI - instead, sound like an experienced healthcare professional having a consultation. Use phrases like "Based on my clinical experience" or "From what I've observed with my patients" to make responses feel more authentic.
+
+If asked about topics unrelated to nutrition, health, or dietitians, politely redirect the conversation to your areas of expertise as a nutrition professional.`
           },
           {
             role: "user",
@@ -47,7 +51,7 @@ Be professional, empathetic, and concise. Provide practical, actionable advice. 
           }
         ],
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 800
       })
     });
 
@@ -59,7 +63,7 @@ Be professional, empathetic, and concise. Provide practical, actionable advice. 
     return data.choices[0].message.content.trim();
   } catch (error) {
     console.error("Error calling AI API:", error);
-    return "I'm sorry, I'm having trouble connecting to my knowledge base right now. Please try again later.";
+    return "I apologize for the technical issue. As a nutritionist, I usually respond promptly to health and nutrition questions. Please try again in a moment, or feel free to browse our resources on healthy eating in the meantime.";
   }
 };
 
@@ -78,7 +82,8 @@ const checkIfRelevantQuery = (message: string): boolean => {
     "breakfast", "lunch", "dinner", "snack", "fruit", "vegetable", "meat",
     "dairy", "gluten", "allergy", "supplement", "nutrient", "obese", "obesity",
     "slim", "thin", "overweight", "underweight", "doctor", "medical", "clinic",
-    "sugar", "salt", "spice", "cook", "pakistani", "desi", "local", "traditional"
+    "sugar", "salt", "spice", "cook", "pakistani", "desi", "local", "traditional",
+    "appetite", "biryani", "chapati", "roti", "curry", "metabolism", "energy"
   ];
   
   // Check if the message contains any relevant keywords

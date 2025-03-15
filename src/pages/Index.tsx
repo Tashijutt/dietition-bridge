@@ -3,6 +3,10 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import HomeDietitianSection from "@/components/HomeDietitianSection";
+import BenefitsSection from "@/components/BenefitsSection";
+import WeightLossTips from "@/components/WeightLossTips";
+import HealthySteps from "@/components/HealthySteps";
+import PricingPlans from "@/components/PricingPlans";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 
@@ -27,6 +31,10 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <Features />
+        <BenefitsSection />
+        <WeightLossTips />
+        <HealthySteps />
+        <PricingPlans />
         <HomeDietitianSection />
       </main>
       <Footer />

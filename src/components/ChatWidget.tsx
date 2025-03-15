@@ -11,7 +11,7 @@ const ChatWidget = () => {
   const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
     {
       type: 'bot',
-      content: 'Hello! I\'m your NutriCare AI assistant. I can answer questions about nutrition, diet plans, or help you find a dietitian. How can I help you today?'
+      content: "Hello! I'm Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I can help with personalized diet advice, answer questions about managing health conditions through nutrition, or assist you in finding a dietitian. How can I support your health journey today?"
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +59,7 @@ const ChatWidget = () => {
       console.error("Error getting AI response:", error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "I'm having trouble processing your request. Please try again later." 
+        content: "I apologize for the technical difficulty. As a nutrition specialist, I strive to provide accurate information. Please try again in a moment, or visit our website for more resources." 
       }]);
     } finally {
       setIsLoading(false);
@@ -73,10 +73,10 @@ const ChatWidget = () => {
         <button
           onClick={handleToggle}
           className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-nutrition-600 text-white rounded-full shadow-lg hover:bg-nutrition-700 transition-all duration-300 hover:scale-105 group"
-          aria-label="Open chat"
+          aria-label="Chat with nutritionist"
         >
           <MessageCircle className="w-7 h-7" />
-          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-nutrition-600 text-sm font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with NutriAI</span>
+          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-nutrition-600 text-sm font-medium rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with Dr. Nasreen</span>
         </button>
       )}
       
@@ -93,7 +93,7 @@ const ChatWidget = () => {
           <div className="flex items-center justify-between px-4 py-3 bg-nutrition-600 text-white">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
-              <h3 className="font-medium">NutriCare AI Assistant</h3>
+              <h3 className="font-medium">Dr. Nasreen Ahmed, Nutrition Specialist</h3>
             </div>
             <div className="flex items-center gap-1">
               <button
@@ -161,7 +161,7 @@ const ChatWidget = () => {
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">I only answer questions about nutrition, diet & health</p>
+                <p className="text-xs text-gray-500 mt-2 text-center">Ask me about nutrition, diet plans, or health conditions</p>
               </form>
             </>
           )}

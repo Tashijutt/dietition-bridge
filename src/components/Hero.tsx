@@ -1,10 +1,11 @@
 
 import { ArrowRight, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [showNotification, setShowNotification] = useState(false);
   
   useEffect(() => {
     const animateElements = () => {
@@ -33,10 +34,26 @@ const Hero = () => {
     };
     
     animateElements();
+    
+    // Show notification after a delay
+    const notificationTimer = setTimeout(() => {
+      setShowNotification(true);
+      
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
+    }, 3000);
+    
+    return () => {
+      clearTimeout(notificationTimer);
+    };
   }, []);
 
   return (
-    <div className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden" ref={containerRef}>
+    <div className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-cover bg-center" 
+         style={{backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url("https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")'}}
+         ref={containerRef}>
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute right-0 top-1/4 w-96 h-96 bg-nutrition-100 rounded-full blur-3xl opacity-40"></div>
@@ -66,10 +83,10 @@ const Hero = () => {
             </Link>
             
             <Link 
-              to="/chat"
+              to="/plans"
               className="group w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 bg-white text-gray-800 font-medium rounded-full shadow-sm hover:shadow-md hover:border-nutrition-500 hover:text-nutrition-600 transition-all duration-300"
             >
-              Chat with AI
+              Explore Plans
               <Zap className="w-4 h-4 text-nutrition-600" />
             </Link>
           </div>
@@ -84,6 +101,21 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      
+      {/* Success Notification Popup */}
+      {showNotification && (
+        <div className="fixed bottom-24 right-6 bg-white rounded-lg shadow-lg p-4 animate-fade-in z-50 max-w-xs">
+          <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full bg-nutrition-100 flex items-center justify-center mr-3">
+              <span className="text-nutrition-600 font-bold">A</span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-900">Amanda just started her personalized diet plan!</p>
+              <p className="text-xs text-gray-500">2 minutes ago</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
