@@ -4,13 +4,14 @@ import { Send, ChevronDown, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { getAIResponse } from "@/services/ai";
+import { toast } from "@/hooks/use-toast";
 
 const ChatPage = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
     {
       type: 'bot',
-      content: 'Hello! I\'m your NutriCare AI assistant. I specialize in providing information about nutrition, diet plans, and can help you with questions about managing health conditions like diabetes, hypertension, or weight management. How can I assist you today?'
+      content: 'Assalam o Alaikum! I\'m Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,19 +48,25 @@ const ChatPage = () => {
       console.error("Error getting AI response:", error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "I'm having trouble processing your request. Please try again later." 
+        content: "I apologize for the technical difficulty. As a nutrition specialist in Pakistan, I strive to provide accurate information. Please try again shortly, or visit our resources section for healthy Pakistani meal ideas." 
       }]);
+      
+      toast({
+        title: "Connection Issue",
+        description: "We're having trouble connecting to our nutrition AI. Please try again shortly.",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const suggestedQuestions = [
-    "What's a good diet for diabetes?",
-    "How can I reduce blood pressure with diet?",
-    "Recommend foods for hypertension patients",
-    "What should I eat to lose weight?",
-    "Can you suggest a diet plan for me?"
+    "What's a good diet for diabetes in Pakistan?",
+    "How can I reduce blood pressure with Pakistani foods?",
+    "Recommend meals for hypertension patients",
+    "What should I eat to lose weight while enjoying desi food?",
+    "Can you suggest a diet plan for Ramadan?"
   ];
 
   const handleSuggestedQuestion = (question: string) => {
@@ -150,7 +157,7 @@ const ChatPage = () => {
                   type="text"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Ask about nutrition, diet plans, health conditions..."
+                  placeholder="Ask about Pakistani nutrition, diet plans, health conditions..."
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-full focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
                   disabled={isLoading}
                 />
@@ -164,7 +171,7 @@ const ChatPage = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-500 mt-2 text-center">
-                This AI assistant is designed to provide general nutrition information and is not a substitute for professional medical advice.
+                This AI assistant is designed to provide general nutrition information based on Pakistani cuisine and lifestyle, and is not a substitute for professional medical advice.
               </p>
             </form>
           </div>

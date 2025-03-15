@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, Send, X, Minimize, Maximize, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getAIResponse } from "@/services/ai";
+import { toast } from "@/hooks/use-toast";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,7 @@ const ChatWidget = () => {
   const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
     {
       type: 'bot',
-      content: "Hello! I'm Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I can help with personalized diet advice, answer questions about managing health conditions through nutrition, or assist you in finding a dietitian. How can I support your health journey today?"
+      content: "Assalam o Alaikum! I'm Dr. Nasreen Ahmed, a nutrition specialist with NutriCare Pakistan. I can help with personalized diet advice, answer questions about managing health conditions through nutrition, or assist you in finding a dietitian. How can I support your health journey today?"
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,8 +60,14 @@ const ChatWidget = () => {
       console.error("Error getting AI response:", error);
       setMessages(prev => [...prev, { 
         type: 'bot', 
-        content: "I apologize for the technical difficulty. As a nutrition specialist, I strive to provide accurate information. Please try again in a moment, or visit our website for more resources." 
+        content: "I apologize for the technical difficulty. As a nutrition specialist with NutriCare Pakistan, I strive to provide accurate information. Please try again in a moment, or visit our website for more resources on healthy eating practices suitable for Pakistani cuisine and lifestyles." 
       }]);
+      
+      toast({
+        title: "Connection Issue",
+        description: "We're having trouble connecting to our nutrition AI. Please try again shortly.",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
@@ -161,7 +168,7 @@ const ChatWidget = () => {
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">Ask me about nutrition, diet plans, or health conditions</p>
+                <p className="text-xs text-gray-500 mt-2 text-center">Ask me about Pakistani nutrition, diet plans, or health conditions</p>
               </form>
             </>
           )}

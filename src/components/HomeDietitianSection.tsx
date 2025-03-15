@@ -1,12 +1,12 @@
 
-import { useState, useEffect } from "react";
-import { MapPin, Phone, Mail, ExternalLink, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from 'react-intersection-observer';
 import { Link } from "react-router-dom";
 
-// Use just 3 dietitians for the home page
-const FEATURED_DIETITIANS = [
+// Mock data for dietitians
+const DIETITIANS = [
   {
     id: 1,
     name: "Dr. Farah Khan",
@@ -46,16 +46,62 @@ const FEATURED_DIETITIANS = [
     clinic: "HealthWay Nutrition, F-10",
     image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
   },
+  {
+    id: 4,
+    name: "Syed Ali Raza",
+    qualifications: "BSc Nutrition, Certified Dietitian",
+    city: "Karachi",
+    specializations: ["Sports Nutrition", "Muscle Building"],
+    contact: {
+      email: "ali.raza@example.com",
+      phone: "+92-312-9998887",
+    },
+    clinic: "FitNutrition, DHA Phase 6",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 5,
+    name: "Zainab Fatima",
+    qualifications: "MSc Food Science & Nutrition",
+    city: "Lahore",
+    specializations: ["Pregnancy Nutrition", "Women's Health"],
+    contact: {
+      email: "zainab.fatima@example.com",
+      phone: "+92-345-1112223",
+    },
+    clinic: "NutriWomen Center, Johar Town",
+    image: "https://images.unsplash.com/photo-1643297654416-05795d62e9a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    id: 6,
+    name: "Dr. Usman Ahmed",
+    qualifications: "PhD Dietetics",
+    city: "Islamabad",
+    specializations: ["Kidney Disease", "Hypertension"],
+    contact: {
+      email: "usman.ahmed@example.com",
+      phone: "+92-321-4445556",
+    },
+    clinic: "Renal Diet Clinic, Blue Area",
+    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+  },
 ];
 
-const HomeDietitianSection = () => {
+interface HomeDietitianSectionProps {
+  limit?: number;
+}
+
+const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
   
+  // Apply limit if provided
+  const displayedDietitians = limit ? DIETITIANS.slice(0, limit) : DIETITIANS;
+
   return (
-    <section id="dietitians" className="py-20">
+    <section id="dietitians" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div 
           ref={ref}
@@ -64,18 +110,18 @@ const HomeDietitianSection = () => {
             inView ? "animate-fade-up" : "opacity-0"
           )}
         >
-          <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full mb-3">Meet Our Experts</span>
+          <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full mb-3">Expert Dietitians</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Featured Dietitians
+            Meet Our Expert Dietitians
           </h2>
           <p className="text-xl text-gray-600">
-            Connect with certified dietitians across Pakistan specializing in various health conditions.
+            Get personalized nutrition advice from qualified dietitians across Pakistan.
           </p>
         </div>
 
         {/* Dietitians Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {FEATURED_DIETITIANS.map((dietitian, index) => (
+          {displayedDietitians.map((dietitian, index) => (
             <div 
               key={dietitian.id}
               className={cn(
@@ -137,25 +183,15 @@ const HomeDietitianSection = () => {
                   </a>
                 </div>
                 
-                <button 
+                <Link 
+                  to="/contact"
                   className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
                 >
                   Book Appointment
-                  <ExternalLink className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
             </div>
           ))}
-        </div>
-        
-        <div className="mt-12 text-center">
-          <Link 
-            to="/dietitians" 
-            className="inline-flex items-center gap-2 px-6 py-3 text-nutrition-600 font-medium hover:text-nutrition-700 transition-colors"
-          >
-            View All Dietitians
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
     </section>
