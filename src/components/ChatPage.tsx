@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Send, ChevronDown, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -8,55 +7,54 @@ import { toast } from "@/hooks/use-toast";
 
 const ChatPage = () => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([
+  const [messages, setMessages] = useState<Array<{ type: 'user' | 'bot', content: string }>>([
     {
       type: 'bot',
       content: 'Assalam o Alaikum! I\'m Dr. Nasreen Ahmed, a nutrition specialist with Dietitian Bridge Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [botResponse, setBotResponse] = useState<string[]>([]); // Array to build response incrementally
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   useEffect(() => {
-    // Scroll to bottom on new messages
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    
-    // Focus input field when component mounts
     inputRef.current?.focus();
   }, [messages]);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  
     if (!message.trim()) return;
-    
-    // Add user message
+  
     const userMessage = message.trim();
     setMessages(prev => [...prev, { type: 'user', content: userMessage }]);
     setMessage("");
     setIsLoading(true);
-    
+    setBotResponse([]);
+  
     try {
-      // Get AI response
       const response = await getAIResponse(userMessage);
-      
-      // Add bot response
-      setMessages(prev => [...prev, { type: 'bot', content: response }]);
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < response.length) {
+          setBotResponse(prev => [...prev, response[index]]);
+          index++;
+        } else {
+          clearInterval(interval);
+          setMessages(prev => [...prev, { type: 'bot', content: response }]);
+          setIsLoading(false);
+        }
+      }, 20); // Typing speed (20ms per character)
     } catch (error) {
       console.error("Error getting AI response:", error);
-      setMessages(prev => [...prev, { 
-        type: 'bot', 
-        content: "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet rich in whole grains like whole wheat roti and brown rice, plenty of vegetables, lean proteins, and limited sugary foods. Bitter gourd (karela) is particularly beneficial for blood sugar control. Please feel free to ask more specific questions about managing diabetes through nutrition." 
-      }]);
-      
       toast({
         title: "Connection Issue",
         description: "We're having trouble connecting to our nutrition AI. Please try again shortly.",
         variant: "destructive"
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -71,7 +69,6 @@ const ChatPage = () => {
 
   const handleSuggestedQuestion = (question: string) => {
     setMessage(question);
-    // Focus the input field
     inputRef.current?.focus();
   };
 
@@ -104,8 +101,8 @@ const ChatPage = () => {
                     <div
                       className={cn(
                         "max-w-[80%] rounded-2xl px-4 py-3",
-                        msg.type === 'user' 
-                          ? "bg-nutrition-600 text-white rounded-tr-none" 
+                        msg.type === 'user'
+                          ? "bg-nutrition-600 text-white rounded-tr-none"
                           : "bg-gray-100 text-gray-800 rounded-tl-none"
                       )}
                     >
@@ -126,10 +123,19 @@ const ChatPage = () => {
                     </div>
                   </div>
                 )}
+                {isLoading && botResponse.length > 0 && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3">
+                      <div className="text-sm md:text-base leading-relaxed whitespace-pre-line">
+                        {botResponse.join('')}
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div ref={messagesEndRef} />
               </div>
             </div>
-            
+
             {/* Suggested Questions */}
             <div className="bg-gray-50 border-t border-gray-200 p-4">
               <div className="flex items-center mb-2">
@@ -148,7 +154,7 @@ const ChatPage = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Input Form */}
             <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4">
               <div className="relative">
