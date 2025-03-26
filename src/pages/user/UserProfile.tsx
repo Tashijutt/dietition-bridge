@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Save, Upload } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
@@ -25,9 +25,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { uploadProfileImage } from "@/utils/imageUploadUtils";
 
 const UserProfile = () => {
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
   
   const [profileData, setProfileData] = useState({
     name: user?.name || "",
@@ -59,16 +62,86 @@ const UserProfile = () => {
 
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
+    // In a real app, this would call an API
+    updateUserProfile && updateUserProfile({
+      ...user,
+      name: profileData.name
+    });
+    
     toast({
       title: "Profile Updated",
       description: "Your profile has been updated successfully."
     });
   };
 
-  const handleProfilePhotoUpload = () => {
-    toast({
-      title: "Feature Coming Soon",
-      description: "The ability to upload a profile photo will be available soon."
+  const handleProfilePhotoClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please upload a JPEG or PNG image.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File Too Large",
+          description: "Please upload an image smaller than 5MB.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      setUploading(true);
+      uploadProfileImage(file, (imageUrl) => {
+        // Update user profile with new image
+        updateUserProfile && updateUserProfile({
+          ...user,
+          profileImage: imageUrl
+        });
+        
+        setUploading(false);
+        toast({
+          title: "Profile Photo Updated",
+          description: "Your profile photo has been updated successfully."
+        });
+      });
+    }
+  };
+
+  // Handle adding a health condition
+  const [newCondition, setNewCondition] = useState("");
+  
+  const handleAddHealthCondition = () => {
+    if (newCondition.trim()) {
+      setProfileData({
+        ...profileData,
+        healthConditions: [...profileData.healthConditions, newCondition.trim()]
+      });
+      setNewCondition("");
+    }
+  };
+  
+  const handleRemoveHealthCondition = (index: number) => {
+    const updatedConditions = [...profileData.healthConditions];
+    updatedConditions.splice(index, 1);
+    setProfileData({
+      ...profileData,
+      healthConditions: updatedConditions
     });
   };
 
@@ -86,21 +159,37 @@ const UserProfile = () => {
               <CardContent>
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="flex flex-col items-center">
-                    <Avatar className="w-24 h-24 mb-4">
+                    <Avatar 
+                      className="w-24 h-24 mb-4 cursor-pointer relative" 
+                      onClick={handleProfilePhotoClick}
+                    >
+                      {uploading && (
+                        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                        </div>
+                      )}
                       <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
                       <AvatarFallback className="bg-nutrition-100 text-nutrition-800 text-2xl">
                         {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      className="hidden"
+                      accept="image/png, image/jpeg, image/jpg"
+                      onChange={handleFileChange}
+                    />
                     <Button 
                       type="button" 
                       variant="outline" 
                       size="sm"
-                      onClick={handleProfilePhotoUpload}
+                      onClick={handleProfilePhotoClick}
                       className="w-full"
+                      disabled={uploading}
                     >
                       <Upload className="mr-2 h-4 w-4" />
-                      Upload Photo
+                      {uploading ? "Uploading..." : "Upload Photo"}
                     </Button>
                   </div>
                   
@@ -206,19 +295,33 @@ const UserProfile = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="healthConditions">Health Conditions</Label>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mb-2">
                       {profileData.healthConditions.map((condition, index) => (
                         <div key={index} className="bg-nutrition-50 text-nutrition-700 px-3 py-1 rounded-full text-sm flex items-center">
                           {condition}
+                          <button 
+                            type="button" 
+                            className="ml-2 text-nutrition-700 hover:text-nutrition-900"
+                            onClick={() => handleRemoveHealthCondition(index)}
+                          >
+                            &times;
+                          </button>
                         </div>
                       ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newCondition}
+                        onChange={(e) => setNewCondition(e.target.value)}
+                        placeholder="Add a health condition"
+                        className="flex-1"
+                      />
                       <Button 
                         type="button" 
-                        variant="outline" 
-                        size="sm"
-                        className="rounded-full px-3 h-8"
+                        variant="outline"
+                        onClick={handleAddHealthCondition}
                       >
-                        + Add
+                        Add
                       </Button>
                     </div>
                   </div>

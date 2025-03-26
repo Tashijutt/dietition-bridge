@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FileText, Download, Eye } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
+import { generatePDF } from "@/utils/pdfGenerator";
 
 interface DietPlan {
   id: string;
@@ -31,12 +32,28 @@ interface DietPlan {
   createdDate: string;
   source: "ai" | "dietitian";
   dietitianName?: string;
+  mealPlan?: {
+    day: string;
+    meals: {
+      type: string;
+      name: string;
+      ingredients: string[];
+      instructions?: string;
+      nutritionalInfo?: {
+        calories: number;
+        protein: number;
+        carbs: number;
+        fats: number;
+      };
+    }[];
+  }[];
 }
 
 const UserPlans = () => {
   const [dietPlans, setDietPlans] = useState<DietPlan[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -48,7 +65,85 @@ const UserPlans = () => {
         description: "A balanced meal plan designed to help you lose weight gradually and sustainably, focusing on Pakistani cuisine.",
         type: "weight-loss",
         createdDate: "2023-11-20",
-        source: "ai"
+        source: "ai",
+        mealPlan: [
+          {
+            day: "Day 1",
+            meals: [
+              {
+                type: "Breakfast",
+                name: "Vegetable Omelette with Whole Wheat Roti",
+                ingredients: ["2 eggs", "Mixed vegetables (tomatoes, onions, green chilies)", "1 whole wheat roti", "1 tsp olive oil"],
+                nutritionalInfo: {
+                  calories: 350,
+                  protein: 18,
+                  carbs: 30,
+                  fats: 15
+                }
+              },
+              {
+                type: "Lunch",
+                name: "Chicken Chapli Kebab with Salad",
+                ingredients: ["100g lean chicken mince", "Chapli kebab spices", "Fresh salad", "1 tbsp yogurt dip"],
+                nutritionalInfo: {
+                  calories: 400,
+                  protein: 25,
+                  carbs: 15,
+                  fats: 20
+                }
+              },
+              {
+                type: "Dinner",
+                name: "Daal with Brown Rice",
+                ingredients: ["1/2 cup masoor daal", "1/3 cup brown rice", "Spices", "Fresh herbs"],
+                nutritionalInfo: {
+                  calories: 380,
+                  protein: 15,
+                  carbs: 60,
+                  fats: 5
+                }
+              }
+            ]
+          },
+          {
+            day: "Day 2",
+            meals: [
+              {
+                type: "Breakfast",
+                name: "Fruit and Nut Yogurt Bowl",
+                ingredients: ["1 cup low-fat yogurt", "Assorted fruits", "1 tbsp mixed nuts", "1 tsp honey"],
+                nutritionalInfo: {
+                  calories: 300,
+                  protein: 12,
+                  carbs: 40,
+                  fats: 10
+                }
+              },
+              {
+                type: "Lunch",
+                name: "Lentil and Vegetable Soup",
+                ingredients: ["Mixed lentils", "Seasonal vegetables", "1 whole wheat roti"],
+                nutritionalInfo: {
+                  calories: 350,
+                  protein: 18,
+                  carbs: 45,
+                  fats: 8
+                }
+              },
+              {
+                type: "Dinner",
+                name: "Grilled Fish with Steamed Vegetables",
+                ingredients: ["150g fish fillet", "Steamed vegetables", "Lemon garlic sauce"],
+                nutritionalInfo: {
+                  calories: 380,
+                  protein: 30,
+                  carbs: 20,
+                  fats: 15
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         id: "2",
@@ -90,17 +185,24 @@ const UserPlans = () => {
   });
 
   const handleViewPlan = (id: string) => {
-    toast({
-      title: "Viewing Diet Plan",
-      description: `Opening detailed view for plan ID: ${id}`
-    });
+    navigate(`/dashboard/plans/${id}`);
   };
 
-  const handleDownloadPlan = (id: string) => {
-    toast({
-      title: "Downloading Diet Plan",
-      description: "Your diet plan will be downloaded as a PDF file."
-    });
+  const handleDownloadPlan = (plan: DietPlan) => {
+    try {
+      generatePDF(plan);
+      toast({
+        title: "PDF Downloaded",
+        description: "Your diet plan has been downloaded as a PDF file."
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast({
+        title: "Download Failed",
+        description: "There was an error generating the PDF. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -205,7 +307,7 @@ const UserPlans = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDownloadPlan(plan.id)}
+                              onClick={() => handleDownloadPlan(plan)}
                             >
                               <Download className="h-4 w-4 mr-1" />
                               PDF

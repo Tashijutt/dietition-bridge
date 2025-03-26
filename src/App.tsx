@@ -22,6 +22,7 @@ import AdminChats from "./pages/admin/AdminChats";
 import UserDashboard from "./pages/user/UserDashboard";
 import UserProfile from "./pages/user/UserProfile";
 import UserPlans from "./pages/user/UserPlans";
+import DietPlanView from "./pages/user/DietPlanView";
 import UserDietitians from "./pages/user/UserDietitians";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/dashboard/profile" element={<UserProfile />} />
             <Route path="/dashboard/plans" element={<UserPlans />} />
+            <Route path="/dashboard/plans/:id" element={<DietPlanView />} />
             <Route path="/dashboard/dietitians" element={<UserDietitians />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
