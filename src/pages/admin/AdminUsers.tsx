@@ -60,7 +60,7 @@ interface User {
   registrationDate: string;
   lastLogin: string;
   status: "active" | "inactive" | "banned";
-  role: string;
+  role: "admin" | "user" | "dietitian";
   phone?: string;
   address?: string;
   dateOfBirth?: string;
@@ -90,8 +90,8 @@ const AdminUsers = () => {
         email: "ayesha@example.com",
         registrationDate: "2023-11-15",
         lastLogin: "2023-11-22",
-        status: "active",
-        role: "user",
+        status: "active" as const,
+        role: "user" as const,
         phone: "+92 300 1234567",
         address: "123 Main St, Islamabad",
         dateOfBirth: "1990-05-15",
@@ -104,8 +104,8 @@ const AdminUsers = () => {
         email: "mali@example.com",
         registrationDate: "2023-11-14",
         lastLogin: "2023-11-20",
-        status: "active",
-        role: "user",
+        status: "active" as const,
+        role: "user" as const,
         phone: "+92 321 1234567",
         address: "456 Oak St, Lahore",
         dateOfBirth: "1985-08-20",
@@ -118,8 +118,8 @@ const AdminUsers = () => {
         email: "fatima@example.com",
         registrationDate: "2023-11-14",
         lastLogin: "2023-11-18",
-        status: "inactive",
-        role: "user",
+        status: "inactive" as const,
+        role: "user" as const,
         phone: "+92 333 1234567",
         address: "789 Pine St, Karachi",
         dateOfBirth: "1992-03-10"
@@ -130,8 +130,8 @@ const AdminUsers = () => {
         email: "ahmed@example.com",
         registrationDate: "2023-11-13",
         lastLogin: "2023-11-15",
-        status: "active",
-        role: "dietitian",
+        status: "active" as const,
+        role: "dietitian" as const,
         phone: "+92 345 1234567",
         address: "101 Elm St, Faisalabad",
         dateOfBirth: "1980-11-25",
@@ -143,8 +143,8 @@ const AdminUsers = () => {
         email: "saira@example.com",
         registrationDate: "2023-11-12",
         lastLogin: "2023-11-12",
-        status: "banned",
-        role: "user",
+        status: "banned" as const,
+        role: "user" as const,
         phone: "+92 312 1234567",
         address: "202 Maple St, Peshawar",
         dateOfBirth: "1995-07-02"
@@ -155,8 +155,8 @@ const AdminUsers = () => {
         email: "admin@dietitianbridge.com",
         registrationDate: "2023-10-01",
         lastLogin: "2023-11-23",
-        status: "active",
-        role: "admin",
+        status: "active" as const,
+        role: "admin" as const,
         phone: "+92 300 9876543",
         address: "Admin Office, Islamabad",
         dateOfBirth: "1985-01-15"
@@ -167,8 +167,8 @@ const AdminUsers = () => {
         email: "dietitian@example.com",
         registrationDate: "2023-10-10",
         lastLogin: "2023-11-21",
-        status: "active",
-        role: "dietitian",
+        status: "active" as const,
+        role: "dietitian" as const,
         phone: "+92 321 9876543",
         address: "Nutrition Clinic, Lahore",
         dateOfBirth: "1978-06-22",
