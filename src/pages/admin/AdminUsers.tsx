@@ -42,7 +42,7 @@ interface User {
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -96,7 +96,7 @@ const AdminUsers = () => {
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus ? user.status === filterStatus : true;
+    const matchesStatus = filterStatus === "all" ? true : user.status === filterStatus;
     
     return matchesSearch && matchesStatus;
   });
@@ -161,7 +161,7 @@ const AdminUsers = () => {
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="inactive">Inactive</SelectItem>
                     <SelectItem value="banned">Banned</SelectItem>

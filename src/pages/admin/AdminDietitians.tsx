@@ -42,8 +42,8 @@ interface Dietitian {
 const AdminDietitians = () => {
   const [dietitians, setDietitians] = useState<Dietitian[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterCity, setFilterCity] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterCity, setFilterCity] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -98,8 +98,8 @@ const AdminDietitians = () => {
     const matchesSearch = dietitian.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          dietitian.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          dietitian.specialization.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCity = filterCity ? dietitian.city === filterCity : true;
-    const matchesStatus = filterStatus ? dietitian.status === filterStatus : true;
+    const matchesCity = filterCity === "all" ? true : dietitian.city === filterCity;
+    const matchesStatus = filterStatus === "all" ? true : dietitian.status === filterStatus;
     
     return matchesSearch && matchesCity && matchesStatus;
   });
@@ -156,7 +156,7 @@ const AdminDietitians = () => {
                     <SelectValue placeholder="Filter by city" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Cities</SelectItem>
+                    <SelectItem value="all">All Cities</SelectItem>
                     <SelectItem value="Karachi">Karachi</SelectItem>
                     <SelectItem value="Lahore">Lahore</SelectItem>
                     <SelectItem value="Islamabad">Islamabad</SelectItem>
@@ -169,7 +169,7 @@ const AdminDietitians = () => {
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="inactive">Inactive</SelectItem>

@@ -42,8 +42,8 @@ interface Dietitian {
 const UserDietitians = () => {
   const [dietitians, setDietitians] = useState<Dietitian[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterCity, setFilterCity] = useState("");
-  const [filterSpecialization, setFilterSpecialization] = useState("");
+  const [filterCity, setFilterCity] = useState("all");
+  const [filterSpecialization, setFilterSpecialization] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   useEffect(() => {
@@ -107,11 +107,11 @@ const UserDietitians = () => {
     const matchesSearch = dietitian.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                            dietitian.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            dietitian.bio.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCity = filterCity ? dietitian.city === filterCity : true;
-    const matchesSpecialization = filterSpecialization ? 
+    const matchesCity = filterCity === "all" ? true : dietitian.city === filterCity;
+    const matchesSpecialization = filterSpecialization === "all" ? true : 
                                   dietitian.specialization.some(spec => 
                                     spec.toLowerCase() === filterSpecialization.toLowerCase()
-                                  ) : true;
+                                  );
     
     return matchesSearch && matchesCity && matchesSpecialization;
   });
@@ -252,7 +252,7 @@ const UserDietitians = () => {
                               <SelectValue placeholder="City" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">All Cities</SelectItem>
+                              <SelectItem value="all">All Cities</SelectItem>
                               <SelectItem value="Karachi">Karachi</SelectItem>
                               <SelectItem value="Lahore">Lahore</SelectItem>
                               <SelectItem value="Islamabad">Islamabad</SelectItem>
@@ -265,7 +265,7 @@ const UserDietitians = () => {
                               <SelectValue placeholder="Specialization" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">All Specializations</SelectItem>
+                              <SelectItem value="all">All Specializations</SelectItem>
                               <SelectItem value="Diabetes Management">Diabetes Management</SelectItem>
                               <SelectItem value="Weight Management">Weight Management</SelectItem>
                               <SelectItem value="Heart Health">Heart Health</SelectItem>
@@ -307,8 +307,8 @@ const UserDietitians = () => {
                         variant="outline"
                         onClick={() => {
                           setSearchQuery("");
-                          setFilterCity("");
-                          setFilterSpecialization("");
+                          setFilterCity("all");
+                          setFilterSpecialization("all");
                         }}
                       >
                         Clear Filters

@@ -42,8 +42,8 @@ interface Plan {
 const AdminPlans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterType, setFilterType] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -96,8 +96,8 @@ const AdminPlans = () => {
 
   const filteredPlans = plans.filter(plan => {
     const matchesSearch = plan.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = filterType ? plan.type === filterType : true;
-    const matchesStatus = filterStatus ? plan.status === filterStatus : true;
+    const matchesType = filterType === "all" ? true : plan.type === filterType;
+    const matchesStatus = filterStatus === "all" ? true : plan.status === filterStatus;
     
     return matchesSearch && matchesType && matchesStatus;
   });
@@ -161,7 +161,7 @@ const AdminPlans = () => {
                     <SelectValue placeholder="Filter by type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all">All Types</SelectItem>
                     <SelectItem value="weight-loss">Weight Loss</SelectItem>
                     <SelectItem value="diabetes">Diabetes</SelectItem>
                     <SelectItem value="heart-health">Heart Health</SelectItem>
@@ -175,7 +175,7 @@ const AdminPlans = () => {
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>
+                    <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="published">Published</SelectItem>
                     <SelectItem value="draft">Draft</SelectItem>
                   </SelectContent>
