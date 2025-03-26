@@ -17,11 +17,11 @@ export const getAIResponse = async (message: string): Promise<string> => {
       headers: {
         "Authorization": `Bearer ${DEEPSEEK_API_KEY}`,
         "HTTP-Referer": "https://dietitian-pathfinder.com", 
-        "X-Title": "Dietitian Pathfinder",
+        "X-Title": "Dietitian Bridge",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-r1:free",
+        model: "deepseek/deepseek-coder-xl:free",
         messages: [
           {
             role: "system",
@@ -38,37 +38,27 @@ Focus on these areas:
 
 Be empathetic but maintain professional boundaries. Provide actionable, practical advice based on established nutritional science. Avoid sounding like an AI - instead, sound like an experienced healthcare professional having a consultation. Use phrases like "Based on my clinical experience" or "From what I've observed with my patients" to make responses feel more authentic and localized.
 
-IMPORTANT: You MUST always provide a detailed, helpful response related to nutrition and health. Do not say there are technical issues or apologize for not being able to respond. Always provide nutrition advice based on your expertise.`
+IMPORTANT: Always provide detailed, helpful responses about Pakistani nutrition and health. Don't apologize for technical issues - just provide good nutrition advice for Pakistani patients.`
           },
           {
             role: "user",
             content: message
           }
         ],
-        stream: true,
+        temperature: 0.7,
+        max_tokens: 1000
       })
     });
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
-    const reader = response.body?.getReader();
-    if (!reader) throw new Error("No response body");
 
-    let fullResponse = '';
-    const decoder = new TextDecoder();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value, { stream: true });
-      fullResponse += chunk;
-    }
-    const lines = fullResponse.split('\n').filter(line => line.startsWith('data: '));
-    const data = lines.map(line => JSON.parse(line.replace('data: ', '')));
-    const content = data.map(d => d.choices?.[0]?.delta?.content || '').join('');
-    return content || "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet with whole wheat roti, brown rice, daal, and karela (bitter gourd). Limit maida and sugary foods.";
+    const data = await response.json();
+    return data.choices[0].message.content || "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet with whole wheat roti, brown rice, daal, and karela (bitter gourd). Limit maida and sugary foods.";
   } catch (error) {
     console.error("Error calling AI API:", error);
-    return "Assalam o Alaikum! As a nutrition specialist in Pakistan, I recommend a balanced diet with whole wheat roti, daal, and vegetables like karela for diabetes management. Please ask more specific questions.";
+    // Fallback response with Pakistani context
+    return "Assalam o Alaikum! As a nutrition specialist in Pakistan, I recommend a balanced diet with whole wheat roti, daal, and vegetables like karela for diabetes management. Regular small meals with low glycemic index foods like chickpeas and lentils are beneficial. Consider local foods like bitter gourd (karela) which has blood sugar lowering properties. Feel free to ask more specific questions about Pakistani diet recommendations.";
   }
 };

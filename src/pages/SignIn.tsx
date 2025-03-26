@@ -2,14 +2,18 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, User, EyeIcon, EyeOffIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, User, EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "@/hooks/use-toast";
 
 const SignIn = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login, register, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -22,26 +26,57 @@ const SignIn = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would implement actual authentication logic
+    setIsSubmitting(true);
+    
+    try {
+      if (isSignUp) {
+        await register(formData.name, formData.email, formData.password);
+        toast({
+          title: "Account created successfully",
+          description: "Welcome to Dietitian Bridge!",
+        });
+        navigate("/dashboard");
+      } else {
+        await login(formData.email, formData.password);
+        toast({
+          title: "Login successful",
+          description: "Welcome back to Dietitian Bridge!",
+        });
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Auth error:", error);
+      toast({
+        title: "Authentication failed",
+        description: error instanceof Error ? error.message : "Please check your credentials and try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
+    // Redirect if already logged in
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+    
     // Add a slight delay to ensure smooth page entrance animation
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
       <Header />
       <main className="flex-grow flex items-center justify-center py-20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 max-w-[1280px]">
           <div className="max-w-md mx-auto">
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
               <div className="text-center mb-8">
@@ -135,9 +170,17 @@ const SignIn = () => {
                 
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 bg-nutrition-600 text-white font-medium rounded-lg shadow-sm hover:bg-nutrition-700 transition-all duration-300"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-nutrition-600 text-white font-medium rounded-lg shadow-sm hover:bg-nutrition-700 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  {isSignUp ? 'Create Account' : 'Sign In'}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {isSignUp ? 'Creating Account...' : 'Signing In...'}
+                    </>
+                  ) : (
+                    isSignUp ? 'Create Account' : 'Sign In'
+                  )}
                 </button>
               </form>
               
@@ -181,7 +224,7 @@ const SignIn = () => {
             </div>
             
             <p className="text-center text-sm text-gray-500 mt-6">
-              By continuing, you agree to NutriCare's
+              By continuing, you agree to Dietitian Bridge's
               <Link to="#" className="text-nutrition-600 hover:text-nutrition-700 mx-1">Terms of Service</Link>
               and
               <Link to="#" className="text-nutrition-600 hover:text-nutrition-700 ml-1">Privacy Policy</Link>
