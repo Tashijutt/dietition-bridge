@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface User {
@@ -13,8 +14,10 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isDietitian: boolean;
+  loading: boolean; // Add loading property
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  register: (name: string, email: string, password: string) => Promise<void>; // Add register method
   updateUserProfile?: (updatedUser: User) => void;
 }
 
@@ -22,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     // Check if user data exists in localStorage
@@ -38,10 +42,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setUser(parsedUser);
     }
+    
+    setLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
+      setLoading(true);
       // In a real app, this would be an API call to verify credentials
       // For demo purposes, we'll use mock data
       
@@ -88,6 +95,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Invalid credentials");
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (name: string, email: string, password: string) => {
+    try {
+      setLoading(true);
+      // In a real app, this would be an API call to register a new user
+      // For demo purposes, we'll create a mock user
+
+      // Check if email is already used
+      if (email === "admin@dietitianbridge.com" || 
+          email === "dietitian@example.com" || 
+          email === "user@example.com") {
+        throw new Error("Email already in use");
+      }
+
+      const newUser: User = {
+        id: `user${Date.now()}`, // Generate a unique ID
+        name,
+        email,
+        role: "user", // New registrations are always regular users
+      };
+
+      setUser(newUser);
+      localStorage.setItem("userAuth", JSON.stringify(newUser));
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,8 +155,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isAuthenticated, 
       isAdmin, 
       isDietitian, 
+      loading,
       login, 
       logout,
+      register,
       updateUserProfile 
     }}>
       {children}
