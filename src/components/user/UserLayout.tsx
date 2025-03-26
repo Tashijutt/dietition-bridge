@@ -11,7 +11,11 @@ import {
   Menu, 
   X, 
   ChevronDown,
-  Home
+  Home,
+  MessageSquare,
+  Heart,
+  Bell,
+  HelpCircle
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -23,6 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 interface UserLayoutProps {
   children: ReactNode;
@@ -64,6 +69,11 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
       path: "/dashboard/dietitians", 
       label: "My Dietitians", 
       icon: <UserCog className="h-5 w-5" /> 
+    },
+    { 
+      path: "/chat", 
+      label: "AI Consultation", 
+      icon: <MessageSquare className="h-5 w-5" /> 
     }
   ];
 
@@ -88,10 +98,16 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
           </div>
           
           {/* User menu */}
-          <div className="flex items-center">
-            <Link to="/" className="mr-4 text-gray-600 hover:text-nutrition-600">
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="mr-2 text-gray-600 hover:text-nutrition-600">
               <Home className="h-5 w-5" />
             </Link>
+            
+            <button className="text-gray-600 hover:text-nutrition-600 relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 bg-nutrition-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">2</span>
+            </button>
+            
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-white border border-gray-200 rounded-full py-1.5 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
                 <Avatar className="h-8 w-8 mr-2">
@@ -107,10 +123,16 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
+                  <User className="mr-2 h-4 w-4" />
                   Profile Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/chat")}>
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  New Consultation
                 </DropdownMenuItem>
                 {isAdmin && (
                   <DropdownMenuItem onClick={() => navigate("/admin")}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
                     Admin Dashboard
                   </DropdownMenuItem>
                 )}
@@ -149,6 +171,20 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
                 <span className="ml-3">{item.label}</span>
               </Link>
             ))}
+            
+            <div className="pt-8 mt-4 border-t">
+              <div className="flex flex-col items-center text-center p-4 bg-nutrition-50 rounded-lg">
+                <Heart className="h-8 w-8 text-nutrition-600 mb-2" />
+                <h3 className="font-medium">Need Help?</h3>
+                <p className="text-sm text-gray-600 mt-1">Contact our support team for assistance</p>
+                <Button size="sm" className="mt-3 w-full" asChild>
+                  <Link to="/contact">
+                    <HelpCircle className="mr-2 h-4 w-4" />
+                    Get Support
+                  </Link>
+                </Button>
+              </div>
+            </div>
           </nav>
         </aside>
 
