@@ -36,7 +36,7 @@ interface DietPlan {
 const UserPlans = () => {
   const [dietPlans, setDietPlans] = useState<DietPlan[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -84,7 +84,7 @@ const UserPlans = () => {
   const filteredPlans = dietPlans.filter(plan => {
     const matchesSearch = plan.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           plan.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = filterType ? plan.type === filterType : true;
+    const matchesType = filterType === "all" ? true : plan.type === filterType;
     
     return matchesSearch && matchesType;
   });
@@ -133,7 +133,7 @@ const UserPlans = () => {
                       <SelectValue placeholder="Filter by type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>
+                      <SelectItem value="all">All Types</SelectItem>
                       <SelectItem value="weight-loss">Weight Loss</SelectItem>
                       <SelectItem value="diabetes">Diabetes</SelectItem>
                       <SelectItem value="heart-health">Heart Health</SelectItem>

@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { MapPin, Search, Phone, Mail, ExternalLink, Grid, List, Filter } from "lucide-react";
+import { MapPin, Search, Phone, Mail, ExternalLink, Grid, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from 'react-intersection-observer';
 
@@ -399,3 +398,4 @@ const DietitianDirectory = () => {
 };
 
 export default DietitianDirectory;
+
