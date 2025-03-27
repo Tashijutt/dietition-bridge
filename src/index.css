@@ -16,16 +16,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 242 50% 25%; /* #21205F */
+    --primary: 262 84% 74%; /* #9b87f5 */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 36 100% 54%; /* #FF9E15 */
+    --secondary: 262 39% 54%; /* #7E69AB */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 36 100% 54%; /* #FF9E15 */
+    --accent: 262 39% 54%; /* #7E69AB */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,13 +33,13 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 242 50% 25%; /* #21205F */
+    --ring: 262 84% 74%; /* #9b87f5 */
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 262 84% 74%; /* #9b87f5 */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
@@ -57,16 +57,16 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 242 50% 25%; /* #21205F */
+    --primary: 262 84% 74%; /* #9b87f5 */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 36 100% 54%; /* #FF9E15 */
+    --secondary: 262 39% 54%; /* #7E69AB */
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 36 100% 54%; /* #FF9E15 */
+    --accent: 262 39% 54%; /* #7E69AB */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -74,11 +74,11 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 242 50% 25%; /* #21205F */
+    --ring: 262 84% 74%; /* #9b87f5 */
     
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 262 84% 74%; /* #9b87f5 */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
@@ -99,8 +99,7 @@
 
   /* Box shadow styles */
   .shadow-standard {
-    box-shadow: 0px 1px 24px 0px rgba(0, 0, 0, 0.05), 
-                0px 1px 4px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 8px 32px 0px rgba(31, 38, 135, 0.15);
   }
 
   .shadow-header {
@@ -109,25 +108,25 @@
 
   /* Glass morphism */
   .glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-soft;
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-standard;
   }
 
   .glass-dark {
-    @apply bg-black/30 backdrop-blur-md border border-white/10 shadow-soft;
+    @apply bg-black/30 backdrop-blur-md border border-white/10 shadow-standard;
   }
 
   .glass-card {
-    @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-soft rounded-lg transition-all duration-300 hover:shadow-md;
+    @apply bg-white/90 backdrop-blur-md border border-gray-200 shadow-standard rounded-lg transition-all duration-300 hover:shadow-md;
   }
 
   /* Focus animations */
   .focus-ring {
-    @apply outline-none ring-2 ring-[#21205F] ring-offset-2 ring-offset-white transition-all duration-200;
+    @apply outline-none ring-2 ring-[#9b87f5] ring-offset-2 ring-offset-white transition-all duration-200;
   }
 
   /* Animated underline */
   .animated-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#21205F] after:transition-all after:duration-300 hover:after:w-full;
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#9b87f5] after:transition-all after:duration-300 hover:after:w-full;
   }
 
   /* Smooth scrolling */
@@ -159,11 +158,11 @@
   }
 
   .chat-message-bot {
-    @apply bg-[#21205F] text-white rounded-bl-none;
+    @apply bg-[#9b87f5] text-white rounded-bl-none;
   }
 
   .chat-input {
-    @apply w-full p-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#21205F] focus:border-transparent transition-all duration-200 outline-none;
+    @apply w-full p-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#9b87f5] focus:border-transparent transition-all duration-200 outline-none;
   }
 
   /* Buttons with specific border-radius */

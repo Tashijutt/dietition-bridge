@@ -58,30 +58,30 @@ export default {
 				},
 				// New color theme
 				primary_brand: {
-					"50": "#e8e8f0",
-					"100": "#d1d1e1",
-					"200": "#a4a3c3",
-					"300": "#7675a5",
-					"400": "#494786",
-					"500": "#21205F", // Primary color
-					"600": "#1a1a4c",
-					"700": "#14133a",
-					"800": "#0d0d27",
-					"900": "#070613",
-					"950": "#030309"
+					"50": "#f3f1fe",
+					"100": "#e8e4fd",
+					"200": "#d1c9fb",
+					"300": "#b9a9f9",
+					"400": "#9b87f5", // Primary color
+					"500": "#7E69AB", // Secondary color
+					"600": "#6E59A5",
+					"700": "#5d4996",
+					"800": "#4c3a7a",
+					"900": "#3c2c5f",
+					"950": "#1A1F2C" // Dark Purple
 				},
 				secondary_brand: {
-					"50": "#fff8eb",
-					"100": "#fff2d6",
-					"200": "#ffe4ad",
-					"300": "#ffd785",
-					"400": "#ffca5c",
-					"500": "#FF9E15", // Secondary color
-					"600": "#cc7e11",
-					"700": "#995f0d",
-					"800": "#663f08",
-					"900": "#332004",
-					"950": "#1a1002"
+					"50": "#f5f3fc",
+					"100": "#ebe7f8",
+					"200": "#d7cef1",
+					"300": "#c2b5ea",
+					"400": "#aa99e3",
+					"500": "#7E69AB", // Secondary color
+					"600": "#6E59A5",
+					"700": "#5d4996",
+					"800": "#4c3a7a",
+					"900": "#3c2c5f",
+					"950": "#1A1F2C"
 				},
 				nutrition: {
 					"50": "#f0fdf4",
@@ -126,7 +126,7 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			boxShadow: {
-				soft: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)',
+				soft: '0px 8px 32px 0px rgba(31, 38, 135, 0.15)',
 				header: '0 .125rem .25rem rgba(0, 0, 0, .075)',
 				glass: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
 				highlight: '0 0 15px rgba(255, 255, 255, 0.5)'

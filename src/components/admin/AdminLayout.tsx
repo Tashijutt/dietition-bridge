@@ -81,7 +81,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Header */}
-      <header className="bg-[#21205F] shadow-[0_0.125rem_0.25rem_rgba(0,0,0,.075)] fixed w-full z-10">
+      <header className="bg-[#9b87f5] shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] fixed w-full z-10">
         <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Mobile menu button */}
           <button 
@@ -104,12 +104,12 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
                 strokeLinejoin="round"
                 className="mr-2 h-6 w-6"
               >
-                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#FF9E15" />
+                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#7E69AB" />
                 <path d="M2 17l10 5 10-5" />
                 <path d="M2 12l10 5 10-5" />
               </svg>
               Dietitian Bridge 
-              <Badge variant="outline" className="ml-2 bg-[#FF9E15] text-white border-[#FF9E15]">
+              <Badge variant="outline" className="ml-2 bg-[#7E69AB] text-white border-[#7E69AB]">
                 Admin
               </Badge>
             </Link>
@@ -123,21 +123,21 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
             
             <button className="text-white hover:text-gray-200 relative">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-[#FF9E15] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+              <span className="absolute -top-1 -right-1 bg-[#7E69AB] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
             </button>
             
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center bg-[#21205F]/70 border border-[#FF9E15]/20 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-[#21205F]/80 focus:outline-none transition duration-150 ease-in-out">
-                <Avatar className="h-8 w-8 mr-2 border border-[#FF9E15]/30">
+              <DropdownMenuTrigger className="flex items-center bg-[#9b87f5]/70 border border-[#7E69AB]/20 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-[#9b87f5]/80 focus:outline-none transition duration-150 ease-in-out">
+                <Avatar className="h-8 w-8 mr-2 border border-[#7E69AB]/30">
                   <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
-                  <AvatarFallback className="bg-[#FF9E15] text-white">
+                  <AvatarFallback className="bg-[#7E69AB] text-white">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "A"}
                   </AvatarFallback>
                 </Avatar>
                 <span className="hidden md:inline-block text-white">{user?.name}</span>
                 <ChevronDown className="ml-2 h-4 w-4 text-white" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)]">
+              <DropdownMenuContent align="end" className="w-56 shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)]">
                 <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/dashboard")}>
@@ -164,7 +164,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
         <aside 
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-in-out`}
+          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] transition-transform duration-300 ease-in-out`}
         >
           <div className="p-4 border-b">
             <div className="text-sm text-gray-500">Admin Portal</div>
@@ -177,7 +177,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
                 to={item.path}
                 className={`flex items-center px-4 py-3 text-sm font-medium rounded-[4px] transition-colors ${
                   location.pathname === item.path
-                    ? "bg-[#21205F]/5 text-[#21205F]"
+                    ? "bg-[#9b87f5]/5 text-[#9b87f5]"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
                 onClick={() => setSidebarOpen(false)}
@@ -213,7 +213,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
         {/* Main content */}
         <main className="flex-1 p-6 lg:pl-6 w-full overflow-x-hidden">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-[#21205F]">{title}</h1>
+            <h1 className="text-2xl font-bold text-[#9b87f5]">{title}</h1>
           </div>
           
           {children}

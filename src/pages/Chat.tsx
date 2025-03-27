@@ -81,10 +81,10 @@ const Chat = () => {
       <main className="flex-grow pt-20 bg-gray-50">
         <div className="container mx-auto px-4 py-8 max-w-[1280px]">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#21205F] mb-8">AI Nutrition Assistant</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#9b87f5] mb-8">AI Nutrition Assistant</h1>
 
             {/* Chat Interface */}
-            <div className="bg-white rounded-xl shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] overflow-hidden">
+            <div className="bg-white rounded-xl shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] overflow-hidden">
               {/* Chat Messages */}
               <div className="h-[calc(100vh-300px)] overflow-y-auto p-6">
                 <div className="space-y-6">
@@ -98,7 +98,7 @@ const Chat = () => {
                       <div
                         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                           msg.type === 'user'
-                            ? "bg-[#21205F] text-white rounded-tr-none"
+                            ? "bg-[#9b87f5] text-white rounded-tr-none"
                             : "bg-gray-100 text-gray-800 rounded-tl-none"
                         }`}
                       >
@@ -143,7 +143,7 @@ const Chat = () => {
                     <button
                       key={index}
                       onClick={() => handleSuggestedQuestion(question)}
-                      className="text-sm bg-white border border-gray-200 rounded-[4px] px-3 py-1.5 text-gray-700 hover:bg-[#21205F]/5 hover:border-[#21205F]/20 hover:text-[#21205F] transition-colors"
+                      className="text-sm bg-white border border-gray-200 rounded-[4px] px-3 py-1.5 text-gray-700 hover:bg-[#9b87f5]/5 hover:border-[#9b87f5]/20 hover:text-[#9b87f5] transition-colors"
                     >
                       {question}
                     </button>
@@ -160,12 +160,12 @@ const Chat = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Ask about Pakistani nutrition, diet plans, health conditions..."
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#21205F] focus:border-transparent transition-all duration-200 outline-none"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#9b87f5] focus:border-transparent transition-all duration-200 outline-none"
                     disabled={isLoading}
                   />
                   <button
                     type="submit"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-[#21205F] hover:text-[#21205F]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-[#9b87f5] hover:text-[#7E69AB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     disabled={!message.trim() || isLoading}
                     aria-label="Send message"
                   >
