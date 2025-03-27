@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Send, ChevronDown } from "lucide-react";
@@ -17,6 +17,15 @@ const Chat = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [botResponse, setBotResponse] = useState<string[]>([]);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Scroll to the bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    inputRef.current?.focus();
+  }, [messages, botResponse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +72,7 @@ const Chat = () => {
 
   const handleSuggestedQuestion = (question: string) => {
     setMessage(question);
+    inputRef.current?.focus();
   };
 
   return (
@@ -71,10 +81,10 @@ const Chat = () => {
       <main className="flex-grow pt-20 bg-gray-50">
         <div className="container mx-auto px-4 py-8 max-w-[1280px]">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">AI Nutrition Assistant</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#21205F] mb-8">AI Nutrition Assistant</h1>
 
             {/* Chat Interface */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            <div className="bg-white rounded-xl shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] overflow-hidden">
               {/* Chat Messages */}
               <div className="h-[calc(100vh-300px)] overflow-y-auto p-6">
                 <div className="space-y-6">
@@ -88,7 +98,7 @@ const Chat = () => {
                       <div
                         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                           msg.type === 'user'
-                            ? "bg-nutrition-600 text-white rounded-tr-none"
+                            ? "bg-[#21205F] text-white rounded-tr-none"
                             : "bg-gray-100 text-gray-800 rounded-tl-none"
                         }`}
                       >
@@ -118,6 +128,7 @@ const Chat = () => {
                       </div>
                     </div>
                   )}
+                  <div ref={messagesEndRef} />
                 </div>
               </div>
 
@@ -132,7 +143,7 @@ const Chat = () => {
                     <button
                       key={index}
                       onClick={() => handleSuggestedQuestion(question)}
-                      className="text-sm bg-white border border-gray-200 rounded-full px-3 py-1.5 text-gray-700 hover:bg-nutrition-50 hover:border-nutrition-200 hover:text-nutrition-700 transition-colors"
+                      className="text-sm bg-white border border-gray-200 rounded-[4px] px-3 py-1.5 text-gray-700 hover:bg-[#21205F]/5 hover:border-[#21205F]/20 hover:text-[#21205F] transition-colors"
                     >
                       {question}
                     </button>
@@ -144,16 +155,17 @@ const Chat = () => {
               <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4">
                 <div className="relative">
                   <input
+                    ref={inputRef}
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Ask about Pakistani nutrition, diet plans, health conditions..."
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-full focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#21205F] focus:border-transparent transition-all duration-200 outline-none"
                     disabled={isLoading}
                   />
                   <button
                     type="submit"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-nutrition-600 hover:text-nutrition-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-[#21205F] hover:text-[#21205F]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     disabled={!message.trim() || isLoading}
                     aria-label="Send message"
                   >

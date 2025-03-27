@@ -81,7 +81,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Header */}
-      <header className="bg-nutrition-700 shadow-md fixed w-full z-10">
+      <header className="bg-[#21205F] shadow-[0_0.125rem_0.25rem_rgba(0,0,0,.075)] fixed w-full z-10">
         <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Mobile menu button */}
           <button 
@@ -94,9 +94,22 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
           {/* Logo */}
           <div className="flex-1 flex items-center justify-center lg:justify-start">
             <Link to="/admin" className="font-bold text-xl text-white flex items-center">
-              <Globe className="mr-2 h-6 w-6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-2 h-6 w-6"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#FF9E15" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
               Dietitian Bridge 
-              <Badge variant="outline" className="ml-2 bg-nutrition-800 text-white border-nutrition-600">
+              <Badge variant="outline" className="ml-2 bg-[#FF9E15] text-white border-[#FF9E15]">
                 Admin
               </Badge>
             </Link>
@@ -110,21 +123,21 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
             
             <button className="text-white hover:text-gray-200 relative">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+              <span className="absolute -top-1 -right-1 bg-[#FF9E15] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
             </button>
             
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center bg-nutrition-800 border border-nutrition-600 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-nutrition-900 focus:outline-none transition duration-150 ease-in-out">
-                <Avatar className="h-8 w-8 mr-2 border border-nutrition-600">
+              <DropdownMenuTrigger className="flex items-center bg-[#21205F]/70 border border-[#FF9E15]/20 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-[#21205F]/80 focus:outline-none transition duration-150 ease-in-out">
+                <Avatar className="h-8 w-8 mr-2 border border-[#FF9E15]/30">
                   <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
-                  <AvatarFallback className="bg-nutrition-600 text-white">
+                  <AvatarFallback className="bg-[#FF9E15] text-white">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "A"}
                   </AvatarFallback>
                 </Avatar>
                 <span className="hidden md:inline-block text-white">{user?.name}</span>
                 <ChevronDown className="ml-2 h-4 w-4 text-white" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)]">
                 <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/dashboard")}>
@@ -151,7 +164,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
         <aside 
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white shadow transition-transform duration-300 ease-in-out`}
+          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-in-out`}
         >
           <div className="p-4 border-b">
             <div className="text-sm text-gray-500">Admin Portal</div>
@@ -162,9 +175,9 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                className={`flex items-center px-4 py-3 text-sm font-medium rounded-[4px] transition-colors ${
                   location.pathname === item.path
-                    ? "bg-nutrition-50 text-nutrition-700"
+                    ? "bg-[#21205F]/5 text-[#21205F]"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
                 onClick={() => setSidebarOpen(false)}
@@ -180,7 +193,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               </div>
               <Link
                 to="/admin"
-                className="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-100"
+                className="flex items-center px-4 py-3 text-sm font-medium rounded-[4px] text-gray-700 hover:bg-gray-100"
               >
                 <Sliders className="h-5 w-5" />
                 <span className="ml-3">Settings</span>
@@ -188,7 +201,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className="flex w-full items-center px-4 py-3 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50"
+                className="flex w-full items-center px-4 py-3 text-sm font-medium rounded-[4px] text-red-600 hover:bg-red-50"
               >
                 <LogOut className="h-5 w-5" />
                 <span className="ml-3">Log out</span>
@@ -200,7 +213,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
         {/* Main content */}
         <main className="flex-1 p-6 lg:pl-6 w-full overflow-x-hidden">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+            <h1 className="text-2xl font-bold text-[#21205F]">{title}</h1>
           </div>
           
           {children}

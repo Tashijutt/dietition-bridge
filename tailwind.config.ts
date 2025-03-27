@@ -56,6 +56,33 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// New color theme
+				primary_brand: {
+					"50": "#e8e8f0",
+					"100": "#d1d1e1",
+					"200": "#a4a3c3",
+					"300": "#7675a5",
+					"400": "#494786",
+					"500": "#21205F", // Primary color
+					"600": "#1a1a4c",
+					"700": "#14133a",
+					"800": "#0d0d27",
+					"900": "#070613",
+					"950": "#030309"
+				},
+				secondary_brand: {
+					"50": "#fff8eb",
+					"100": "#fff2d6",
+					"200": "#ffe4ad",
+					"300": "#ffd785",
+					"400": "#ffca5c",
+					"500": "#FF9E15", // Secondary color
+					"600": "#cc7e11",
+					"700": "#995f0d",
+					"800": "#663f08",
+					"900": "#332004",
+					"950": "#1a1002"
+				},
 				nutrition: {
 					"50": "#f0fdf4",
 					"100": "#dcfce7",
@@ -97,6 +124,12 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			boxShadow: {
+				soft: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)',
+				header: '0 .125rem .25rem rgba(0, 0, 0, .075)',
+				glass: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+				highlight: '0 0 15px rgba(255, 255, 255, 0.5)'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -146,11 +179,6 @@ export default {
 				'slide-in-right': 'slide-in-right 0.3s ease-out',
 				'slide-in-left': 'slide-in-left 0.3s ease-out',
 				pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-			},
-			boxShadow: {
-				soft: '0 2px 10px rgba(0, 0, 0, 0.05)',
-				glass: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-				highlight: '0 0 15px rgba(255, 255, 255, 0.5)'
 			},
 			backdropBlur: {
 				xs: '2px',

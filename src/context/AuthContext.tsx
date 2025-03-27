@@ -14,10 +14,10 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isDietitian: boolean;
-  loading: boolean; // Add loading property
+  loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (name: string, email: string, password: string) => Promise<void>; // Add register method
+  register: (name: string, email: string, password: string) => Promise<void>;
   updateUserProfile?: (updatedUser: User) => void;
 }
 
@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   
+  // Load user from localStorage on initial load
   useEffect(() => {
-    // Check if user data exists in localStorage
     const storedUser = localStorage.getItem("userAuth");
     const storedProfileImage = localStorage.getItem("userProfileImage");
     
