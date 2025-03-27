@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Send, ChevronDown, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -78,7 +79,7 @@ const ChatPage = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="flex items-center mb-8">
-            <Link to="/" className="flex items-center text-gray-600 hover:text-nutrition-600 transition-colors mr-4">
+            <Link to="/" className="flex items-center text-gray-600 hover:text-primary transition-colors mr-4">
               <ArrowLeft className="w-5 h-5 mr-1" />
               <span>Back to Home</span>
             </Link>
@@ -102,7 +103,7 @@ const ChatPage = () => {
                       className={cn(
                         "max-w-[80%] rounded-2xl px-4 py-3",
                         msg.type === 'user'
-                          ? "bg-nutrition-600 text-white rounded-tr-none"
+                          ? "bg-primary text-white rounded-tr-none"
                           : "bg-gray-100 text-gray-800 rounded-tl-none"
                       )}
                     >
@@ -147,7 +148,7 @@ const ChatPage = () => {
                   <button
                     key={index}
                     onClick={() => handleSuggestedQuestion(question)}
-                    className="text-sm bg-white border border-gray-200 rounded-full px-3 py-1.5 text-gray-700 hover:bg-nutrition-50 hover:border-nutrition-200 hover:text-nutrition-700 transition-colors"
+                    className="text-sm bg-white border border-gray-200 rounded-full px-3 py-1.5 text-gray-700 hover:bg-primary/5 hover:border-primary/20 hover:text-primary transition-colors"
                   >
                     {question}
                   </button>
@@ -164,12 +165,12 @@ const ChatPage = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Ask about Pakistani nutrition, diet plans, health conditions..."
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-full focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-full focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-nutrition-600 hover:text-nutrition-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-primary hover:text-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   disabled={!message.trim() || isLoading}
                   aria-label="Send message"
                 >

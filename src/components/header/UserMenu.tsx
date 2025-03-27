@@ -32,7 +32,7 @@ const UserMenu = () => {
                 src={user?.profileImage}
                 alt={user?.name || "User"}
               />
-              <AvatarFallback className="bg-[#21205F] text-white">
+              <AvatarFallback className="bg-primary text-white">
                 {user?.name?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
@@ -65,7 +65,7 @@ const UserMenu = () => {
     <Link to="/signin">
       <Button 
         variant="default" 
-        className="rounded-[4px] bg-[#21205F] hover:bg-[#21205F]/90"
+        className="rounded-[4px] bg-primary hover:bg-primary/90"
       >
         <User className="mr-2 h-4 w-4" />
         Sign In

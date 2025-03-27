@@ -79,11 +79,11 @@ const ChatWidget = () => {
       {!isOpen && (
         <button
           onClick={handleToggle}
-          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-[#9b87f5] text-white rounded-full shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] hover:bg-[#7E69AB] transition-all duration-300 hover:scale-105 group"
+          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-primary text-white rounded-full shadow-soft hover:bg-primary/90 transition-all duration-300 hover:scale-105 group"
           aria-label="Chat with nutritionist"
         >
           <MessageCircle className="w-7 h-7" />
-          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-[#9b87f5] text-sm font-medium rounded-[4px] shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with Dr. Nasreen</span>
+          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-primary text-sm font-medium rounded-[4px] shadow-soft opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with Dr. Nasreen</span>
         </button>
       )}
       
@@ -91,13 +91,13 @@ const ChatWidget = () => {
       {isOpen && (
         <div
           className={cn(
-            "fixed z-50 bottom-6 right-6 w-[380px] bg-white rounded-2xl shadow-[0px_8px_32px_0px_rgba(31,38,135,0.15)] overflow-hidden transition-all duration-300 border border-gray-200",
+            "fixed z-50 bottom-6 right-6 w-[380px] bg-white rounded-2xl shadow-soft overflow-hidden transition-all duration-300 border border-gray-200",
             isMinimized ? "h-14" : "h-[550px] max-h-[80vh]",
             isOpen ? "animate-slide-up" : ""
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-[#9b87f5] text-white">
+          <div className="flex items-center justify-between px-4 py-3 bg-primary text-white">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
               <h3 className="font-medium">Dr. Nasreen Ahmed, Nutrition Specialist</h3>
@@ -105,14 +105,14 @@ const ChatWidget = () => {
             <div className="flex items-center gap-1">
               <button
                 onClick={handleMinimize}
-                className="p-1.5 rounded-full hover:bg-[#7E69AB] transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary/80 transition-colors"
                 aria-label={isMinimized ? "Maximize chat" : "Minimize chat"}
               >
                 {isMinimized ? <Maximize className="w-4 h-4" /> : <Minimize className="w-4 h-4" />}
               </button>
               <button
                 onClick={handleToggle}
-                className="p-1.5 rounded-full hover:bg-[#7E69AB] transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary/80 transition-colors"
                 aria-label="Close chat"
               >
                 <X className="w-4 h-4" />
@@ -131,7 +131,7 @@ const ChatWidget = () => {
                       className={cn(
                         "p-4 rounded-lg max-w-[85%] mb-2 animate-fade-in",
                         msg.type === 'user' 
-                          ? "bg-[#9b87f5] ml-auto text-white rounded-br-none" 
+                          ? "bg-primary ml-auto text-white rounded-br-none" 
                           : "bg-gray-100 text-black rounded-bl-none"
                       )}
                     >
@@ -158,12 +158,12 @@ const ChatWidget = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Ask about nutrition, diets, or health..."
-                    className="w-full p-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-[#9b87f5] focus:border-transparent transition-all duration-200 outline-none"
+                    className="w-full p-3 pr-12 border border-gray-300 rounded-[4px] focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
                     disabled={isLoading}
                   />
                   <button
                     type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-[#9b87f5] text-white rounded-[4px] hover:bg-[#7E69AB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-primary text-white rounded-[4px] hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     disabled={!message.trim() || isLoading}
                     aria-label="Send message"
                   >

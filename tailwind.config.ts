@@ -58,30 +58,30 @@ export default {
 				},
 				// New color theme
 				primary_brand: {
-					"50": "#f3f1fe",
-					"100": "#e8e4fd",
-					"200": "#d1c9fb",
-					"300": "#b9a9f9",
-					"400": "#9b87f5", // Primary color
-					"500": "#7E69AB", // Secondary color
-					"600": "#6E59A5",
-					"700": "#5d4996",
-					"800": "#4c3a7a",
-					"900": "#3c2c5f",
-					"950": "#1A1F2C" // Dark Purple
+					"50": "#ececf6",
+					"100": "#d0d0e9",
+					"200": "#a8a7d5",
+					"300": "#807dbc",
+					"400": "#6158a5", 
+					"500": "#21205F", // Primary color
+					"600": "#1d1c56",
+					"700": "#191852",
+					"800": "#14144d",
+					"900": "#101049",
+					"950": "#0a0a2e"
 				},
 				secondary_brand: {
-					"50": "#f5f3fc",
-					"100": "#ebe7f8",
-					"200": "#d7cef1",
-					"300": "#c2b5ea",
-					"400": "#aa99e3",
-					"500": "#7E69AB", // Secondary color
-					"600": "#6E59A5",
-					"700": "#5d4996",
-					"800": "#4c3a7a",
-					"900": "#3c2c5f",
-					"950": "#1A1F2C"
+					"50": "#fff8eb",
+					"100": "#ffeac2",
+					"200": "#ffd585",
+					"300": "#ffc148",
+					"400": "#ffae1f",
+					"500": "#FF9E15", // Secondary color
+					"600": "#e17f00",
+					"700": "#bb6800",
+					"800": "#964f00",
+					"900": "#7a4300",
+					"950": "#432100"
 				},
 				nutrition: {
 					"50": "#f0fdf4",
@@ -126,10 +126,11 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			boxShadow: {
-				soft: '0px 8px 32px 0px rgba(31, 38, 135, 0.15)',
-				header: '0 .125rem .25rem rgba(0, 0, 0, .075)',
-				glass: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-				highlight: '0 0 15px rgba(255, 255, 255, 0.5)'
+				soft: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)',
+				header: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)',
+				glass: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)',
+				highlight: '0 0 15px rgba(255, 255, 255, 0.5)',
+				card: '0px 1px 24px 0px rgba(0, 0, 0, 0.05), 0px 1px 4px 0px rgba(0, 0, 0, 0.15)'
 			},
 			keyframes: {
 				'accordion-down': {
