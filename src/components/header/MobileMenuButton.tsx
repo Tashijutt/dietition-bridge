@@ -10,7 +10,7 @@ const MobileMenuButton = ({ isOpen, toggleMenu }: MobileMenuButtonProps) => {
   return (
     <button
       onClick={toggleMenu}
-      className="ml-4 md:hidden text-gray-600 focus:outline-none"
+      className="ml-4 md:hidden text-[#21205F] focus:outline-none"
     >
       {isOpen ? (
         <X className="h-6 w-6" />

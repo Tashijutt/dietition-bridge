@@ -80,46 +80,46 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b fixed w-full z-10">
+      <header className="bg-white shadow-[0_0.125rem_0.25rem_rgba(0,0,0,.075)] border-b fixed w-full z-10">
         <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center justify-between">
           {/* Mobile menu button */}
           <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden text-gray-500 hover:text-gray-700"
+            className="lg:hidden text-gray-500 hover:text-[#21205F]"
           >
             {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
           
           {/* Logo */}
           <div className="flex-1 flex items-center justify-center lg:justify-start">
-            <Link to="/dashboard" className="font-bold text-xl text-nutrition-600">
+            <Link to="/dashboard" className="font-bold text-xl text-[#21205F]">
               Dietitian Bridge <span className="text-sm font-normal text-gray-500">Dashboard</span>
             </Link>
           </div>
           
           {/* User menu */}
           <div className="flex items-center space-x-4">
-            <Link to="/" className="mr-2 text-gray-600 hover:text-nutrition-600">
+            <Link to="/" className="mr-2 text-gray-600 hover:text-[#21205F]">
               <Home className="h-5 w-5" />
             </Link>
             
-            <button className="text-gray-600 hover:text-nutrition-600 relative">
+            <button className="text-gray-600 hover:text-[#21205F] relative">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-nutrition-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">2</span>
+              <span className="absolute -top-1 -right-1 bg-[#FF9E15] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">2</span>
             </button>
             
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-white border border-gray-200 rounded-full py-1.5 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
                 <Avatar className="h-8 w-8 mr-2">
                   <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
-                  <AvatarFallback className="bg-nutrition-100 text-nutrition-800">
+                  <AvatarFallback className="bg-[#21205F]/10 text-[#21205F]">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                   </AvatarFallback>
                 </Avatar>
                 <span className="hidden md:inline-block">{user?.name}</span>
                 <ChevronDown className="ml-2 h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)]">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
@@ -153,16 +153,16 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
         <aside 
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white border-r transition-transform duration-300 ease-in-out`}
+          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white border-r shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] transition-transform duration-300 ease-in-out`}
         >
           <nav className="p-4 space-y-1 overflow-y-auto h-full">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                className={`flex items-center px-4 py-3 text-sm font-medium rounded-[4px] transition-colors ${
                   location.pathname === item.path
-                    ? "bg-nutrition-50 text-nutrition-700"
+                    ? "bg-[#21205F]/5 text-[#21205F]"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
                 onClick={() => setSidebarOpen(false)}
@@ -173,11 +173,11 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
             ))}
             
             <div className="pt-8 mt-4 border-t">
-              <div className="flex flex-col items-center text-center p-4 bg-nutrition-50 rounded-lg">
-                <Heart className="h-8 w-8 text-nutrition-600 mb-2" />
+              <div className="flex flex-col items-center text-center p-4 bg-[#21205F]/5 rounded-lg">
+                <Heart className="h-8 w-8 text-[#21205F] mb-2" />
                 <h3 className="font-medium">Need Help?</h3>
                 <p className="text-sm text-gray-600 mt-1">Contact our support team for assistance</p>
-                <Button size="sm" className="mt-3 w-full" asChild>
+                <Button size="sm" className="mt-3 w-full bg-[#21205F] hover:bg-[#21205F]/90 text-white" asChild>
                   <Link to="/contact">
                     <HelpCircle className="mr-2 h-4 w-4" />
                     Get Support
@@ -191,7 +191,7 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
         {/* Main content */}
         <main className="flex-1 p-6 lg:pl-6 w-full overflow-x-hidden">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+            <h1 className="text-2xl font-bold text-[#21205F]">{title}</h1>
           </div>
           
           {children}

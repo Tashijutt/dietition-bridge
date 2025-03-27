@@ -83,7 +83,7 @@ const ChatWidget = () => {
           aria-label="Chat with nutritionist"
         >
           <MessageCircle className="w-7 h-7" />
-          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-[#21205F] text-sm font-medium rounded-[4px] shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with Dr. Nasreen</span>
+          <span className="absolute right-full mr-3 px-3 py-1 bg-white text-[#21205F] text-sm font-medium rounded-[4px] shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">Chat with Dr. Nasreen</span>
         </button>
       )}
       
@@ -130,7 +130,9 @@ const ChatWidget = () => {
                       key={index}
                       className={cn(
                         "p-4 rounded-lg max-w-[85%] mb-2 animate-fade-in",
-                        msg.type === 'user' ? "bg-[#21205F] ml-auto text-white rounded-br-none" : "bg-gray-100 text-black rounded-bl-none"
+                        msg.type === 'user' 
+                          ? "bg-[#21205F] ml-auto text-white rounded-br-none" 
+                          : "bg-gray-100 text-black rounded-bl-none"
                       )}
                     >
                       {msg.content}

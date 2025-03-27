@@ -18,14 +18,14 @@ const NavLinks = ({ isMobile = false }: { isMobile?: boolean }) => {
 
   if (isMobile) {
     return (
-      <div className="md:hidden bg-white border-t border-gray-200 shadow-md">
+      <div className="md:hidden bg-white border-t border-gray-200 shadow-[0px_1px_24px_0px_rgba(0,0,0,0.05),0px_1px_4px_0px_rgba(0,0,0,0.15)]">
         <div className="container mx-auto px-4 py-3 space-y-1">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={cn(
-                "block px-3 py-2 text-base font-medium rounded-md",
+                "block px-3 py-2 text-base font-medium rounded-[4px]",
                 activePath === link.path
                   ? "text-white bg-[#21205F]"
                   : "text-gray-600 hover:bg-gray-100"
@@ -46,7 +46,7 @@ const NavLinks = ({ isMobile = false }: { isMobile?: boolean }) => {
           key={link.path}
           to={link.path}
           className={cn(
-            "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+            "px-3 py-2 text-sm font-medium rounded-[4px] transition-colors",
             activePath === link.path
               ? "text-white bg-[#21205F]"
               : "text-gray-600 hover:text-[#21205F]"
