@@ -14,9 +14,9 @@ const ChatWidgetWrapper = () => {
     <div className="fixed bottom-20 sm:bottom-24 right-4 z-40">
       {isOpen ? (
         <div className="bg-white rounded-lg shadow-soft w-full sm:w-96 h-[500px] flex flex-col overflow-hidden border border-gray-200">
-          <div className="bg-primary text-white p-4 flex justify-between items-center">
+          <div className="bg-primary text-white p-4 flex justify-between items-center sticky top-0 z-10">
             <h3 className="font-semibold">Chat with Nutritionist AI</h3>
-            <button onClick={toggleWidget} className="text-white hover:text-gray-200">
+            <button onClick={toggleWidget} className="text-white hover:text-secondary transition-colors">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -27,7 +27,7 @@ const ChatWidgetWrapper = () => {
       ) : (
         <button
           onClick={toggleWidget}
-          className="bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
+          className="bg-primary hover:bg-primary/90 text-white p-3 rounded-full shadow-lg transition-colors"
         >
           <MessageSquare className="h-6 w-6" />
         </button>

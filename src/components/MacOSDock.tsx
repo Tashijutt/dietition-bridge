@@ -4,13 +4,13 @@ import { Home, MessageSquare, ScrollText, Users, Info, Mail, FileText } from "lu
 
 const MacOSDock = () => {
   const dockItems = [
-    { name: "Home", path: "/", icon: <Home className="w-8 h-8 text-primary" /> },
-    { name: "Chat", path: "/chat", icon: <MessageSquare className="w-8 h-8 text-primary" /> },
-    { name: "Plans", path: "/plans", icon: <ScrollText className="w-8 h-8 text-primary" /> },
-    { name: "Dietitians", path: "/dietitians", icon: <Users className="w-8 h-8 text-primary" /> },
-    { name: "About", path: "/about", icon: <Info className="w-8 h-8 text-primary" /> },
-    { name: "Contact", path: "/contact", icon: <Mail className="w-8 h-8 text-primary" /> },
-    { name: "Blog", path: "/blog", icon: <FileText className="w-8 h-8 text-primary" /> }
+    { name: "Home", path: "/", icon: <Home className="w-8 h-8 text-white" /> },
+    { name: "Chat", path: "/chat", icon: <MessageSquare className="w-8 h-8 text-white" /> },
+    { name: "Plans", path: "/plans", icon: <ScrollText className="w-8 h-8 text-white" /> },
+    { name: "Dietitians", path: "/dietitians", icon: <Users className="w-8 h-8 text-white" /> },
+    { name: "About", path: "/about", icon: <Info className="w-8 h-8 text-white" /> },
+    { name: "Contact", path: "/contact", icon: <Mail className="w-8 h-8 text-white" /> },
+    { name: "Blog", path: "/blog", icon: <FileText className="w-8 h-8 text-white" /> }
   ];
 
   return (
@@ -23,7 +23,7 @@ const MacOSDock = () => {
             className="macos-dock-item" 
             data-name={item.name}
           >
-            <div className="macos-dock-icon flex items-center justify-center bg-white rounded-xl p-1 shadow-soft">
+            <div className="macos-dock-icon flex items-center justify-center">
               {item.icon}
             </div>
           </Link>
