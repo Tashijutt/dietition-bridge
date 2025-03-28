@@ -25,7 +25,7 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
       )}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-nutrition-50 text-nutrition-600 mb-5">
+      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-secondary/20 text-secondary mb-5">
         {icon}
       </div>
       <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>

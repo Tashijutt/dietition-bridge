@@ -60,15 +60,15 @@ const HealthySteps = () => {
             <div 
               key={index}
               className={cn(
-                "relative p-6 bg-white rounded-lg shadow-soft border border-gray-100 hover:border-nutrition-200 transition-all duration-300",
+                "relative p-6 bg-white rounded-lg shadow-soft border border-gray-100 hover:border-primary/20 transition-all duration-300",
                 inView ? "animate-fade-up" : "opacity-0"
               )}
               style={{ animationDelay: `${index * 100 + 200}ms` }}
             >
-              <div className="absolute -top-4 -right-4 w-12 h-12 bg-nutrition-600 text-white rounded-full flex items-center justify-center font-bold">
+              <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold">
                 {step.number}
               </div>
-              <div className="text-nutrition-600 mb-5">
+              <div className="text-primary mb-5">
                 {step.icon}
               </div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
@@ -80,7 +80,7 @@ const HealthySteps = () => {
         <div className="text-center mt-12">
           <Link 
             to="/get-started" 
-            className="inline-flex items-center gap-2 px-8 py-4 bg-nutrition-600 text-white font-medium rounded-lg hover:bg-nutrition-700 transition-colors text-lg"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors text-lg"
           >
             Start Now
             <ArrowRight className="w-5 h-5" />

@@ -44,9 +44,9 @@ const BenefitsSection = () => {
               {benefits.map((benefit, index) => (
                 <div 
                   key={index} 
-                  className="flex p-5 bg-white rounded-lg shadow-soft border border-gray-100 hover:border-nutrition-200 transition-all duration-300"
+                  className="flex p-5 bg-white rounded-lg shadow-soft border border-gray-100 hover:border-primary/20 transition-all duration-300"
                 >
-                  <div className="mr-4 p-3 bg-nutrition-50 text-nutrition-600 rounded-full">
+                  <div className="mr-4 p-3 bg-primary/10 text-primary rounded-full">
                     {benefit.icon}
                   </div>
                   <div>
@@ -59,7 +59,7 @@ const BenefitsSection = () => {
             
             <Link 
               to="/about" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-nutrition-600 text-white font-medium rounded-lg hover:bg-nutrition-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
             >
               Learn More
               <ArrowRight className="w-4 h-4" />
