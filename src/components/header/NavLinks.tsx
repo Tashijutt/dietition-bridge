@@ -46,10 +46,12 @@ const NavLinks = ({ isMobile = false }: { isMobile?: boolean }) => {
           key={link.path}
           to={link.path}
           className={cn(
-            "px-3 py-2 text-sm font-medium rounded-[4px] transition-colors",
+            "px-3 py-2 text-sm font-medium rounded-[4px] transition-colors relative",
             activePath === link.path
               ? "text-white bg-primary"
-              : "text-gray-600 hover:text-primary"
+              : "text-gray-600 hover:text-primary",
+            "after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300",
+            activePath !== link.path && "hover:after:w-full"
           )}
         >
           {link.name}

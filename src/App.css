@@ -3,6 +3,7 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  padding-bottom: 6rem; /* Adding extra padding for the dock */
   text-align: center;
 }
 
@@ -13,10 +14,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em rgba(33, 32, 95, 0.6));
+  filter: drop-shadow(0 0 2em rgba(33, 32, 95, 0.6)); /* Updated to primary color */
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(255, 158, 21, 0.6));
+  filter: drop-shadow(0 0 2em rgba(255, 158, 21, 0.6)); /* Updated to secondary color */
 }
 
 @keyframes logo-spin {

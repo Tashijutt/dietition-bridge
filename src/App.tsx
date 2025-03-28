@@ -25,6 +25,8 @@ import UserPlans from "./pages/user/UserPlans";
 import DietPlanView from "./pages/user/DietPlanView";
 import UserDietitians from "./pages/user/UserDietitians";
 import { AuthProvider } from "./context/AuthContext";
+import MacOSDock from "./components/MacOSDock";
+import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,52 @@ const ScrollToTop = () => {
   return null;
 };
 
+// RouterContent component to conditionally show MacOSDock
+const RouterContent = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isDashboardPage = location.pathname.startsWith('/dashboard');
+  const isChatPage = location.pathname === '/chat';
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/plans" element={<Plans />} />
+        <Route path="/dietitians" element={<Dietitians />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/signin" element={<SignIn />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/dietitians" element={<AdminDietitians />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/plans" element={<AdminPlans />} />
+        <Route path="/admin/chats" element={<AdminChats />} />
+        
+        {/* User Dashboard Routes */}
+        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/dashboard/profile" element={<UserProfile />} />
+        <Route path="/dashboard/plans" element={<UserPlans />} />
+        <Route path="/dashboard/plans/:id" element={<DietPlanView />} />
+        <Route path="/dashboard/dietitians" element={<UserDietitians />} />
+        
+        {/* Catch-all route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/* Only show MacOS Dock on public pages, not admin or dashboard */}
+      {!isAdminPage && !isDashboardPage && <MacOSDock />}
+      
+      {/* Only show ChatWidgetWrapper when not on the dedicated chat page */}
+      {!isChatPage && <ChatWidgetWrapper />}
+    </>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -47,33 +95,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/plans" element={<Plans />} />
-            <Route path="/dietitians" element={<Dietitians />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/signin" element={<SignIn />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/dietitians" element={<AdminDietitians />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/plans" element={<AdminPlans />} />
-            <Route path="/admin/chats" element={<AdminChats />} />
-            
-            {/* User Dashboard Routes */}
-            <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/dashboard/profile" element={<UserProfile />} />
-            <Route path="/dashboard/plans" element={<UserPlans />} />
-            <Route path="/dashboard/plans/:id" element={<DietPlanView />} />
-            <Route path="/dashboard/dietitians" element={<UserDietitians />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <RouterContent />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
