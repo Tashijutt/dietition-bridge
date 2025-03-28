@@ -13,7 +13,7 @@ const Plans = () => {
       <main className="flex-grow">
         <div className="container mx-auto px-4 pt-32 pb-12">
           <div className="max-w-4xl mx-auto">
-            <Link to="/" className="inline-flex items-center text-gray-600 hover:text-nutrition-600 mb-6">
+            <Link to="/" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>

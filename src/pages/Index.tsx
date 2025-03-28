@@ -31,7 +31,7 @@ const Index = () => {
         const notification = document.createElement('div');
         notification.className = 'fixed top-24 right-4 bg-white shadow-lg rounded-lg px-4 py-3 flex items-center z-50 animate-fade-in';
         notification.innerHTML = `
-          <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+          <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
           <p class="text-sm font-medium">Fatima just started her personalized diet plan!</p>
         `;
         document.body.appendChild(notification);
@@ -65,7 +65,7 @@ const Index = () => {
         <div className="container mx-auto px-4 pb-16 text-center max-w-[1280px]">
           <Link 
             to="/dietitians" 
-            className="inline-flex items-center justify-center px-6 py-3 bg-nutrition-600 text-white rounded-full hover:bg-nutrition-700 transition-all duration-300 shadow-sm hover:shadow-md"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-all duration-300 shadow-sm hover:shadow-md"
           >
             View All Dietitians
           </Link>
