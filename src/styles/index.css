@@ -1,0 +1,15 @@
+
+/* Import base styles with Tailwind directives */
+@import './base.css';
+
+/* Import component styles */
+@import './components.css';
+
+/* Import MacOS dock styles */
+@import './dock.css';
+
+/* Import animation styles */
+@import './animations.css';
+
+/* Import utility styles */
+@import './utilities.css';

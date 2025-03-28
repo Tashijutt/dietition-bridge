@@ -1,0 +1,59 @@
+
+@layer base {
+  /* MacOS Style Dock Menu Animation */
+  .macos-dock {
+    @apply fixed bottom-0 left-0 right-0 flex justify-center items-end pb-4 z-50;
+    background: rgba(33, 32, 95, 0.8); /* Primary color with transparency */
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 158, 21, 0.3); /* Secondary color with transparency */
+    height: 80px;
+  }
+
+  .macos-dock-inner {
+    @apply flex items-center justify-center gap-6 px-6 py-3 rounded-2xl;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .macos-dock-item {
+    @apply relative flex items-center justify-center w-14 h-14 rounded-xl transition-all duration-200;
+    transform-origin: bottom;
+  }
+
+  .macos-dock-item:hover {
+    transform: scale(1.8) translateY(-10px);
+    transition: all 0.2s cubic-bezier(0.2, 0.98, 0.35, 1);
+  }
+
+  .macos-dock-item:not(:hover) {
+    transition: all 0.2s cubic-bezier(0.2, 0.98, 0.35, 1);
+  }
+
+  .macos-dock-inner:hover .macos-dock-item:not(:hover) {
+    transform: scale(0.9);
+  }
+
+  .macos-dock-item:hover::after {
+    @apply absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-medium bg-white text-primary py-1 px-3 rounded-md whitespace-nowrap opacity-100;
+    content: attr(data-name);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(0) translateX(-50%);
+  }
+
+  .macos-dock-item::after {
+    @apply absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium bg-white text-primary py-1 px-3 rounded-md whitespace-nowrap opacity-0;
+    content: attr(data-name);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(4px) translateX(-50%);
+  }
+
+  .macos-dock-icon {
+    @apply w-10 h-10 transition-all duration-200 flex items-center justify-center;
+    background: linear-gradient(135deg, rgba(255, 158, 21, 0.9), rgba(33, 32, 95, 0.9));
+    border-radius: 25%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+}
