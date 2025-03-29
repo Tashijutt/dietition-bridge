@@ -22,10 +22,10 @@ const MacOSDock = () => {
           <Link 
             key={item.path}
             to={item.path}
-            className={`macos-dock-item ${location.pathname === item.path ? 'scale-110' : ''}`}
+            className={`macos-dock-item ${location.pathname === item.path ? 'active' : ''}`}
             data-name={item.name}
           >
-            <div className={`macos-dock-icon ${location.pathname === item.path ? 'ring-2 ring-white/30' : ''} flex items-center justify-center`}>
+            <div className={`macos-dock-icon ${location.pathname === item.path ? 'active' : ''}`}>
               {item.icon}
             </div>
           </Link>
