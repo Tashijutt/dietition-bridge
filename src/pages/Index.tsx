@@ -8,7 +8,6 @@ import WeightLossTips from "@/components/WeightLossTips";
 import HealthySteps from "@/components/HealthySteps";
 import PricingPlans from "@/components/PricingPlans";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -72,7 +71,6 @@ const Index = () => {
         </div>
       </main>
       <Footer />
-      <ChatWidget />
     </div>
   );
 };

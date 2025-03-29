@@ -2,42 +2,47 @@
 @layer base {
   /* MacOS Style Dock Menu Animation */
   .macos-dock {
-    @apply fixed bottom-0 left-0 right-0 flex justify-center items-end pb-4 z-50;
-    background: rgba(33, 32, 95, 0.8); /* Primary color with transparency */
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 158, 21, 0.3); /* Secondary color with transparency */
-    height: 80px;
+    @apply fixed bottom-0 left-0 right-0 flex justify-center items-end z-50;
+    background: rgba(33, 32, 95, 0.85); /* Semi-transparent primary background */
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+    height: 70px;
   }
 
   .macos-dock-inner {
-    @apply flex items-center justify-center gap-6 px-6 py-3 rounded-2xl;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    @apply flex items-center justify-center gap-4 px-6 py-2 mx-4 rounded-2xl;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
 
   .macos-dock-item {
-    @apply relative flex items-center justify-center w-14 h-14 rounded-xl transition-all duration-200;
+    @apply relative flex items-center justify-center transition-all duration-300;
     transform-origin: bottom;
+    width: 48px;
+    height: 48px;
   }
 
   .macos-dock-item:hover {
-    transform: scale(1.8) translateY(-10px);
-    transition: all 0.2s cubic-bezier(0.2, 0.98, 0.35, 1);
+    transform: scale(1.5) translateY(-10px);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
   }
 
   .macos-dock-item:not(:hover) {
-    transition: all 0.2s cubic-bezier(0.2, 0.98, 0.35, 1);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .macos-dock-inner:hover .macos-dock-item:not(:hover) {
-    transform: scale(0.9);
+    transform: scale(0.8);
+    opacity: 0.8;
   }
 
   .macos-dock-item:hover::after {
     @apply absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-medium bg-white text-primary py-1 px-3 rounded-md whitespace-nowrap opacity-100;
     content: attr(data-name);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: opacity 0.3s, transform 0.3s;
     transform: translateY(0) translateX(-50%);
   }
@@ -45,15 +50,14 @@
   .macos-dock-item::after {
     @apply absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium bg-white text-primary py-1 px-3 rounded-md whitespace-nowrap opacity-0;
     content: attr(data-name);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: opacity 0.3s, transform 0.3s;
     transform: translateY(4px) translateX(-50%);
   }
 
   .macos-dock-icon {
-    @apply w-10 h-10 transition-all duration-200 flex items-center justify-center;
-    background: linear-gradient(135deg, rgba(255, 158, 21, 0.9), rgba(33, 32, 95, 0.9));
-    border-radius: 25%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    @apply w-10 h-10 flex items-center justify-center rounded-xl overflow-hidden transition-all duration-200;
+    background: linear-gradient(135deg, rgba(255, 158, 21, 0.9), rgba(33, 32, 95, 0.95));
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   }
 }
