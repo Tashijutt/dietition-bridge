@@ -19,6 +19,7 @@ const ChatWidget = () => {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     if (isOpen && !isMinimized) {
@@ -96,8 +97,8 @@ const ChatWidget = () => {
             isOpen ? "animate-slide-up" : ""
           )}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-primary text-white">
+          {/* Header - Always sticky */}
+          <div className="flex items-center justify-between px-4 py-3 bg-primary text-white sticky top-0 z-20 shadow-md">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
               <h3 className="font-medium">Dr. Nasreen Ahmed, Nutrition Specialist</h3>
@@ -105,14 +106,14 @@ const ChatWidget = () => {
             <div className="flex items-center gap-1">
               <button
                 onClick={handleMinimize}
-                className="p-1.5 rounded-full hover:bg-primary/80 transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary-dark/20 transition-colors focus:outline-none"
                 aria-label={isMinimized ? "Maximize chat" : "Minimize chat"}
               >
                 {isMinimized ? <Maximize className="w-4 h-4" /> : <Minimize className="w-4 h-4" />}
               </button>
               <button
                 onClick={handleToggle}
-                className="p-1.5 rounded-full hover:bg-primary/80 transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary-dark/20 transition-colors focus:outline-none"
                 aria-label="Close chat"
               >
                 <X className="w-4 h-4" />
@@ -123,8 +124,12 @@ const ChatWidget = () => {
           {!isMinimized && (
             <>
               {/* Messages Container */}
-              <div className="flex-1 p-4 overflow-y-auto h-[calc(550px-130px)]">
-                <div className="space-y-4">
+              <div 
+                ref={messagesContainerRef}
+                className="flex-1 p-4 overflow-y-auto h-[calc(550px-130px)]"
+                style={{ height: 'calc(100% - 125px)' }} // Fix height calculation
+              >
+                <div className="space-y-4 pb-2">
                   {messages.map((msg, index) => (
                     <div
                       key={index}
@@ -149,8 +154,11 @@ const ChatWidget = () => {
                 </div>
               </div>
               
-              {/* Input Form */}
-              <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 bg-gray-50">
+              {/* Input Form - Always at bottom */}
+              <form 
+                onSubmit={handleSubmit} 
+                className="p-4 border-t border-gray-200 bg-gray-50 sticky bottom-0 left-0 right-0 z-10"
+              >
                 <div className="relative">
                   <input
                     ref={inputRef}
