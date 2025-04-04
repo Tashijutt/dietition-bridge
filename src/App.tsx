@@ -47,6 +47,7 @@ const RouterContent = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isDashboardPage = location.pathname.startsWith('/dashboard');
   const isChatPage = location.pathname === '/chat';
+  const isSignInPage = location.pathname === '/signin';
 
   return (
     <>
@@ -81,8 +82,8 @@ const RouterContent = () => {
       {/* Only show MacOS Dock on public pages, not admin or dashboard */}
       {!isAdminPage && !isDashboardPage && <MacOSDock />}
       
-      {/* Only show ChatWidgetWrapper when not on the dedicated chat page */}
-      {!isChatPage && <ChatWidgetWrapper />}
+      {/* Only show ChatWidgetWrapper when not on the dedicated chat page or signin page */}
+      {!isChatPage && !isSignInPage && <ChatWidgetWrapper />}
     </>
   );
 }

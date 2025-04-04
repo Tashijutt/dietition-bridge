@@ -110,7 +110,7 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
             inView ? "animate-fade-up" : "opacity-0"
           )}
         >
-          <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full mb-3">Expert Dietitians</span>
+          <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full mb-3">Expert Dietitians</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Meet Our Expert Dietitians
           </h2>
@@ -154,7 +154,7 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
                   {dietitian.specializations.map((spec, i) => (
                     <span 
                       key={i} 
-                      className="px-2.5 py-1 bg-nutrition-50 text-nutrition-700 text-xs font-medium rounded-full"
+                      className="px-2.5 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
                     >
                       {spec}
                     </span>
@@ -169,14 +169,14 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
                 <div className="flex flex-col space-y-2">
                   <a 
                     href={`mailto:${dietitian.contact.email}`}
-                    className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                    className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
                   >
                     <Mail className="h-4 w-4 mr-2 text-gray-400" />
                     {dietitian.contact.email}
                   </a>
                   <a 
                     href={`tel:${dietitian.contact.phone}`}
-                    className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                    className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
                   >
                     <Phone className="h-4 w-4 mr-2 text-gray-400" />
                     {dietitian.contact.phone}
@@ -185,7 +185,7 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
                 
                 <Link 
                   to="/contact"
-                  className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
+                  className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
                 >
                   Book Appointment
                 </Link>

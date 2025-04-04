@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { MapPin, Search, Phone, Mail, ExternalLink, Grid, List } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -127,7 +128,7 @@ const DietitianDirectory = () => {
             inView ? "animate-fade-up" : "opacity-0"
           )}
         >
-          <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full mb-3">Dietitian Directory</span>
+          <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full mb-3">Dietitian Directory</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Find Qualified Dietitians Near You
           </h2>
@@ -152,7 +153,7 @@ const DietitianDirectory = () => {
                 placeholder="Search by name or specialization..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2.5 w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                className="pl-10 pr-4 py-2.5 w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none"
               />
             </div>
             
@@ -164,7 +165,7 @@ const DietitianDirectory = () => {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="pl-10 pr-8 py-2.5 rounded-md border border-gray-300 focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none appearance-none"
+                className="pl-10 pr-8 py-2.5 rounded-md border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 outline-none appearance-none"
               >
                 {CITIES.map((city) => (
                   <option key={city} value={city}>
@@ -181,7 +182,7 @@ const DietitianDirectory = () => {
                 className={cn(
                   "flex items-center justify-center p-1.5 rounded",
                   viewMode === 'grid' 
-                    ? "bg-nutrition-600 text-white" 
+                    ? "bg-primary text-white" 
                     : "bg-transparent text-gray-500 hover:bg-gray-100"
                 )}
                 aria-label="Grid view"
@@ -193,7 +194,7 @@ const DietitianDirectory = () => {
                 className={cn(
                   "flex items-center justify-center p-1.5 rounded",
                   viewMode === 'list' 
-                    ? "bg-nutrition-600 text-white" 
+                    ? "bg-primary text-white" 
                     : "bg-transparent text-gray-500 hover:bg-gray-100"
                 )}
                 aria-label="List view"
@@ -241,7 +242,7 @@ const DietitianDirectory = () => {
                       {dietitian.specializations.map((spec, i) => (
                         <span 
                           key={i} 
-                          className="px-2.5 py-1 bg-nutrition-50 text-nutrition-700 text-xs font-medium rounded-full"
+                          className="px-2.5 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
                         >
                           {spec}
                         </span>
@@ -256,14 +257,14 @@ const DietitianDirectory = () => {
                     <div className="flex flex-col space-y-2">
                       <a 
                         href={`mailto:${dietitian.contact.email}`}
-                        className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                        className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
                       >
                         <Mail className="h-4 w-4 mr-2 text-gray-400" />
                         {dietitian.contact.email}
                       </a>
                       <a 
                         href={`tel:${dietitian.contact.phone}`}
-                        className="text-sm text-gray-700 flex items-center hover:text-nutrition-600 transition-colors"
+                        className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
                       >
                         <Phone className="h-4 w-4 mr-2 text-gray-400" />
                         {dietitian.contact.phone}
@@ -271,7 +272,7 @@ const DietitianDirectory = () => {
                     </div>
                     
                     <button 
-                      className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-nutrition-600 text-white text-sm font-medium rounded-md hover:bg-nutrition-700 transition-colors"
+                      className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
                     >
                       Book Appointment
                       <ExternalLink className="h-4 w-4" />
@@ -287,7 +288,7 @@ const DietitianDirectory = () => {
                     setSearchTerm("");
                     setSelectedCity("All Cities");
                   }}
-                  className="mt-4 px-4 py-2 text-sm text-nutrition-600 hover:text-nutrition-700"
+                  className="mt-4 px-4 py-2 text-sm text-primary hover:text-primary/80"
                 >
                   Clear filters
                 </button>
@@ -398,4 +399,3 @@ const DietitianDirectory = () => {
 };
 
 export default DietitianDirectory;
-
