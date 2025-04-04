@@ -21,8 +21,8 @@ const MacOSDock = () => {
       const dock = dockRef.current;
       const dockRect = dock.getBoundingClientRect();
       
-      // Only apply effect when mouse is near the dock
-      if (e.clientY < window.innerHeight && e.clientY > window.innerHeight - 100) {
+      // Only apply effect when mouse is near the dock (bottom 150px of screen)
+      if (e.clientY > window.innerHeight - 150) {
         const items = dock.querySelectorAll('.macos-dock-item');
         
         items.forEach((item) => {
@@ -33,16 +33,22 @@ const MacOSDock = () => {
           const itemCenterX = itemRect.left + itemRect.width / 2;
           const distanceX = Math.abs(e.clientX - itemCenterX);
           
-          // Apply scale based on distance
-          if (distanceX < 100) {
-            const scale = 1 + (100 - distanceX) / 100 * 0.5; // Max scale 1.5x
+          // Apply scale based on distance (more extreme magnification for MacBook Pro look)
+          if (distanceX < 120) {
+            const scale = 1 + (120 - distanceX) / 100 * 0.8; // Max scale 1.8x
             itemEl.style.transform = `scale(${scale})`;
             if (scale > 1.2) {
-              itemEl.style.transform = `scale(${scale}) translateY(-${(scale-1)*10}px)`;
+              itemEl.style.transform = `scale(${scale}) translateY(-${(scale-1)*15}px)`;
             }
           } else {
             itemEl.style.transform = '';
           }
+        });
+      } else {
+        // Reset scales when mouse is far from dock
+        dock.querySelectorAll('.macos-dock-item').forEach((item) => {
+          const itemEl = item as HTMLElement;
+          itemEl.style.transform = '';
         });
       }
     };
@@ -51,6 +57,7 @@ const MacOSDock = () => {
     return () => document.removeEventListener('mousemove', handleMouseMove);
   }, []);
   
+  // Dock items with blue and orange theme colors
   const dockItems = [
     { name: "Home", path: "/", icon: <Home className="w-5 h-5 text-white" /> },
     { name: "Chat", path: "/chat", icon: <MessageSquare className="w-5 h-5 text-white" /> },
@@ -77,7 +84,7 @@ const MacOSDock = () => {
             >
               <div className={`macos-dock-icon ${isActive ? 'active' : ''}`}>
                 {item.icon}
-                {isActive && <span className="absolute bottom-0 w-1 h-1 bg-white rounded-full"></span>}
+                {isActive && <span className="absolute bottom-1.5 w-1.5 h-1.5 bg-white rounded-full"></span>}
               </div>
             </Link>
           );

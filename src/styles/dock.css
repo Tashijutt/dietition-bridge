@@ -3,43 +3,44 @@
   /* MacOS Style Dock Menu Animation */
   .macos-dock {
     @apply fixed bottom-0 left-0 right-0 flex justify-center items-end z-40;
-    height: 75px;
-    background: rgba(0, 0, 0, 0.2); 
-    backdrop-filter: blur(15px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    height: 80px;
+    background: rgba(0, 0, 0, 0.3); 
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .macos-dock-inner {
     @apply flex items-center justify-center gap-2 px-6 py-2;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 20px;
-    margin: 0 auto 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 4px 12px;
+    margin: 0 auto 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.15) inset;
+    padding: 5px 15px;
+    min-width: 400px;
   }
 
   .macos-dock-item {
     @apply relative flex items-center justify-center;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     margin: 0 2px;
   }
 
   .macos-dock-item:hover {
-    transform: scale(1.4) translateY(-12px);
+    transform: scale(1.5) translateY(-15px);
   }
 
   .macos-dock-inner:hover .macos-dock-item:not(:hover) {
-    transform: scale(0.8);
-    opacity: 0.7;
+    transform: scale(0.75);
+    opacity: 0.6;
   }
 
   .macos-dock-item::after {
     content: attr(data-name);
     @apply absolute whitespace-nowrap bg-black/80 text-white text-xs font-medium rounded-md py-1 px-3 opacity-0;
-    bottom: 67px;
+    bottom: 70px;
     left: 50%;
     transform: translateX(-50%) translateY(10px);
     transition: all 0.2s ease;
@@ -54,16 +55,16 @@
 
   .macos-dock-icon {
     @apply rounded-2xl flex items-center justify-center;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     background: linear-gradient(135deg, rgba(255, 158, 21, 0.95), rgba(33, 32, 95, 0.95));
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.4);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
   }
 
-  /* Add reflection effect like macOS */
+  /* Enhanced reflection effect like macOS */
   .macos-dock-icon::before {
     content: "";
     position: absolute;
@@ -71,38 +72,53 @@
     left: 0;
     right: 0;
     height: 50%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
     border-radius: 12px 12px 0 0;
+    z-index: 1;
   }
 
   .macos-dock-icon::after {
     content: "";
     position: absolute;
-    bottom: -4px;
+    bottom: -5px;
     left: 15%;
     right: 15%;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.5);
+    height: 3px;
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    filter: blur(1px);
-    opacity: 0.7;
+    filter: blur(2px);
+    opacity: 0.8;
+    transform: scaleX(0.8);
   }
 
   .macos-dock-icon.active {
     background: linear-gradient(135deg, rgba(255, 158, 21, 1), rgba(33, 32, 95, 1));
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4), 0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
   .macos-dock-item.active {
-    transform: scale(1.2);
+    transform: scale(1.25);
+  }
+
+  /* Dot indicator for active items */
+  .macos-dock-item.active::before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
   }
 
   /* Add bounce animation for active item */
   @keyframes dock-bounce {
     0%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-12px); }
-    70% { transform: translateY(-6px); }
-    90% { transform: translateY(-2px); }
+    40% { transform: translateY(-15px); }
+    70% { transform: translateY(-7px); }
+    90% { transform: translateY(-3px); }
   }
   
   .macos-dock-item.active .macos-dock-icon {
@@ -111,6 +127,33 @@
 
   /* Make the dock more visible on dark backgrounds */
   .macos-dock {
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* MacOS-style dynamic magnification effect */
+  @keyframes dock-appear {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .macos-dock {
+    animation: dock-appear 0.5s ease-out forwards;
+  }
+  
+  /* Icon shine effect */
+  @keyframes icon-shine {
+    0% { opacity: 0; left: -100%; }
+    20% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; left: 100%; }
+  }
+  
+  .macos-dock-icon:hover::before {
+    animation: icon-shine 1s ease-in-out;
+  }
+  
+  /* Glow effect for active icons */
+  .macos-dock-icon.active {
+    box-shadow: 0 0 20px rgba(255, 158, 21, 0.6), 0 0 30px rgba(33, 32, 95, 0.3);
   }
 }

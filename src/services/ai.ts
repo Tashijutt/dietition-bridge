@@ -36,14 +36,16 @@ Focus on these areas:
 
 Be empathetic but maintain professional boundaries. Provide actionable, practical advice based on established nutritional science. Avoid sounding like an AI - instead, sound like an experienced healthcare professional having a consultation. Use phrases like "Based on my clinical experience" or "From what I've observed with my patients" to make responses feel more authentic and localized.
 
-IMPORTANT: Always provide detailed, helpful responses about Pakistani nutrition and health. Don't apologize for technical issues - just provide good nutrition advice for Pakistani patients.`
+IMPORTANT: Always provide detailed, helpful responses about Pakistani nutrition and health. Don't apologize for technical issues - just provide good nutrition advice for Pakistani patients.
+
+Each time, provide a DIFFERENT response even if the question is similar to previous ones. Vary your advice and examples to avoid repetitive responses.`
           },
           {
             role: "user",
             content: message
           }
         ],
-        temperature: 0.7,
+        temperature: 0.8, // Increased for more variation
         max_tokens: 1000
       })
     });
@@ -80,7 +82,7 @@ const getOpenRouterResponse = async (message: string): Promise<string> => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "deepseek/deepseek-coder-xl:free",
+      model: "anthropic/claude-3-haiku", // Updated to a different model
       messages: [
         {
           role: "system",
@@ -97,14 +99,16 @@ Focus on these areas:
 
 Be empathetic but maintain professional boundaries. Provide actionable, practical advice based on established nutritional science. Avoid sounding like an AI - instead, sound like an experienced healthcare professional having a consultation. Use phrases like "Based on my clinical experience" or "From what I've observed with my patients" to make responses feel more authentic and localized.
 
-IMPORTANT: Always provide detailed, helpful responses about Pakistani nutrition and health. Don't apologize for technical issues - just provide good nutrition advice for Pakistani patients.`
+IMPORTANT: Always provide detailed, helpful responses about Pakistani nutrition and health. Don't apologize for technical issues - just provide good nutrition advice for Pakistani patients.
+
+Each time, provide a DIFFERENT response even if the question is similar to previous ones. Vary your advice and examples to avoid repetitive responses.`
         },
         {
           role: "user",
           content: message
         }
       ],
-      temperature: 0.7,
+      temperature: 0.8, // Increased for more variation
       max_tokens: 1000
     })
   });
@@ -125,7 +129,10 @@ const getFallbackResponse = (): string => {
     "Assalam o Alaikum! For diabetes management in Pakistan, I recommend a balanced diet with whole wheat roti, brown rice, daal, and karela (bitter gourd). Limit maida and sugary foods.",
     "As a nutrition specialist in Pakistan, I recommend a balanced diet with whole wheat roti, daal, and vegetables like karela for diabetes management. Regular small meals with low glycemic index foods like chickpeas and lentils are beneficial.",
     "In my practice in Pakistan, I've found that traditional dishes like daal, sabzi, and roti can be excellent for heart health when prepared with minimal oil. Consider adding more garlic and ginger, which are beneficial for circulation.",
-    "Many of my patients in Karachi have had success with weight management by keeping traditional Pakistani foods in their diet but adjusting portion sizes. I recommend smaller portions of rice or roti and larger portions of vegetables and protein."
+    "Many of my patients in Karachi have had success with weight management by keeping traditional Pakistani foods in their diet but adjusting portion sizes. I recommend smaller portions of rice or roti and larger portions of vegetables and protein.",
+    "For hypertension management, I often suggest my Pakistani patients reduce salt in their cooking and increase potassium-rich foods like bananas, oranges, and tomatoes. Traditional Pakistani dishes can be modified by using herbs and spices for flavor instead of salt.",
+    "In my clinic in Islamabad, I've had great success helping patients manage cholesterol by recommending oats for breakfast, increasing fiber through whole grains like daliya, and incorporating more plant-based proteins like lentils and beans into their daily meals.",
+    "Based on my experience with patients throughout Pakistan, I find that those who maintain traditional meal timings but adjust portion sizes have better success with their nutrition goals. Our cultural eating patterns can be maintained while making healthier choices."
   ];
   
   return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
