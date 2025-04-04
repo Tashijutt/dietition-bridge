@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import { Send, ChevronDown } from "lucide-react";
 import { getAIResponse } from "@/services/ai";
 import { toast } from "@/hooks/use-toast";
-import ChatWidget from "@/components/ChatWidget";
 
 const Chat = () => {
   const [message, setMessage] = useState("");
@@ -179,9 +178,6 @@ const Chat = () => {
             </div>
           </div>
         </div>
-        
-        {/* Chat Widget for floating chat */}
-        <ChatWidget />
       </main>
       <Footer />
     </div>
