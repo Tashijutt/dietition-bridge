@@ -1,6 +1,8 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface User {
   id: string;
   name: string;
@@ -46,59 +48,88 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
+  // Login function
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
-      // In a real app, this would be an API call to verify credentials
-      // For demo purposes, we'll use mock data
       
-      // Admin credentials
-      if (email === "admin@dietitianbridge.com" && password === "admin123") {
-        const adminUser: User = {
-          id: "admin1",
-          name: "Admin User",
-          email: "admin@dietitianbridge.com",
-          role: "admin",
-        };
-        setUser(adminUser);
-        localStorage.setItem("userAuth", JSON.stringify(adminUser));
-        return;
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
       }
+  
+      const userData = await response.json();
+      setUser(userData);
+      localStorage.setItem("userAuth", JSON.stringify(userData));
       
-      // Dietitian credentials
-      if (email === "dietitian@example.com" && password === "dietitian123") {
-        const dietitianUser: User = {
-          id: "dietitian1",
-          name: "Dr. Ayesha Ahmed",
-          email: "dietitian@example.com",
-          role: "dietitian",
-        };
-        setUser(dietitianUser);
-        localStorage.setItem("userAuth", JSON.stringify(dietitianUser));
-        return;
-      }
-      
-      // Regular user credentials
-      if (email === "user@example.com" && password === "user123") {
-        const regularUser: User = {
-          id: "user1",
-          name: "Sarah Khan",
-          email: "user@example.com",
-          role: "user",
-        };
-        setUser(regularUser);
-        localStorage.setItem("userAuth", JSON.stringify(regularUser));
-        return;
-      }
-      
-      // If no match
-      throw new Error("Invalid credentials");
     } catch (error) {
       throw error;
     } finally {
       setLoading(false);
     }
   };
+
+  // const login = async (email: string, password: string) => {
+  //   try {
+  //     setLoading(true);
+  //     // In a real app, this would be an API call to verify credentials
+  //     // For demo purposes, we'll use mock data
+      
+  //     // Admin credentials
+  //     if (email === "admin@dietitianbridge.com" && password === "admin123") {
+  //       const adminUser: User = {
+  //         id: "admin1",
+  //         name: "Admin User",
+  //         email: "admin@dietitianbridge.com",
+  //         role: "admin",
+  //       };
+  //       setUser(adminUser);
+  //       localStorage.setItem("userAuth", JSON.stringify(adminUser));
+  //       return;
+  //     }
+      
+  //     // Dietitian credentials
+  //     if (email === "dietitian@example.com" && password === "dietitian123") {
+  //       const dietitianUser: User = {
+  //         id: "dietitian1",
+  //         name: "Dr. Ayesha Ahmed",
+  //         email: "dietitian@example.com",
+  //         role: "dietitian",
+  //       };
+  //       setUser(dietitianUser);
+  //       localStorage.setItem("userAuth", JSON.stringify(dietitianUser));
+  //       return;
+  //     }
+      
+  //     // Regular user credentials
+  //     if (email === "user@example.com" && password === "user123") {
+  //       const regularUser: User = {
+  //         id: "user1",
+  //         name: "Sarah Khan",
+  //         email: "user@example.com",
+  //         role: "user",
+  //       };
+  //       setUser(regularUser);
+  //       localStorage.setItem("userAuth", JSON.stringify(regularUser));
+  //       return;
+  //     }
+      
+  //     // If no match
+  //     throw new Error("Invalid credentials");
+  //   } catch (error) {
+  //     throw error;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const register = async (name: string, email: string, password: string) => {
     try {
