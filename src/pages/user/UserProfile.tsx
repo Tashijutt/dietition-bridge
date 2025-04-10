@@ -1,5 +1,5 @@
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Save, Upload } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
@@ -27,23 +27,72 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { uploadProfileImage } from "@/utils/imageUploadUtils";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const UserProfile = () => {
-  const { user, updateUserProfile } = useAuth();
+  const { user, updateUserProfile, token } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
+  // const [profileData, setProfileData] = useState({
+  //   name: user?.name || "",
+  //   email: user?.email || "",
+  //   phone: "+92 300 1234567",
+  //   gender: "female" as const,
+  //   age: "32",
+  //   weight: "65",
+  //   height: "165",
+  //   healthConditions: ["Diabetes", "High Blood Pressure"],
+  //   bio: "I'm interested in improving my diet to better manage my diabetes and blood pressure. Looking for meal plans that are both healthy and delicious.",
+  //   dietaryPreferences: "No beef, prefer chicken and fish. Vegetarian options welcomed."
+  // });
+
+  // const [profileData, setProfileData] = useState({
+  //   name: user?.name || "",
+  //   email: user?.email || "",
+  //   phone: user?.phone || "",
+  //   gender: user?.gender || "other" as const,
+  //   age: user?.age?.toString() || "",
+  //   weight: user?.weight?.toString() || "",
+  //   height: user?.height?.toString() || "",
+  //   healthConditions: user?.healthConditions || [],
+  //   bio: user?.bio || "",
+  //   dietaryPreferences: user?.dietaryPreferences || ""
+  // });
+  
+  // Define profileData state first
   const [profileData, setProfileData] = useState({
     name: user?.name || "",
     email: user?.email || "",
-    phone: "+92 300 1234567",
-    gender: "female" as const,
-    age: "32",
-    weight: "65",
-    height: "165",
-    healthConditions: ["Diabetes", "High Blood Pressure"],
-    bio: "I'm interested in improving my diet to better manage my diabetes and blood pressure. Looking for meal plans that are both healthy and delicious.",
-    dietaryPreferences: "No beef, prefer chicken and fish. Vegetarian options welcomed."
+    phone: user?.phone || "",
+    gender: user?.gender || "other" as const,
+    age: user?.age?.toString() || "",
+    weight: user?.weight?.toString() || "",
+    height: user?.height?.toString() || "",
+    healthConditions: user?.healthConditions || [],
+    bio: user?.bio || "",
+    dietaryPreferences: user?.dietaryPreferences || ""
   });
+
+  // Then use it in useEffect
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        gender: user.gender || "other" as const,
+        age: user.age?.toString() || "",
+        weight: user.weight?.toString() || "",
+        height: user.height?.toString() || "",
+        healthConditions: user.healthConditions || [],
+        bio: user.bio || "",
+        dietaryPreferences: user.dietaryPreferences || ""
+      });
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -60,18 +109,50 @@ const UserProfile = () => {
     });
   };
 
-  const handleProfileUpdate = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would call an API
-    updateUserProfile && updateUserProfile({
-      ...user,
-      name: profileData.name
-    });
+  // const handleProfileUpdate = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // In a real app, this would call an API
+  //   updateUserProfile && updateUserProfile({
+  //     ...user,
+  //     name: profileData.name
+  //   });
     
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been updated successfully."
-    });
+  //   toast({
+  //     title: "Profile Updated",
+  //     description: "Your profile has been updated successfully."
+  //   });
+  // };
+
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${apiUrl}/api/users/${user._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(profileData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+  
+      const updatedUser = await response.json();
+      updateUserProfile && updateUserProfile(updatedUser);
+      
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been updated successfully."
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleProfilePhotoClick = () => {
@@ -149,7 +230,12 @@ const UserProfile = () => {
     <ProtectedRoute>
       <UserLayout title="My Profile">
         <div className="space-y-6">
-          <form onSubmit={handleProfileUpdate}>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nutrition-600"></div>
+            </div>
+          ) : (
+            <form onSubmit={handleProfileUpdate}>
             {/* Profile Picture and Basic Info */}
             <Card className="mb-6">
               <CardHeader>
@@ -363,6 +449,7 @@ const UserProfile = () => {
               </Button>
             </div>
           </form>
+          )}
         </div>
       </UserLayout>
     </ProtectedRoute>

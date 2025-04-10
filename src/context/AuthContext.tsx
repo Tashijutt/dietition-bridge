@@ -13,6 +13,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  token: string;
   isAuthenticated: boolean;
   isAdmin: boolean;
   isDietitian: boolean;
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState("");
   
   // Load user from localStorage on initial load
   useEffect(() => {
@@ -35,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedProfileImage = localStorage.getItem("userProfileImage");
     
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
+      const parsedUser = JSON.parse(storedUser).user;
       
       // Apply stored profile image if exists
       if (storedProfileImage && !parsedUser.profileImage) {
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       setUser(parsedUser);
+      setToken(JSON.parse(storedUser).token);
     }
     
     setLoading(false);
@@ -131,28 +134,56 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   //   }
   // };
 
+  // const register = async (name: string, email: string, password: string) => {
+  //   try {
+  //     setLoading(true);
+  //     // In a real app, this would be an API call to register a new user
+  //     // For demo purposes, we'll create a mock user
+
+  //     // Check if email is already used
+  //     if (email === "admin@dietitianbridge.com" || 
+  //         email === "dietitian@example.com" || 
+  //         email === "user@example.com") {
+  //       throw new Error("Email already in use");
+  //     }
+
+  //     const newUser: User = {
+  //       id: `user${Date.now()}`, // Generate a unique ID
+  //       name,
+  //       email,
+  //       role: "user", // New registrations are always regular users
+  //     };
+
+  //     setUser(newUser);
+  //     localStorage.setItem("userAuth", JSON.stringify(newUser));
+  //   } catch (error) {
+  //     throw error;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const register = async (name: string, email: string, password: string) => {
     try {
       setLoading(true);
-      // In a real app, this would be an API call to register a new user
-      // For demo purposes, we'll create a mock user
+      
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-      // Check if email is already used
-      if (email === "admin@dietitianbridge.com" || 
-          email === "dietitian@example.com" || 
-          email === "user@example.com") {
-        throw new Error("Email already in use");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Registration failed');
       }
 
-      const newUser: User = {
-        id: `user${Date.now()}`, // Generate a unique ID
-        name,
-        email,
-        role: "user", // New registrations are always regular users
-      };
-
-      setUser(newUser);
-      localStorage.setItem("userAuth", JSON.stringify(newUser));
+      const userData = await response.json();
+      setUser(userData);
+      localStorage.setItem("userAuth", JSON.stringify(userData));
+      
     } catch (error) {
       throw error;
     } finally {
@@ -183,6 +214,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{ 
       user, 
+      token,
       isAuthenticated, 
       isAdmin, 
       isDietitian, 
