@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -20,7 +19,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, role?: "user" | "dietitian") => Promise<void>;
   updateUserProfile?: (updatedUser: User) => void;
 }
 
@@ -104,115 +103,101 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // const login = async (email: string, password: string) => {
-  //   try {
-  //     setLoading(true);
-  //     // In a real app, this would be an API call to verify credentials
-  //     // For demo purposes, we'll use mock data
-      
-  //     // Admin credentials
-  //     if (email === "admin@dietitianbridge.com" && password === "admin123") {
-  //       const adminUser: User = {
-  //         id: "admin1",
-  //         name: "Admin User",
-  //         email: "admin@dietitianbridge.com",
-  //         role: "admin",
-  //       };
-  //       setUser(adminUser);
-  //       localStorage.setItem("userAuth", JSON.stringify(adminUser));
-  //       return;
-  //     }
-      
-  //     // Dietitian credentials
-  //     if (email === "dietitian@example.com" && password === "dietitian123") {
-  //       const dietitianUser: User = {
-  //         id: "dietitian1",
-  //         name: "Dr. Ayesha Ahmed",
-  //         email: "dietitian@example.com",
-  //         role: "dietitian",
-  //       };
-  //       setUser(dietitianUser);
-  //       localStorage.setItem("userAuth", JSON.stringify(dietitianUser));
-  //       return;
-  //     }
-      
-  //     // Regular user credentials
-  //     if (email === "user@example.com" && password === "user123") {
-  //       const regularUser: User = {
-  //         id: "user1",
-  //         name: "Sarah Khan",
-  //         email: "user@example.com",
-  //         role: "user",
-  //       };
-  //       setUser(regularUser);
-  //       localStorage.setItem("userAuth", JSON.stringify(regularUser));
-  //       return;
-  //     }
-      
-  //     // If no match
-  //     throw new Error("Invalid credentials");
-  //   } catch (error) {
-  //     throw error;
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const register = async (name: string, email: string, password: string) => {
-  //   try {
-  //     setLoading(true);
-  //     // In a real app, this would be an API call to register a new user
-  //     // For demo purposes, we'll create a mock user
-
-  //     // Check if email is already used
-  //     if (email === "admin@dietitianbridge.com" || 
-  //         email === "dietitian@example.com" || 
-  //         email === "user@example.com") {
-  //       throw new Error("Email already in use");
-  //     }
-
-  //     const newUser: User = {
-  //       id: `user${Date.now()}`, // Generate a unique ID
-  //       name,
-  //       email,
-  //       role: "user", // New registrations are always regular users
-  //     };
-
-  //     setUser(newUser);
-  //     localStorage.setItem("userAuth", JSON.stringify(newUser));
-  //   } catch (error) {
-  //     throw error;
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  const register = async (name: string, email: string, password: string) => {
+  // For demonstration if API is not fully set up
+  const mockLogin = async (email: string, password: string) => {
     try {
       setLoading(true);
       
-      const response = await fetch(`${apiUrl}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Registration failed');
+      // Admin credentials
+      if (email === "admin@dietitianbridge.com" && password === "admin123") {
+        const adminUser: User = {
+          id: "admin1",
+          name: "Admin User",
+          email: "admin@dietitianbridge.com",
+          role: "admin",
+        };
+        setUser(adminUser);
+        const userData = { user: adminUser, token: "mock-token-admin" };
+        localStorage.setItem("userAuth", JSON.stringify(userData));
+        return;
       }
+      
+      // Dietitian credentials
+      if (email === "dietitian@example.com" && password === "dietitian123") {
+        const dietitianUser: User = {
+          id: "dietitian1",
+          name: "Dr. Ayesha Ahmed",
+          email: "dietitian@example.com",
+          role: "dietitian",
+        };
+        setUser(dietitianUser);
+        const userData = { user: dietitianUser, token: "mock-token-dietitian" };
+        localStorage.setItem("userAuth", JSON.stringify(userData));
+        return;
+      }
+      
+      // Regular user credentials
+      if (email === "user@example.com" && password === "user123") {
+        const regularUser: User = {
+          id: "user1",
+          name: "Sarah Khan",
+          email: "user@example.com",
+          role: "user",
+        };
+        setUser(regularUser);
+        const userData = { user: regularUser, token: "mock-token-user" };
+        localStorage.setItem("userAuth", JSON.stringify(userData));
+        return;
+      }
+      
+      // If no match
+      throw new Error("Invalid credentials");
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      const userData = await response.json();
-      // Extract user data and token from the response
-      const { user: userObject, token: authToken } = userData;
+  const register = async (name: string, email: string, password: string, role: "user" | "dietitian" = "user") => {
+    try {
+      setLoading(true);
       
-      // Set user and token in state
-      setUser(userObject);
-      setToken(authToken);
+      // Use this once API is set up
+      // const response = await fetch(`${apiUrl}/api/auth/register`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ name, email, password, role }),
+      // });
+
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error(errorData.message || 'Registration failed');
+      // }
+
+      // const userData = await response.json();
+      // // Extract user data and token from the response
+      // const { user: userObject, token: authToken } = userData;
       
-      // Store the complete response in localStorage
+      // // Set user and token in state
+      // setUser(userObject);
+      // setToken(authToken);
+      
+      // // Store the complete response in localStorage
+      // localStorage.setItem("userAuth", JSON.stringify(userData));
+      
+      // For mock demonstration without API
+      const newUser: User = {
+        id: `user${Date.now()}`,
+        name,
+        email,
+        role: role,
+      };
+
+      setUser(newUser);
+      const userData = { user: newUser, token: `mock-token-${role}-${Date.now()}` };
       localStorage.setItem("userAuth", JSON.stringify(userData));
       
     } catch (error) {

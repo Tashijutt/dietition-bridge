@@ -1,6 +1,6 @@
 
-import { Link } from "react-router-dom";
-import { User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { User, LayoutDashboard } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,12 +14,33 @@ import {
 import { useAuth } from "@/context/AuthContext";
 
 const UserMenu = () => {
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, isDietitian, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     // Redirect to home page after logout
     window.location.href = "/";
+  };
+
+  // Determine dashboard link based on user role
+  const getDashboardLink = () => {
+    if (isAdmin) {
+      return "/admin";
+    } else if (isDietitian) {
+      return "/dietitian/dashboard";
+    } else {
+      return "/dashboard";
+    }
+  };
+
+  // Determine profile link based on user role
+  const getProfileLink = () => {
+    if (isDietitian) {
+      return "/dietitian/profile";
+    } else {
+      return "/dashboard/profile";
+    }
   };
 
   if (isAuthenticated) {
@@ -32,7 +53,7 @@ const UserMenu = () => {
                 src={user?.profileImage}
                 alt={user?.name || "User"}
               />
-              <AvatarFallback className="bg-primary text-white">
+              <AvatarFallback className="bg-blue-100 text-blue-600">
                 {user?.name?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
@@ -47,10 +68,13 @@ const UserMenu = () => {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to={getDashboardLink()}>
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              Dashboard
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to="/dashboard/profile">Profile</Link>
+            <Link to={getProfileLink()}>Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout} className="text-red-600">
@@ -65,7 +89,7 @@ const UserMenu = () => {
     <Link to="/signin">
       <Button 
         variant="default" 
-        className="rounded-[4px] bg-primary hover:bg-primary/90"
+        className="rounded-[4px] bg-blue-600 hover:bg-blue-700"
       >
         <User className="mr-2 h-4 w-4" />
         Sign In

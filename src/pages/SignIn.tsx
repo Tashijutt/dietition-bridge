@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const SignIn = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,12 +20,17 @@ const SignIn = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    role: 'user'
   });
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRoleChange = (value: string) => {
+    setFormData(prev => ({ ...prev, role: value }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,19 +39,27 @@ const SignIn = () => {
     
     try {
       if (isSignUp) {
-        await register(formData.name, formData.email, formData.password);
+        await register(formData.name, formData.email, formData.password, formData.role as "user" | "dietitian");
         toast({
           title: "Account created successfully",
-          description: "Welcome to Dietitian Bridge!",
+          description: `Welcome to Dietitian Bridge as a ${formData.role === 'dietitian' ? 'Dietitian' : 'User'}!`,
         });
-        navigate("/dashboard");
+        
+        // Redirect based on role
+        if (formData.role === 'dietitian') {
+          navigate("/dietitian/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
         await login(formData.email, formData.password);
         toast({
           title: "Login successful",
           description: "Welcome back to Dietitian Bridge!",
         });
-        navigate("/dashboard");
+        
+        // After login, the user will be redirected based on their role
+        // This is handled in the login function in AuthContext
       }
     } catch (error) {
       console.error("Auth error:", error);
@@ -105,7 +120,7 @@ const SignIn = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required={isSignUp}
-                        className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                        className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
                         placeholder="John Doe"
                       />
                     </div>
@@ -125,7 +140,7 @@ const SignIn = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                      className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
                       placeholder="email@example.com"
                     />
                   </div>
@@ -135,7 +150,7 @@ const SignIn = () => {
                   <div className="flex items-center justify-between mb-1">
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                     {!isSignUp && (
-                      <Link to="#" className="text-xs text-nutrition-600 hover:text-nutrition-700">
+                      <Link to="#" className="text-xs text-blue-600 hover:text-blue-700">
                         Forgot password?
                       </Link>
                     )}
@@ -151,7 +166,7 @@ const SignIn = () => {
                       value={formData.password}
                       onChange={handleChange}
                       required
-                      className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-nutrition-500 focus:border-transparent transition-all duration-200 outline-none"
+                      className="pl-10 px-4 py-2.5 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
                       placeholder="••••••••"
                     />
                     <button
@@ -167,11 +182,32 @@ const SignIn = () => {
                     </button>
                   </div>
                 </div>
+
+                {isSignUp && (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">I am registering as</label>
+                    <RadioGroup 
+                      defaultValue="user" 
+                      value={formData.role}
+                      onValueChange={handleRoleChange}
+                      className="flex gap-6"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="user" id="user-role" />
+                        <Label htmlFor="user-role" className="cursor-pointer">Patient/User</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="dietitian" id="dietitian-role" />
+                        <Label htmlFor="dietitian-role" className="cursor-pointer">Dietitian</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                )}
                 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-4 py-3 bg-nutrition-600 text-white font-medium rounded-lg shadow-sm hover:bg-nutrition-700 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full px-4 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isSubmitting ? (
                     <>
@@ -189,7 +225,7 @@ const SignIn = () => {
                   {isSignUp ? 'Already have an account?' : 'Don\'t have an account?'}
                   <button
                     onClick={() => setIsSignUp(!isSignUp)}
-                    className="ml-1 text-nutrition-600 hover:text-nutrition-700 font-medium"
+                    className="ml-1 text-blue-600 hover:text-blue-700 font-medium"
                   >
                     {isSignUp ? 'Sign In' : 'Sign Up'}
                   </button>
@@ -225,9 +261,9 @@ const SignIn = () => {
             
             <p className="text-center text-sm text-gray-500 mt-6">
               By continuing, you agree to Dietitian Bridge's
-              <Link to="#" className="text-nutrition-600 hover:text-nutrition-700 mx-1">Terms of Service</Link>
+              <Link to="#" className="text-blue-600 hover:text-blue-700 mx-1">Terms of Service</Link>
               and
-              <Link to="#" className="text-nutrition-600 hover:text-nutrition-700 ml-1">Privacy Policy</Link>
+              <Link to="#" className="text-blue-600 hover:text-blue-700 ml-1">Privacy Policy</Link>
             </p>
           </div>
         </div>

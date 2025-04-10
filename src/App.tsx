@@ -24,7 +24,10 @@ import UserProfile from "./pages/user/UserProfile";
 import UserPlans from "./pages/user/UserPlans";
 import DietPlanView from "./pages/user/DietPlanView";
 import UserDietitians from "./pages/user/UserDietitians";
+import DietitianDashboard from "./pages/dietitian/DietitianDashboard";
+import DietitianProfile from "./pages/dietitian/DietitianProfile";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
 
 const queryClient = new QueryClient();
@@ -40,11 +43,12 @@ const ScrollToTop = () => {
   return null;
 };
 
-// RouterContent component to conditionally show MacOSDock
+// RouterContent component to conditionally show MacOSDock and ChatWidgetWrapper
 const RouterContent = () => {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
   const isDashboardPage = location.pathname.startsWith('/dashboard');
+  const isDietitianPage = location.pathname.startsWith('/dietitian');
   const isChatPage = location.pathname === '/chat';
   const isSignInPage = location.pathname === '/signin';
 
@@ -60,19 +64,107 @@ const RouterContent = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/signin" element={<SignIn />} />
         
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/dietitians" element={<AdminDietitians />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/plans" element={<AdminPlans />} />
-        <Route path="/admin/chats" element={<AdminChats />} />
+        {/* Admin Routes - Protected with admin role required */}
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/dietitians" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDietitians />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/users" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminUsers />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/plans" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminPlans />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/chats" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminChats />
+            </ProtectedRoute>
+          } 
+        />
         
-        {/* User Dashboard Routes */}
-        <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard/profile" element={<UserProfile />} />
-        <Route path="/dashboard/plans" element={<UserPlans />} />
-        <Route path="/dashboard/plans/:id" element={<DietPlanView />} />
-        <Route path="/dashboard/dietitians" element={<UserDietitians />} />
+        {/* User Dashboard Routes - Protected */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard/profile" 
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard/plans" 
+          element={
+            <ProtectedRoute>
+              <UserPlans />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard/plans/:id" 
+          element={
+            <ProtectedRoute>
+              <DietPlanView />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard/dietitians" 
+          element={
+            <ProtectedRoute>
+              <UserDietitians />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Dietitian Dashboard Routes - Protected */}
+        <Route 
+          path="/dietitian/dashboard" 
+          element={
+            <ProtectedRoute>
+              <DietitianDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dietitian/profile" 
+          element={
+            <ProtectedRoute>
+              <DietitianProfile />
+            </ProtectedRoute>
+          } 
+        />
         
         {/* Catch-all route */}
         <Route path="*" element={<NotFound />} />
