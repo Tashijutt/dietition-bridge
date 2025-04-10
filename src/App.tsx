@@ -26,6 +26,9 @@ import DietPlanView from "./pages/user/DietPlanView";
 import UserDietitians from "./pages/user/UserDietitians";
 import DietitianDashboard from "./pages/dietitian/DietitianDashboard";
 import DietitianProfile from "./pages/dietitian/DietitianProfile";
+import DietitianPatients from "./pages/dietitian/DietitianPatients";
+import DietitianPlans from "./pages/dietitian/DietitianPlans";
+import DietitianAppointments from "./pages/dietitian/DietitianAppointments";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
@@ -162,6 +165,30 @@ const RouterContent = () => {
           element={
             <ProtectedRoute>
               <DietitianProfile />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dietitian/patients" 
+          element={
+            <ProtectedRoute>
+              <DietitianPatients />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dietitian/plans" 
+          element={
+            <ProtectedRoute>
+              <DietitianPlans />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dietitian/appointments" 
+          element={
+            <ProtectedRoute>
+              <DietitianAppointments />
             </ProtectedRoute>
           } 
         />
