@@ -1,6 +1,7 @@
 
 export interface User {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   registrationDate: string;
@@ -10,9 +11,14 @@ export interface User {
   phone?: string;
   address?: string;
   dateOfBirth?: string;
+  gender?: "male" | "female" | "other";
+  age?: number;
+  weight?: number;
+  height?: number;
   profileImage?: string;
   healthConditions?: string[];
-  dietaryPreferences?: string[];
+  bio?: string;
+  dietaryPreferences?: string[] | string;
 }
 
 export const mockUsers: User[] = [
