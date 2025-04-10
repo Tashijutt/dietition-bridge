@@ -18,12 +18,22 @@ const Chat = () => {
   const [botResponse, setBotResponse] = useState<string[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Scroll to the bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Ensure the page starts from the top when it first loads
+    window.scrollTo(0, 0);
+    
+    // Focus on the input field
     inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    // Scroll only the messages container to the bottom when messages change
+    if (messagesEndRef.current && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages, botResponse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,7 +95,10 @@ const Chat = () => {
             {/* Chat Interface */}
             <div className="bg-white rounded-xl shadow-soft overflow-hidden">
               {/* Chat Messages */}
-              <div className="h-[calc(100vh-300px)] overflow-y-auto p-6">
+              <div 
+                ref={messagesContainerRef} 
+                className="h-[calc(100vh-300px)] overflow-y-auto p-6"
+              >
                 <div className="space-y-6">
                   {messages.map((msg, index) => (
                     <div

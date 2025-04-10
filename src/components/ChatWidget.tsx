@@ -20,8 +20,10 @@ const ChatWidget = () => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Scroll to bottom on new messages
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll to bottom on new messages but only within the widget container
+    if (messagesEndRef.current && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
     
     // Focus input field when widget opens
     inputRef.current?.focus();

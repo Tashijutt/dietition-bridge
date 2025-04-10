@@ -18,12 +18,23 @@ const ChatPage = () => {
   const [botResponse, setBotResponse] = useState<string[]>([]); // Array to build response incrementally
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Ensure the page starts from the top when it first loads
+    window.scrollTo(0, 0);
+    
+    // Focus on the input field
     inputRef.current?.focus();
-  }, [messages]);
+  }, []);
+
+  useEffect(() => {
+    // Scroll only the messages container to the bottom when messages change
+    if (messagesEndRef.current && messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages, botResponse]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +100,10 @@ const ChatPage = () => {
           {/* Chat Interface */}
           <div className="bg-white rounded-xl shadow-soft overflow-hidden">
             {/* Chat Messages */}
-            <div className="h-[calc(100vh-300px)] overflow-y-auto p-6">
+            <div 
+              ref={messagesContainerRef}
+              className="h-[calc(100vh-300px)] overflow-y-auto p-6"
+            >
               <div className="space-y-6">
                 {messages.map((msg, index) => (
                   <div

@@ -5,8 +5,14 @@ import PricingPlans from "@/components/PricingPlans";
 import ChatWidget from "@/components/ChatWidget";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Plans = () => {
+  // Add this useEffect to ensure the page starts from the top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
