@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, Clock, Video, Phone, MessageSquare, Calendar, Plus } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Video, Phone, MessageSquare, Plus } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -124,7 +124,7 @@ const DietitianAppointments = () => {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={setDate}
+                  onSelect={(newDate) => setDate(newDate)}
                   className="rounded-md border"
                 />
                 
@@ -216,7 +216,7 @@ const DietitianAppointments = () => {
                 
                 {upcomingAppointments.length === 0 && (
                   <div className="text-center py-12">
-                    <Calendar className="mx-auto h-12 w-12 text-gray-400" />
+                    <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <h3 className="mt-2 text-lg font-medium text-gray-900">No upcoming appointments</h3>
                     <p className="mt-1 text-gray-500">You have no upcoming appointments scheduled.</p>
                     <Button className="mt-4">
@@ -273,7 +273,7 @@ const DietitianAppointments = () => {
                 
                 {completedAppointments.length === 0 && (
                   <div className="text-center py-12">
-                    <Calendar className="mx-auto h-12 w-12 text-gray-400" />
+                    <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <h3 className="mt-2 text-lg font-medium text-gray-900">No completed appointments</h3>
                     <p className="mt-1 text-gray-500">You have no completed appointments yet.</p>
                   </div>
@@ -326,7 +326,7 @@ const DietitianAppointments = () => {
                 
                 {cancelledAppointments.length === 0 && (
                   <div className="text-center py-12">
-                    <Calendar className="mx-auto h-12 w-12 text-gray-400" />
+                    <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <h3 className="mt-2 text-lg font-medium text-gray-900">No cancelled appointments</h3>
                     <p className="mt-1 text-gray-500">You have no cancelled appointments.</p>
                   </div>
