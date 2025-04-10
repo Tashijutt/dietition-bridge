@@ -30,6 +30,34 @@ const UserViewDialog = ({
 }: UserViewDialogProps) => {
   if (!selectedUser) return null;
 
+  // Helper function to render dietary preferences
+  const renderDietaryPreferences = () => {
+    if (!selectedUser.dietaryPreferences) {
+      return "None specified";
+    }
+    
+    if (Array.isArray(selectedUser.dietaryPreferences)) {
+      return (
+        <div className="flex flex-wrap gap-2">
+          {selectedUser.dietaryPreferences.map((pref, index) => (
+            <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+              {pref}
+            </Badge>
+          ))}
+        </div>
+      );
+    } else {
+      // Handle case when dietaryPreferences is a string
+      return (
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline" className="bg-blue-50 text-blue-700">
+            {selectedUser.dietaryPreferences}
+          </Badge>
+        </div>
+      );
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-3xl">
@@ -162,17 +190,7 @@ const UserViewDialog = ({
               <div>
                 <Label className="text-gray-500">Dietary Preferences</Label>
                 <div className="font-medium mt-1">
-                  {selectedUser.dietaryPreferences && selectedUser.dietaryPreferences.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedUser.dietaryPreferences.map((pref, index) => (
-                        <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
-                          {pref}
-                        </Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    "None specified"
-                  )}
+                  {renderDietaryPreferences()}
                 </div>
               </div>
             </div>
