@@ -153,7 +153,7 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
         <aside 
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:relative lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white border-r shadow-soft transition-transform duration-300 ease-in-out`}
+          } lg:translate-x-0 fixed lg:sticky lg:block z-30 w-64 h-[calc(100vh-4rem)] bg-white border-r shadow-soft transition-transform duration-300 ease-in-out lg:top-16`}
         >
           <nav className="p-4 space-y-1 overflow-y-auto h-full">
             {navItems.map((item) => (

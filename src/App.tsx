@@ -25,7 +25,6 @@ import UserPlans from "./pages/user/UserPlans";
 import DietPlanView from "./pages/user/DietPlanView";
 import UserDietitians from "./pages/user/UserDietitians";
 import { AuthProvider } from "./context/AuthContext";
-import MacOSDock from "./components/MacOSDock";
 import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
 
 const queryClient = new QueryClient();
@@ -78,9 +77,6 @@ const RouterContent = () => {
         {/* Catch-all route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-
-      {/* Only show MacOS Dock on public pages, not admin or dashboard */}
-      {!isAdminPage && !isDashboardPage && <MacOSDock />}
       
       {/* Only show ChatWidgetWrapper when not on the dedicated chat page or signin page */}
       {!isChatPage && !isSignInPage && <ChatWidgetWrapper />}

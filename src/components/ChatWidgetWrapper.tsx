@@ -36,7 +36,7 @@ const ChatWidgetWrapper = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-24 right-4 sm:bottom-24 sm:right-6 z-50">
+    <div className="fixed bottom-16 right-4 sm:bottom-6 sm:right-6 z-50">
       {isOpen ? (
         <div className="bg-white rounded-lg shadow-lg w-full sm:w-96 h-[500px] flex flex-col overflow-hidden border border-gray-200 animate-fade-in" style={{zIndex: 9999}}>
           <div className="bg-primary text-white p-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">

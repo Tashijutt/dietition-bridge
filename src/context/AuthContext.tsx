@@ -37,15 +37,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedProfileImage = localStorage.getItem("userProfileImage");
     
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser).user;
-      
-      // Apply stored profile image if exists
-      if (storedProfileImage && !parsedUser.profileImage) {
-        parsedUser.profileImage = storedProfileImage;
+      try {
+        const parsedData = JSON.parse(storedUser);
+        const parsedUser = parsedData.user;
+        
+        if (parsedUser) {
+          // Apply stored profile image if exists
+          if (storedProfileImage && !parsedUser.profileImage) {
+            parsedUser.profileImage = storedProfileImage;
+          }
+          
+          setUser(parsedUser);
+          
+          // Set token if it exists in the stored data
+          if (parsedData.token) {
+            setToken(parsedData.token);
+          }
+        } else {
+          // Handle case where user data might be stored directly
+          // This is for backward compatibility
+          setUser(parsedData);
+        }
+      } catch (error) {
+        console.error("Error parsing stored user data:", error);
+        // Clear invalid data
+        localStorage.removeItem("userAuth");
       }
-      
-      setUser(parsedUser);
-      setToken(JSON.parse(storedUser).token);
     }
     
     setLoading(false);
@@ -70,7 +87,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
   
       const userData = await response.json();
-      setUser(userData);
+      // Extract user data and token from the response
+      const { user: userObject, token: authToken } = userData;
+      
+      // Set user and token in state
+      setUser(userObject);
+      setToken(authToken);
+      
+      // Store the complete response in localStorage
       localStorage.setItem("userAuth", JSON.stringify(userData));
       
     } catch (error) {
@@ -181,7 +205,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const userData = await response.json();
-      setUser(userData);
+      // Extract user data and token from the response
+      const { user: userObject, token: authToken } = userData;
+      
+      // Set user and token in state
+      setUser(userObject);
+      setToken(authToken);
+      
+      // Store the complete response in localStorage
       localStorage.setItem("userAuth", JSON.stringify(userData));
       
     } catch (error) {
@@ -193,13 +224,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
+    setToken("");
     // Don't remove profile image on logout to keep it persistent
     localStorage.removeItem("userAuth");
   };
 
   const updateUserProfile = (updatedUser: User) => {
     setUser(updatedUser);
-    localStorage.setItem("userAuth", JSON.stringify(updatedUser));
+    
+    // Get the current stored auth data to preserve the token
+    const storedAuth = localStorage.getItem("userAuth");
+    let authData = { user: updatedUser, token };
+    
+    if (storedAuth) {
+      try {
+        const parsedAuth = JSON.parse(storedAuth);
+        // Preserve the token from stored data
+        authData = { ...parsedAuth, user: updatedUser };
+      } catch (error) {
+        console.error("Error parsing stored auth data:", error);
+      }
+    }
+    
+    // Update localStorage with the new user data while preserving the token
+    localStorage.setItem("userAuth", JSON.stringify(authData));
     
     // If updating profile image, store it separately too for persistence
     if (updatedUser.profileImage) {
