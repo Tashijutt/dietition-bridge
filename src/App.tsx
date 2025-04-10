@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -54,6 +53,7 @@ const RouterContent = () => {
   const isDietitianPage = location.pathname.startsWith('/dietitian');
   const isChatPage = location.pathname === '/chat';
   const isSignInPage = location.pathname === '/signin';
+  const isPlansPage = location.pathname === '/plans';
 
   return (
     <>
@@ -197,8 +197,8 @@ const RouterContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       
-      {/* Only show ChatWidgetWrapper when not on the dedicated chat page or signin page */}
-      {!isChatPage && !isSignInPage && <ChatWidgetWrapper />}
+      {/* Only show ChatWidgetWrapper when not on specific pages */}
+      {!isChatPage && !isSignInPage && !isPlansPage && <ChatWidgetWrapper />}
     </>
   );
 }
