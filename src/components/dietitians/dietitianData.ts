@@ -1,0 +1,126 @@
+
+import { Dietitian } from "./dietitianTypes";
+
+// Mock data for dietitians
+export const DIETITIANS: Dietitian[] = [
+  {
+    id: 1,
+    name: "Dr. Farah Khan",
+    qualifications: "PhD Nutrition Sciences",
+    city: "Karachi",
+    specializations: ["Diabetes", "Weight Management"],
+    contact: {
+      email: "farah.khan@example.com",
+      phone: "+92-321-1234567",
+    },
+    clinic: "Nutrition Care Center, Clifton",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.8,
+    reviewCount: 24,
+    about: "Specialized in helping patients with diabetes maintain a balanced diet while enjoying traditional Pakistani cuisine.",
+    experience: "4 Years",
+    satisfiedPatients: "100% (5)",
+    fee: "Rs. 1,200",
+    availability: "Available Mon, Apr 14"
+  },
+  {
+    id: 2,
+    name: "Ahmad Malik",
+    qualifications: "MSc Clinical Nutrition",
+    city: "Lahore",
+    specializations: ["Hypertension", "Heart Health"],
+    contact: {
+      email: "ahmad.malik@example.com",
+      phone: "+92-300-9876543",
+    },
+    clinic: "Diet Clinic, Gulberg",
+    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.5,
+    reviewCount: 18,
+    about: "Focuses on heart-healthy diets that incorporate local Pakistani ingredients and cooking methods.",
+    experience: "11 Years",
+    satisfiedPatients: "98% (183)",
+    fee: "Rs. 1,400",
+    availability: "Available Mon, Apr 14"
+  },
+  {
+    id: 3,
+    name: "Dr. Ayesha Nasir",
+    qualifications: "MBBS, Diploma in Nutrition",
+    city: "Islamabad",
+    specializations: ["Pediatric Nutrition", "Allergies"],
+    contact: {
+      email: "ayesha.nasir@example.com",
+      phone: "+92-333-5557777",
+    },
+    clinic: "HealthWay Nutrition, F-10",
+    image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.9,
+    reviewCount: 32,
+    about: "Expert in pediatric nutrition with special focus on food allergies and sensitivities in children.",
+    experience: "7 Years",
+    satisfiedPatients: "97% (42)",
+    fee: "Rs. 1,500",
+    availability: "Available Tue, Apr 15"
+  },
+  {
+    id: 4,
+    name: "Syed Ali Raza",
+    qualifications: "BSc Nutrition, Certified Dietitian",
+    city: "Karachi",
+    specializations: ["Sports Nutrition", "Muscle Building"],
+    contact: {
+      email: "ali.raza@example.com",
+      phone: "+92-312-9998887",
+    },
+    clinic: "FitNutrition, DHA Phase 6",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.6,
+    reviewCount: 21,
+    about: "Specializes in sports nutrition and helping athletes optimize their performance through diet.",
+    experience: "5 Years",
+    satisfiedPatients: "94% (31)",
+    fee: "Rs. 1,300",
+    availability: "Available Wed, Apr 16"
+  },
+  {
+    id: 5,
+    name: "Zainab Fatima",
+    qualifications: "MSc Food Science & Nutrition",
+    city: "Lahore",
+    specializations: ["Pregnancy Nutrition", "Women's Health"],
+    contact: {
+      email: "zainab.fatima@example.com",
+      phone: "+92-345-1112223",
+    },
+    clinic: "NutriWomen Center, Johar Town",
+    image: "https://images.unsplash.com/photo-1643297654416-05795d62e9a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.7,
+    reviewCount: 27,
+    about: "Dedicated to women's nutritional health with a focus on prenatal and postnatal nutrition.",
+    experience: "6 Years",
+    satisfiedPatients: "96% (74)",
+    fee: "Rs. 1,100",
+    availability: "Available Thu, Apr 17"
+  },
+  {
+    id: 6,
+    name: "Dr. Usman Ahmed",
+    qualifications: "PhD Dietetics",
+    city: "Islamabad",
+    specializations: ["Kidney Disease", "Hypertension"],
+    contact: {
+      email: "usman.ahmed@example.com",
+      phone: "+92-321-4445556",
+    },
+    clinic: "Renal Diet Clinic, Blue Area",
+    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.8,
+    reviewCount: 19,
+    about: "Specialized in dietary management of kidney diseases and hypertension using evidence-based approaches.",
+    experience: "9 Years",
+    satisfiedPatients: "99% (87)",
+    fee: "Rs. 1,800",
+    availability: "Available Fri, Apr 18"
+  },
+];
