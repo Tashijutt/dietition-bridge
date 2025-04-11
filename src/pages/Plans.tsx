@@ -1,20 +1,26 @@
 
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Star, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PricingPlans from "@/components/PricingPlans";
-import { ArrowLeft, Star, Download, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-// Sample free diet plans
-const freeDietPlans = [
+// Sample diet plans
+const dietPlans = [
   {
-    id: "free1",
+    id: "plan1",
     title: "Balanced Nutrition Plan",
     description: "A well-balanced diet plan suitable for most adults seeking to maintain healthy weight.",
     category: "General Health",
@@ -22,7 +28,6 @@ const freeDietPlans = [
     dietitianName: "Dr. Ayesha Khan",
     dietitianCredentials: "PhD in Nutritional Sciences",
     popularity: 4.8,
-    downloads: 1250,
     image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2070&auto=format&fit=crop",
     preview: [
       "Breakfast: Whole grain paratha with yogurt",
@@ -31,7 +36,7 @@ const freeDietPlans = [
     ]
   },
   {
-    id: "free2",
+    id: "plan2",
     title: "Diabetes Management Diet",
     description: "Specially designed plan to help manage blood sugar levels with traditional Pakistani foods.",
     category: "Medical Condition",
@@ -39,7 +44,6 @@ const freeDietPlans = [
     dietitianName: "Dr. Farhan Ahmed",
     dietitianCredentials: "Specialist in Diabetic Care",
     popularity: 4.9,
-    downloads: 2100,
     image: "https://images.unsplash.com/photo-1605493725784-84d97448829d?q=80&w=1974&auto=format&fit=crop",
     preview: [
       "Breakfast: Egg whites with whole wheat toast",
@@ -48,7 +52,7 @@ const freeDietPlans = [
     ]
   },
   {
-    id: "free3",
+    id: "plan3",
     title: "Heart Health Diet",
     description: "Low sodium, heart-healthy diet plan with delicious Pakistani cuisine alternatives.",
     category: "Medical Condition",
@@ -56,7 +60,6 @@ const freeDietPlans = [
     dietitianName: "Dr. Sana Malik",
     dietitianCredentials: "Cardiac Nutrition Specialist",
     popularity: 4.7,
-    downloads: 980,
     image: "https://images.unsplash.com/photo-1607532941433-304659e8198a?q=80&w=1978&auto=format&fit=crop",
     preview: [
       "Breakfast: Oatmeal with nuts and seeds",
@@ -65,7 +68,7 @@ const freeDietPlans = [
     ]
   },
   {
-    id: "free4",
+    id: "plan4",
     title: "Weight Loss Plan",
     description: "Effective and sustainable weight loss diet without compromising on taste.",
     category: "Weight Management",
@@ -73,7 +76,6 @@ const freeDietPlans = [
     dietitianName: "Dr. Imran Habib",
     dietitianCredentials: "Weight Management Expert",
     popularity: 4.9,
-    downloads: 3200,
     image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=2070&auto=format&fit=crop",
     preview: [
       "Breakfast: Vegetable omelette with one roti",
@@ -100,12 +102,9 @@ const Plans = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleDownload = (planId) => {
-    toast({
-      title: "Download Started",
-      description: "Your diet plan is being downloaded.",
-    });
-    // In a real app, this would trigger the actual download
+  const handleViewPlan = (plan) => {
+    setSelectedPlan(plan);
+    setIsDialogOpen(true);
   };
   
   return (
@@ -121,24 +120,24 @@ const Plans = () => {
             
             <div className="mb-12">
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Nutrition Plans
+                Expert Nutrition Plans
               </h1>
               <p className="text-xl text-gray-600">
-                Explore our range of personalized nutrition and diet plans designed by professional dietitians to help you achieve your health goals.
+                Discover scientifically-backed nutrition plans designed by Pakistan's leading dietitians, tailored to address specific health conditions and dietary goals.
               </p>
             </div>
 
-            {/* Free Diet Plans Section */}
+            {/* Diet Plans Section */}
             <div className="mb-16">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Free Diet Plans</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Curated Nutrition Plans</h2>
                 <div className="text-sm text-gray-500">
-                  Curated by top nutrition specialists
+                  Developed by certified nutrition specialists
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {freeDietPlans.map((plan, index) => (
+                {dietPlans.map((plan, index) => (
                   <Card 
                     key={plan.id} 
                     className={`overflow-hidden transition-all duration-500 hover:shadow-md ${showPlans ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
@@ -176,10 +175,6 @@ const Plans = () => {
                             <Clock className="h-3.5 w-3.5 mr-1" />
                             <span>{plan.duration}</span>
                           </div>
-                          <div className="flex items-center">
-                            <Download className="h-3.5 w-3.5 mr-1" />
-                            <span>{plan.downloads}</span>
-                          </div>
                         </div>
                         
                         <div className="flex items-center mb-4">
@@ -198,10 +193,9 @@ const Plans = () => {
                       <Button 
                         variant="outline" 
                         className="w-full"
-                        onClick={() => handleDownload(plan.id)}
+                        onClick={() => handleViewPlan(plan)}
                       >
-                        <Download className="h-4 w-4 mr-2" />
-                        Download Free
+                        View Plan
                       </Button>
                     </CardContent>
                   </Card>
@@ -218,7 +212,59 @@ const Plans = () => {
         </div>
       </main>
       <Footer />
-      {/* ChatWidget removed from Plans page */}
+
+      {/* Plan View Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-lg">
+          {selectedPlan && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl font-semibold">{selectedPlan.title}</DialogTitle>
+                <DialogDescription>{selectedPlan.description}</DialogDescription>
+              </DialogHeader>
+              
+              <div className="mt-4">
+                <div className="flex items-center justify-between mb-4">
+                  <Badge>{selectedPlan.category}</Badge>
+                  <span className="text-sm text-gray-500">{selectedPlan.duration}</span>
+                </div>
+                
+                <div className="mb-4 flex items-center">
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                      {selectedPlan.dietitianName.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-sm">{selectedPlan.dietitianName}</p>
+                    <p className="text-xs text-gray-500">{selectedPlan.dietitianCredentials}</p>
+                  </div>
+                </div>
+                
+                <div className="border-t pt-4">
+                  <h4 className="font-medium mb-2">Sample Menu</h4>
+                  <ul className="space-y-2">
+                    {selectedPlan.preview.map((meal, i) => (
+                      <li key={i} className="text-sm bg-gray-50 p-2 rounded">
+                        {meal}
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="mt-6 text-center">
+                    <p className="text-sm text-gray-500 mb-3">
+                      This is a sample preview. For a complete personalized plan, please contact the dietitian.
+                    </p>
+                    <Link to="/dietitians">
+                      <Button>Contact Dietitian</Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

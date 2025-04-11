@@ -85,4 +85,49 @@
   .btn, button {
     @apply rounded-[4px];
   }
+  
+  /* Replacing nutrition specific classes */
+  .bg-nutrition-50 {
+    @apply bg-slate-50;
+  }
+  
+  .bg-nutrition-100 {
+    @apply bg-slate-100;
+  }
+  
+  .text-nutrition-600 {
+    @apply text-primary;
+  }
+  
+  .text-nutrition-700 {
+    @apply text-primary;
+  }
+  
+  .border-nutrition-400 {
+    @apply border-primary/40;
+  }
+  
+  .border-nutrition-500 {
+    @apply border-primary;
+  }
+  
+  .bg-nutrition-600 {
+    @apply bg-primary;
+  }
+  
+  .bg-nutrition-700 {
+    @apply bg-primary/90;
+  }
+  
+  .hover\:bg-nutrition-500:hover {
+    @apply hover:bg-primary;
+  }
+  
+  .hover\:bg-nutrition-700:hover {
+    @apply hover:bg-primary/90;
+  }
+  
+  .hover\:text-nutrition-600:hover {
+    @apply hover:text-primary;
+  }
 }

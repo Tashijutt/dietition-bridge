@@ -7,6 +7,7 @@ import BenefitsSection from "@/components/BenefitsSection";
 import WeightLossTips from "@/components/WeightLossTips";
 import HealthySteps from "@/components/HealthySteps";
 import PricingPlans from "@/components/PricingPlans";
+import HomeFAQ from "@/components/HomeFAQ";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -58,6 +59,7 @@ const Index = () => {
         <WeightLossTips />
         <HealthySteps />
         <PricingPlans />
+        <HomeFAQ />
         <HomeDietitianSection limit={3} />
         
         {/* View All Dietitians CTA */}
