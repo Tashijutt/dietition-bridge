@@ -1,9 +1,10 @@
 
 import { useState } from "react";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Star, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from 'react-intersection-observer';
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 // Mock data for dietitians
 const DIETITIANS = [
@@ -19,6 +20,9 @@ const DIETITIANS = [
     },
     clinic: "Nutrition Care Center, Clifton",
     image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.8,
+    reviewCount: 24,
+    about: "Specialized in helping patients with diabetes maintain a balanced diet while enjoying traditional Pakistani cuisine.",
   },
   {
     id: 2,
@@ -32,6 +36,9 @@ const DIETITIANS = [
     },
     clinic: "Diet Clinic, Gulberg",
     image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.5,
+    reviewCount: 18,
+    about: "Focuses on heart-healthy diets that incorporate local Pakistani ingredients and cooking methods.",
   },
   {
     id: 3,
@@ -45,45 +52,9 @@ const DIETITIANS = [
     },
     clinic: "HealthWay Nutrition, F-10",
     image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    id: 4,
-    name: "Syed Ali Raza",
-    qualifications: "BSc Nutrition, Certified Dietitian",
-    city: "Karachi",
-    specializations: ["Sports Nutrition", "Muscle Building"],
-    contact: {
-      email: "ali.raza@example.com",
-      phone: "+92-312-9998887",
-    },
-    clinic: "FitNutrition, DHA Phase 6",
-    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    id: 5,
-    name: "Zainab Fatima",
-    qualifications: "MSc Food Science & Nutrition",
-    city: "Lahore",
-    specializations: ["Pregnancy Nutrition", "Women's Health"],
-    contact: {
-      email: "zainab.fatima@example.com",
-      phone: "+92-345-1112223",
-    },
-    clinic: "NutriWomen Center, Johar Town",
-    image: "https://images.unsplash.com/photo-1643297654416-05795d62e9a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    id: 6,
-    name: "Dr. Usman Ahmed",
-    qualifications: "PhD Dietetics",
-    city: "Islamabad",
-    specializations: ["Kidney Disease", "Hypertension"],
-    contact: {
-      email: "usman.ahmed@example.com",
-      phone: "+92-321-4445556",
-    },
-    clinic: "Renal Diet Clinic, Blue Area",
-    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+    rating: 4.9,
+    reviewCount: 32,
+    about: "Expert in pediatric nutrition with special focus on food allergies and sensitivities in children.",
   },
 ];
 
@@ -97,8 +68,16 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
     threshold: 0.1,
   });
   
+  const [selectedDietitian, setSelectedDietitian] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   // Apply limit if provided
   const displayedDietitians = limit ? DIETITIANS.slice(0, limit) : DIETITIANS;
+
+  const handleBookAppointment = (dietitian) => {
+    setSelectedDietitian(dietitian);
+    setIsModalOpen(true);
+  };
 
   return (
     <section id="dietitians" className="py-20 bg-gray-50">
@@ -119,80 +98,183 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
           </p>
         </div>
 
-        {/* Dietitians Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Dietitians */}
+        <div className="space-y-4">
           {displayedDietitians.map((dietitian, index) => (
             <div 
               key={dietitian.id}
               className={cn(
-                "glass-card overflow-hidden transition-all duration-500 hover:shadow-md",
+                "bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-md overflow-hidden",
                 inView ? "animate-fade-up" : "opacity-0"
               )}
               style={{ animationDelay: `${300 + index * 100}ms` }}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <img 
-                  src={dietitian.image} 
-                  alt={dietitian.name} 
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute bottom-0 left-0 p-4 text-white">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-4 w-4" />
-                    <span className="text-sm">{dietitian.city}</span>
+              <div className="p-5 flex flex-col md:flex-row">
+                {/* Dietitian Image and Basic Info */}
+                <div className="md:w-1/4 flex items-start space-x-4">
+                  <div className="rounded-full overflow-hidden w-16 h-16 flex-shrink-0 border-2 border-primary">
+                    <img 
+                      src={dietitian.image} 
+                      alt={dietitian.name} 
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{dietitian.name}</h3>
+                    <p className="text-sm text-gray-500">{dietitian.qualifications}</p>
+                    <div className="flex items-center mt-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      <span className="text-sm font-medium ml-1">{dietitian.rating}</span>
+                      <span className="text-sm text-gray-500 ml-1">({dietitian.reviewCount} reviews)</span>
+                    </div>
+                    <p className="text-sm text-gray-500 flex items-center mt-1">
+                      <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                      {dietitian.city}
+                    </p>
                   </div>
                 </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-1 text-gray-900">{dietitian.name}</h3>
-                <p className="text-sm text-gray-600 mb-3">{dietitian.qualifications}</p>
                 
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {dietitian.specializations.map((spec, i) => (
-                    <span 
-                      key={i} 
-                      className="px-2.5 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
+                {/* Specializations & About */}
+                <div className="md:w-2/4 pt-4 md:pt-0 md:px-6">
+                  <div className="mb-3">
+                    <div className="flex flex-wrap gap-2">
+                      {dietitian.specializations.map((spec, i) => (
+                        <span 
+                          key={i} 
+                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 line-clamp-2">{dietitian.about}</p>
+                  <div className="mt-3">
+                    <a 
+                      href="#" 
+                      className="text-sm text-blue-600 hover:underline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleBookAppointment(dietitian);
+                      }}
                     >
-                      {spec}
-                    </span>
-                  ))}
+                      View full profile
+                    </a>
+                  </div>
                 </div>
                 
-                <p className="text-sm text-gray-600 mb-4 flex items-start">
-                  <MapPin className="h-4 w-4 mr-2 mt-0.5 text-gray-400" />
-                  {dietitian.clinic}
-                </p>
-                
-                <div className="flex flex-col space-y-2">
-                  <a 
-                    href={`mailto:${dietitian.contact.email}`}
-                    className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
+                {/* Actions */}
+                <div className="md:w-1/4 flex flex-col justify-center items-end gap-2 pt-4 md:pt-0">
+                  <button
+                    onClick={() => handleBookAppointment(dietitian)}
+                    className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded shadow-sm transition-colors"
                   >
-                    <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                    {dietitian.contact.email}
-                  </a>
-                  <a 
-                    href={`tel:${dietitian.contact.phone}`}
-                    className="text-sm text-gray-700 flex items-center hover:text-primary transition-colors"
+                    Book Appointment
+                  </button>
+                  <button 
+                    className="w-full md:w-auto px-6 py-2.5 border border-primary text-primary bg-white hover:bg-primary/5 font-medium rounded shadow-sm transition-colors"
                   >
-                    <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                    {dietitian.contact.phone}
-                  </a>
+                    Message
+                  </button>
                 </div>
-                
-                <Link 
-                  to="/contact"
-                  className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
-                >
-                  Book Appointment
-                </Link>
               </div>
             </div>
           ))}
         </div>
+
+        {/* View All Link */}
+        {limit && displayedDietitians.length < DIETITIANS.length && (
+          <div className="text-center mt-8">
+            <Link 
+              to="/dietitians"
+              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-all duration-300"
+            >
+              View All Dietitians
+            </Link>
+          </div>
+        )}
+        
+        {/* Dietitian Details Modal */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            {selectedDietitian && (
+              <div className="p-2">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="rounded-full overflow-hidden w-16 h-16 border-2 border-primary">
+                    <img 
+                      src={selectedDietitian.image} 
+                      alt={selectedDietitian.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">{selectedDietitian.name}</h3>
+                    <p className="text-sm text-gray-500">{selectedDietitian.qualifications}</p>
+                    <div className="flex items-center mt-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      <span className="text-sm font-medium ml-1">{selectedDietitian.rating}</span>
+                      <span className="text-sm text-gray-500 ml-1">({selectedDietitian.reviewCount} reviews)</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">Specializations</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedDietitian.specializations.map((spec, i) => (
+                      <span 
+                        key={i} 
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                      >
+                        {spec}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">About</h4>
+                  <p className="text-sm text-gray-600">{selectedDietitian.about}</p>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">Contact</h4>
+                  <div className="space-y-2">
+                    <a 
+                      href={`mailto:${selectedDietitian.contact.email}`}
+                      className="flex items-center text-sm text-gray-600 hover:text-primary"
+                    >
+                      <Mail className="w-4 h-4 mr-2" />
+                      {selectedDietitian.contact.email}
+                    </a>
+                    <a 
+                      href={`tel:${selectedDietitian.contact.phone}`}
+                      className="flex items-center text-sm text-gray-600 hover:text-primary"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      {selectedDietitian.contact.phone}
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md"
+                  >
+                    Book Appointment
+                  </button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

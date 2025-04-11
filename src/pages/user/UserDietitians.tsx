@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, User, Phone, Mail, Star, Grid3X3, List } from "lucide-react";
+import { Search, User, Phone, Mail, Star, Grid3X3, List, MapPin } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import {
@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface Dietitian {
   id: string;
@@ -32,6 +33,7 @@ interface Dietitian {
   city: string;
   specialization: string[];
   rating: number;
+  reviewCount: number;
   phone: string;
   email: string;
   bio: string;
@@ -44,7 +46,9 @@ const UserDietitians = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCity, setFilterCity] = useState("all");
   const [filterSpecialization, setFilterSpecialization] = useState("all");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+  const [selectedDietitian, setSelectedDietitian] = useState<Dietitian | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -57,6 +61,7 @@ const UserDietitians = () => {
         city: "Karachi",
         specialization: ["Diabetes Management", "Weight Loss"],
         rating: 4.8,
+        reviewCount: 24,
         phone: "+92 300 1234567",
         email: "dr.ayesha@example.com",
         bio: "Specialized in helping patients with diabetes maintain a balanced diet while enjoying traditional Pakistani cuisine. Over 10 years of experience in nutritional counseling.",
@@ -69,6 +74,7 @@ const UserDietitians = () => {
         city: "Lahore",
         specialization: ["Weight Management", "Sports Nutrition"],
         rating: 4.6,
+        reviewCount: 18,
         phone: "+92 321 9876543",
         email: "fatima.khan@example.com",
         bio: "Expert in weight management strategies tailored for South Asian body types and dietary patterns. Passionate about helping clients achieve sustainable weight loss.",
@@ -81,6 +87,7 @@ const UserDietitians = () => {
         city: "Islamabad",
         specialization: ["Heart Health", "General Wellness"],
         rating: 4.9,
+        reviewCount: 32,
         phone: "+92 333 4567890",
         email: "m.ali@example.com",
         bio: "Focuses on heart-healthy diets that incorporate local Pakistani ingredients and cooking methods to reduce the risk of cardiovascular disease while preserving cultural food preferences.",
@@ -93,6 +100,7 @@ const UserDietitians = () => {
         city: "Karachi",
         specialization: ["Sports Nutrition", "Fitness Planning"],
         rating: 4.7,
+        reviewCount: 21,
         phone: "+92 312 5678901",
         email: "saima@example.com",
         bio: "Specializes in nutrition for athletes and active individuals. Helps clients optimize their performance through scientifically-backed nutrition strategies.",
@@ -136,10 +144,8 @@ const UserDietitians = () => {
   };
 
   const handleContact = (dietitian: Dietitian) => {
-    toast({
-      title: "Contact Information",
-      description: `You can reach ${dietitian.name} at ${dietitian.phone} or ${dietitian.email}`
-    });
+    setSelectedDietitian(dietitian);
+    setIsModalOpen(true);
   };
 
   return (
@@ -175,42 +181,54 @@ const UserDietitians = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {savedDietitians.map(dietitian => (
-                        <Card key={dietitian.id} className="overflow-hidden border border-gray-200 transition-all hover:shadow-md">
-                          <div className="p-6">
-                            <div className="flex items-center mb-4">
-                              <Avatar className="h-12 w-12 mr-4">
+                    <div className="space-y-4">
+                      {savedDietitians.map((dietitian) => (
+                        <div 
+                          key={dietitian.id}
+                          className="bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-md overflow-hidden"
+                        >
+                          <div className="p-5 flex flex-col md:flex-row">
+                            {/* Dietitian Image and Basic Info */}
+                            <div className="md:w-1/4 flex items-start space-x-4">
+                              <Avatar className="h-16 w-16 border-2 border-primary">
                                 <AvatarImage src={dietitian.image} alt={dietitian.name} />
-                                <AvatarFallback className="bg-nutrition-100 text-nutrition-800">
+                                <AvatarFallback className="bg-primary/10 text-primary">
                                   {dietitian.name.split(" ").map(n => n[0]).join("").toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
-                                <h3 className="text-lg font-medium text-gray-900">{dietitian.name}</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-1">{dietitian.name}</h3>
                                 <p className="text-sm text-gray-500">{dietitian.title}</p>
+                                <div className="flex items-center mt-1">
+                                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                  <span className="text-sm font-medium ml-1">{dietitian.rating}</span>
+                                  <span className="text-sm text-gray-500 ml-1">({dietitian.reviewCount} reviews)</span>
+                                </div>
+                                <p className="text-sm text-gray-500 flex items-center mt-1">
+                                  <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                                  {dietitian.city}
+                                </p>
                               </div>
                             </div>
                             
-                            <div className="mb-4">
-                              <div className="flex items-center text-sm mb-2">
-                                <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                                <span className="font-medium">{dietitian.rating}</span>
-                                <span className="text-gray-500 mx-2">•</span>
-                                <span className="text-gray-500">{dietitian.city}</span>
+                            {/* Specializations & Bio */}
+                            <div className="md:w-2/4 pt-4 md:pt-0 md:px-6">
+                              <div className="mb-3">
+                                <div className="flex flex-wrap gap-2">
+                                  {dietitian.specialization.map((spec, i) => (
+                                    <Badge key={i} variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                                      {spec}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
-                              <div className="flex flex-wrap gap-2 mb-3">
-                                {dietitian.specialization.map((spec, index) => (
-                                  <Badge key={index} variant="outline" className="bg-nutrition-50 text-nutrition-700 border-nutrition-200">
-                                    {spec}
-                                  </Badge>
-                                ))}
-                              </div>
+                              <p className="text-sm text-gray-600 line-clamp-2">{dietitian.bio}</p>
                             </div>
                             
-                            <div className="flex space-x-2 mt-4">
+                            {/* Actions */}
+                            <div className="md:w-1/4 flex flex-col justify-center items-end gap-2 pt-4 md:pt-0">
                               <Button
-                                className="flex-1"
+                                className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white"
                                 onClick={() => handleContact(dietitian)}
                               >
                                 <Phone className="h-4 w-4 mr-1.5" />
@@ -218,14 +236,14 @@ const UserDietitians = () => {
                               </Button>
                               <Button
                                 variant="outline"
-                                className="text-red-600 border-red-200 hover:bg-red-50"
+                                className="w-full md:w-auto px-6 py-2.5 text-red-600 border-red-200 hover:bg-red-50"
                                 onClick={() => handleToggleSave(dietitian.id, dietitian.isSaved)}
                               >
                                 Remove
                               </Button>
                             </div>
                           </div>
-                        </Card>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -320,9 +338,9 @@ const UserDietitians = () => {
                         <Card key={dietitian.id} className="overflow-hidden border border-gray-200 transition-all hover:shadow-md">
                           <div className="p-6">
                             <div className="flex items-center mb-4">
-                              <Avatar className="h-12 w-12 mr-4">
+                              <Avatar className="h-12 w-12 mr-4 border-2 border-primary">
                                 <AvatarImage src={dietitian.image} alt={dietitian.name} />
-                                <AvatarFallback className="bg-nutrition-100 text-nutrition-800">
+                                <AvatarFallback className="bg-primary/10 text-primary">
                                   {dietitian.name.split(" ").map(n => n[0]).join("").toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
@@ -334,14 +352,14 @@ const UserDietitians = () => {
                             
                             <div className="mb-4">
                               <div className="flex items-center text-sm mb-2">
-                                <Star className="h-4 w-4 text-yellow-400 mr-1" />
+                                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
                                 <span className="font-medium">{dietitian.rating}</span>
                                 <span className="text-gray-500 mx-2">•</span>
                                 <span className="text-gray-500">{dietitian.city}</span>
                               </div>
                               <div className="flex flex-wrap gap-2 mb-3">
                                 {dietitian.specialization.map((spec, index) => (
-                                  <Badge key={index} variant="outline" className="bg-nutrition-50 text-nutrition-700 border-nutrition-200">
+                                  <Badge key={index} variant="outline" className="bg-primary/10 text-primary border-primary/20">
                                     {spec}
                                   </Badge>
                                 ))}
@@ -350,7 +368,7 @@ const UserDietitians = () => {
                             
                             <div className="flex space-x-2 mt-4">
                               <Button
-                                className="flex-1"
+                                className="flex-1 bg-orange-500 hover:bg-orange-600"
                                 onClick={() => handleContact(dietitian)}
                               >
                                 <Phone className="h-4 w-4 mr-1.5" />
@@ -371,60 +389,67 @@ const UserDietitians = () => {
                   ) : (
                     <div className="space-y-4">
                       {filteredDietitians.map(dietitian => (
-                        <Card key={dietitian.id} className="overflow-hidden border border-gray-200 transition-all hover:shadow-md">
-                          <div className="p-6">
-                            <div className="flex flex-col md:flex-row md:items-center">
-                              <div className="flex items-center mb-4 md:mb-0 md:w-1/3">
-                                <Avatar className="h-12 w-12 mr-4">
-                                  <AvatarImage src={dietitian.image} alt={dietitian.name} />
-                                  <AvatarFallback className="bg-nutrition-100 text-nutrition-800">
-                                    {dietitian.name.split(" ").map(n => n[0]).join("").toUpperCase()}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <h3 className="text-lg font-medium text-gray-900">{dietitian.name}</h3>
-                                  <div className="flex items-center text-sm">
-                                    <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                                    <span className="font-medium">{dietitian.rating}</span>
-                                    <span className="text-gray-500 mx-2">•</span>
-                                    <span className="text-gray-500">{dietitian.city}</span>
-                                  </div>
+                        <div 
+                          key={dietitian.id}
+                          className="bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-md overflow-hidden"
+                        >
+                          <div className="p-5 flex flex-col md:flex-row">
+                            {/* Dietitian Image and Basic Info */}
+                            <div className="md:w-1/4 flex items-start space-x-4">
+                              <Avatar className="h-16 w-16 border-2 border-primary">
+                                <AvatarImage src={dietitian.image} alt={dietitian.name} />
+                                <AvatarFallback className="bg-primary/10 text-primary">
+                                  {dietitian.name.split(" ").map(n => n[0]).join("").toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-1">{dietitian.name}</h3>
+                                <p className="text-sm text-gray-500">{dietitian.title}</p>
+                                <div className="flex items-center mt-1">
+                                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                  <span className="text-sm font-medium ml-1">{dietitian.rating}</span>
+                                  <span className="text-sm text-gray-500 ml-1">({dietitian.reviewCount} reviews)</span>
                                 </div>
+                                <p className="text-sm text-gray-500 flex items-center mt-1">
+                                  <MapPin className="w-4 h-4 mr-1 text-gray-400" />
+                                  {dietitian.city}
+                                </p>
                               </div>
-                              
-                              <div className="md:w-1/3">
-                                <p className="text-sm text-gray-500 mb-2">{dietitian.title}</p>
+                            </div>
+                            
+                            {/* Specializations & Bio */}
+                            <div className="md:w-2/4 pt-4 md:pt-0 md:px-6">
+                              <div className="mb-3">
                                 <div className="flex flex-wrap gap-2">
-                                  {dietitian.specialization.map((spec, index) => (
-                                    <Badge key={index} variant="outline" className="bg-nutrition-50 text-nutrition-700 border-nutrition-200">
+                                  {dietitian.specialization.map((spec, i) => (
+                                    <Badge key={i} variant="outline" className="bg-primary/10 text-primary border-primary/20">
                                       {spec}
                                     </Badge>
                                   ))}
                                 </div>
                               </div>
-                              
-                              <div className="flex space-x-2 mt-4 md:mt-0 md:w-1/3 md:justify-end">
-                                <Button
-                                  onClick={() => handleContact(dietitian)}
-                                >
-                                  <Phone className="h-4 w-4 mr-1.5" />
-                                  Contact
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  className={dietitian.isSaved ? "text-red-600 border-red-200 hover:bg-red-50" : ""}
-                                  onClick={() => handleToggleSave(dietitian.id, dietitian.isSaved)}
-                                >
-                                  {dietitian.isSaved ? "Remove" : "Save"}
-                                </Button>
-                              </div>
+                              <p className="text-sm text-gray-600 line-clamp-2">{dietitian.bio}</p>
                             </div>
                             
-                            <div className="mt-4 pt-4 border-t border-gray-100">
-                              <p className="text-sm text-gray-600">{dietitian.bio}</p>
+                            {/* Actions */}
+                            <div className="md:w-1/4 flex flex-col justify-center items-end gap-2 pt-4 md:pt-0">
+                              <Button
+                                className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white"
+                                onClick={() => handleContact(dietitian)}
+                              >
+                                <Phone className="h-4 w-4 mr-1.5" />
+                                Contact
+                              </Button>
+                              <Button
+                                variant="outline"
+                                className={dietitian.isSaved ? "w-full md:w-auto px-6 py-2.5 text-red-600 border-red-200 hover:bg-red-50" : "w-full md:w-auto px-6 py-2.5"}
+                                onClick={() => handleToggleSave(dietitian.id, dietitian.isSaved)}
+                              >
+                                {dietitian.isSaved ? "Remove" : "Save"}
+                              </Button>
                             </div>
                           </div>
-                        </Card>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -433,6 +458,83 @@ const UserDietitians = () => {
             </CardContent>
           </Card>
         </div>
+        
+        {/* Dietitian Details Modal */}
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            {selectedDietitian && (
+              <div className="p-2">
+                <div className="flex items-center space-x-4 mb-4">
+                  <Avatar className="h-16 w-16 border-2 border-primary">
+                    <AvatarImage src={selectedDietitian.image} alt={selectedDietitian.name} />
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {selectedDietitian.name.split(" ").map(n => n[0]).join("").toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="text-xl font-semibold">{selectedDietitian.name}</h3>
+                    <p className="text-sm text-gray-500">{selectedDietitian.title}</p>
+                    <div className="flex items-center mt-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      <span className="text-sm font-medium ml-1">{selectedDietitian.rating}</span>
+                      <span className="text-sm text-gray-500 ml-1">({selectedDietitian.reviewCount} reviews)</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">Specializations</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedDietitian.specialization.map((spec, i) => (
+                      <Badge key={i} variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                        {spec}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">About</h4>
+                  <p className="text-sm text-gray-600">{selectedDietitian.bio}</p>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-medium mb-1">Contact</h4>
+                  <div className="space-y-2">
+                    <a 
+                      href={`mailto:${selectedDietitian.email}`}
+                      className="flex items-center text-sm text-gray-600 hover:text-primary"
+                    >
+                      <Mail className="w-4 h-4 mr-2" />
+                      {selectedDietitian.email}
+                    </a>
+                    <a 
+                      href={`tel:${selectedDietitian.phone}`}
+                      className="flex items-center text-sm text-gray-600 hover:text-primary"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      {selectedDietitian.phone}
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end space-x-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    className="bg-orange-500 hover:bg-orange-600"
+                  >
+                    Book Appointment
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </UserLayout>
     </ProtectedRoute>
   );

@@ -74,14 +74,6 @@ const HomeFAQ = () => {
             ))}
           </Accordion>
         </div>
-
-        <div className="flex justify-center mt-12">
-          <img 
-            src="/lovable-uploads/c6d0bfb7-dbc8-4597-99a3-ff5b6b6523e5.png" 
-            alt="FAQ Reference Image" 
-            className="max-w-md w-full rounded-lg shadow-md opacity-90 hidden md:block" 
-          />
-        </div>
       </div>
     </section>
   );
