@@ -10,28 +10,28 @@ import { useInView } from "react-intersection-observer";
 
 const FAQs = [
   {
-    question: "What makes Nutri-Vision different from other nutrition apps?",
-    answer: "Nutri-Vision offers personalized diet plans crafted by qualified dietitians from across Pakistan. We combine human expertise with AI-powered recommendations to create nutrition plans specifically adapted to Pakistani cuisine and health needs."
+    question: "How does the personalized diet plan work?",
+    answer: "We provide personalized diet plans tailored to your health goals. 1-on-1 consultations with expert dietitians, meal planning guidance, and ongoing support to help you achieve sustainable lifestyle changes."
   },
   {
-    question: "How do I choose the right dietitian for my needs?",
-    answer: "You can browse our directory of verified dietitians, filtered by specialty (diabetes, weight management, etc.), location, and patient ratings. Each dietitian profile includes their qualifications, experience, and approach to nutrition guidance."
+    question: "How do I connect with a dietitian?",
+    answer: "You can easily book a consultation through our website. Once scheduled, you'll have a virtual or in-person session where a dietitian will assess your needs and create a personalized plan."
   },
   {
-    question: "Can I get nutrition advice specific to my medical condition?",
-    answer: "Yes, our platform specializes in nutritional guidance for various health conditions including diabetes, hypertension, heart disease, and digestive disorders, all adapted to Pakistani dietary preferences."
+    question: "How do I book a consultation?",
+    answer: "Simply visit our website, choose your preferred dietitian, select an available time slot, and confirm your booking."
   },
   {
-    question: "How does the AI-powered nutritional guidance work?",
-    answer: "Our AI nutrition assistant analyzes your health data, dietary preferences, and health goals to provide instant recommendations. For more comprehensive guidance, it works alongside our human dietitians to create fully personalized meal plans."
+    question: "How are the diet plans customized to my needs?",
+    answer: "We analyze factors such as your metabolism, food preferences, medical conditions, activity level, and dietary restrictions to create a tailored plan that fits your lifestyle."
+  },
+  {
+    question: "What makes Dietitian Bridge different from other nutrition platforms?",
+    answer: "Dietitian Bridge offers personalized diet plans crafted by qualified dietitians from across Pakistan. We combine human expertise with AI-powered recommendations to create nutrition plans specifically adapted to Pakistani cuisine and health needs."
   },
   {
     question: "Are online consultations as effective as in-person visits?",
     answer: "Yes, research shows that online nutrition counseling can be just as effective as in-person consultations. Our platform enables dietitians to review your progress, adjust your plans, and provide continuous support remotely."
-  },
-  {
-    question: "How much do the nutrition plans cost?",
-    answer: "We offer a range of plans starting from free basic guidance to premium personalized plans. Pricing varies based on the level of personalization, dietitian expertise, and duration of the plan. View our pricing page for detailed information."
   }
 ];
 
@@ -73,6 +73,14 @@ const HomeFAQ = () => {
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+
+        <div className="flex justify-center mt-12">
+          <img 
+            src="/lovable-uploads/c6d0bfb7-dbc8-4597-99a3-ff5b6b6523e5.png" 
+            alt="FAQ Reference Image" 
+            className="max-w-md w-full rounded-lg shadow-md opacity-90 hidden md:block" 
+          />
         </div>
       </div>
     </section>
