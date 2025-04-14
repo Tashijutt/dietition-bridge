@@ -1,5 +1,15 @@
 
-import { Activity, UtensilsCrossed, CalendarClock } from "lucide-react";
+import { 
+  Utensils, 
+  Activity, 
+  Weight, 
+  Salad, 
+  Baby, 
+  Apple, 
+  HeartPulse, 
+  Wheat, 
+  Dumbbell 
+} from "lucide-react";
 import { useInView } from 'react-intersection-observer';
 import { cn } from "@/lib/utils";
 
@@ -35,27 +45,6 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
 };
 
 const Features = () => {
-  const features = [
-    {
-      icon: <Activity className="w-7 h-7" />,
-      title: "Daily Exercise",
-      description: "Custom fitness plans to keep you active and energized.",
-      delay: 100,
-    },
-    {
-      icon: <UtensilsCrossed className="w-7 h-7" />,
-      title: "Healthy Diets",
-      description: "Expert guides for balanced, nutrient-rich meals.",
-      delay: 200,
-    },
-    {
-      icon: <CalendarClock className="w-7 h-7" />,
-      title: "Routine Plans",
-      description: "Simplified meal planning to fit your lifestyle.",
-      delay: 300,
-    },
-  ];
-
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -72,23 +61,74 @@ const Features = () => {
           )}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Our Services
+            What We Can Help With
           </h2>
           <p className="text-xl text-gray-600">
-            We provide comprehensive nutrition and wellness solutions tailored to your individual needs.
+            Our professional dietitians provide expert guidance for a wide range of nutritional needs
           </p>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <Feature
+            icon={<Weight className="w-7 h-7" />}
+            title="Weight Loss"
+            description="Personalized programs for sustainable and healthy weight management"
+            delay={100}
+          />
+          <Feature
+            icon={<Wheat className="w-7 h-7" />}
+            title="Food Allergies"
+            description="Specialized diet plans for those with food sensitivities and allergies"
+            delay={200}
+          />
+          <Feature
+            icon={<Utensils className="w-7 h-7" />}
+            title="Digestive Issues"
+            description="Nutrition strategies to improve gut health and digestive wellness"
+            delay={300}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <Feature
+            icon={<Baby className="w-7 h-7" />}
+            title="Pregnancy Diets"
+            description="Nutritional guidance for maternal and fetal health during pregnancy"
+            delay={400}
+          />
+          <Feature
+            icon={<Apple className="w-7 h-7" />}
+            title="Diabetes"
+            description="Blood sugar management through proper nutrition and meal planning"
+            delay={500}
+          />
+          <Feature
+            icon={<HeartPulse className="w-7 h-7" />}
+            title="High Blood Pressure"
+            description="Dietary approaches to reduce hypertension and improve heart health"
+            delay={600}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <Feature
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              delay={feature.delay}
-            />
-          ))}
+          <Feature
+            icon={<Dumbbell className="w-7 h-7" />}
+            title="Sports Nutrition"
+            description="Optimized nutrition plans for athletic performance and recovery"
+            delay={700}
+          />
+          <Feature
+            icon={<Salad className="w-7 h-7" />}
+            title="Vegetarian/Vegan Diets"
+            description="Balanced plant-based meal plans ensuring complete nutrition"
+            delay={800}
+          />
+          <Feature
+            icon={<Activity className="w-7 h-7" />}
+            title="Pediatric Nutrition"
+            description="Age-appropriate nutrition guidance for children's healthy development"
+            delay={900}
+          />
         </div>
       </div>
     </section>

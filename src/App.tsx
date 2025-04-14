@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
+import WeightLossTips from "./pages/WeightLossTips";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminDietitians from "./pages/admin/AdminDietitians";
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -66,8 +67,9 @@ const RouterContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/weight-loss-tips" element={<WeightLossTips />} />
         
-        {/* Admin Routes - Protected with admin role required */}
+        {/* Admin Routes */}
         <Route 
           path="/admin" 
           element={
@@ -109,7 +111,7 @@ const RouterContent = () => {
           } 
         />
         
-        {/* User Dashboard Routes - Protected */}
+        {/* User Dashboard Routes */}
         <Route 
           path="/dashboard" 
           element={
@@ -151,7 +153,7 @@ const RouterContent = () => {
           } 
         />
 
-        {/* Dietitian Dashboard Routes - Protected */}
+        {/* Dietitian Dashboard Routes */}
         <Route 
           path="/dietitian/dashboard" 
           element={
