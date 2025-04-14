@@ -1,8 +1,7 @@
 
 import { useInView } from 'react-intersection-observer';
 import { cn } from "@/lib/utils";
-import { CheckSquare, Calendar, BarChart3, Utensils, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CheckSquare, Calendar, BarChart3, Utensils } from "lucide-react";
 
 const HealthySteps = () => {
   const { ref, inView } = useInView({
@@ -75,16 +74,6 @@ const HealthySteps = () => {
               <p className="text-gray-600">{step.description}</p>
             </div>
           ))}
-        </div>
-        
-        <div className="text-center mt-12">
-          <Link 
-            to="/get-started" 
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors text-lg"
-          >
-            Start Now
-            <ArrowRight className="w-5 h-5" />
-          </Link>
         </div>
       </div>
     </section>

@@ -2,12 +2,16 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Mail, Lock, User, EyeIcon, EyeOffIcon, Loader2, Apple, Leaf } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+
+interface LocationState {
+  selectedRole?: "user" | "dietitian";
+}
 
 const SignIn = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,13 +20,25 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as LocationState | null;
   
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'user'
+    role: (locationState?.selectedRole || 'user') as "user" | "dietitian"
   });
+  
+  useEffect(() => {
+    // Set role if it was passed via state
+    if (locationState?.selectedRole) {
+      setFormData(prev => ({
+        ...prev,
+        role: locationState.selectedRole as "user" | "dietitian"
+      }));
+    }
+  }, [locationState]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,7 +46,7 @@ const SignIn = () => {
   };
 
   const handleRoleChange = (value: string) => {
-    setFormData(prev => ({ ...prev, role: value }));
+    setFormData(prev => ({ ...prev, role: value as "user" | "dietitian" }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,7 +55,7 @@ const SignIn = () => {
     
     try {
       if (isSignUp) {
-        await register(formData.name, formData.email, formData.password, formData.role as "user" | "dietitian");
+        await register(formData.name, formData.email, formData.password, formData.role);
         toast({
           title: "Account created successfully",
           description: `Welcome to Dietitian Bridge as a ${formData.role === 'dietitian' ? 'Dietitian' : 'User'}!`,
@@ -186,21 +202,59 @@ const SignIn = () => {
                 {isSignUp && (
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">I am registering as</label>
-                    <RadioGroup 
-                      defaultValue="user" 
-                      value={formData.role}
-                      onValueChange={handleRoleChange}
-                      className="flex gap-6"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="user" id="user-role" />
-                        <Label htmlFor="user-role" className="cursor-pointer">Patient/User</Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div 
+                        className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                          formData.role === 'user' 
+                            ? 'border-blue-500 bg-blue-50' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => handleRoleChange('user')}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                            <Apple className="h-6 w-6 text-red-600" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Patient</div>
+                            <div className="text-xs text-gray-500">Get nutrition guidance</div>
+                          </div>
+                        </div>
+                        <input 
+                          type="radio" 
+                          name="role" 
+                          checked={formData.role === 'user'} 
+                          onChange={() => handleRoleChange('user')}
+                          className="hidden"
+                        />
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="dietitian" id="dietitian-role" />
-                        <Label htmlFor="dietitian-role" className="cursor-pointer">Dietitian</Label>
+                      
+                      <div 
+                        className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                          formData.role === 'dietitian' 
+                            ? 'border-blue-500 bg-blue-50' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => handleRoleChange('dietitian')}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <Leaf className="h-6 w-6 text-green-600" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Dietitian</div>
+                            <div className="text-xs text-gray-500">Provide nutrition services</div>
+                          </div>
+                        </div>
+                        <input 
+                          type="radio" 
+                          name="role" 
+                          checked={formData.role === 'dietitian'}
+                          onChange={() => handleRoleChange('dietitian')}
+                          className="hidden"
+                        />
                       </div>
-                    </RadioGroup>
+                    </div>
                   </div>
                 )}
                 

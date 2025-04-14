@@ -1,6 +1,7 @@
 
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, LayoutDashboard } from "lucide-react";
+import { User, LayoutDashboard, ChevronDown, Apple, Leaf } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,21 @@ import { useAuth } from "@/context/AuthContext";
 const UserMenu = () => {
   const { user, isAuthenticated, isAdmin, isDietitian, logout } = useAuth();
   const navigate = useNavigate();
+  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const roleDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (roleDropdownRef.current && !roleDropdownRef.current.contains(event.target as Node)) {
+        setRoleDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -41,6 +57,11 @@ const UserMenu = () => {
     } else {
       return "/dashboard/profile";
     }
+  };
+
+  const handleRoleSelection = (role: string) => {
+    setRoleDropdownOpen(false);
+    navigate("/signin", { state: { selectedRole: role } });
   };
 
   if (isAuthenticated) {
@@ -86,15 +107,53 @@ const UserMenu = () => {
   }
 
   return (
-    <Link to="/signin">
-      <Button 
-        variant="default" 
-        className="rounded-[4px] bg-blue-600 hover:bg-blue-700"
+    <div className="relative" ref={roleDropdownRef}>
+      <Button
+        variant="default"
+        className="rounded-[4px] bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+        onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
       >
-        <User className="mr-2 h-4 w-4" />
+        <User className="h-4 w-4" />
         Sign In
+        <ChevronDown className="h-4 w-4" />
       </Button>
-    </Link>
+
+      {roleDropdownOpen && (
+        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden border border-gray-200">
+          <div className="p-4 border-b border-gray-100">
+            <h3 className="text-gray-700 font-medium">Are you a Dietitian or a Patient?</h3>
+          </div>
+          
+          <div className="p-2">
+            <button 
+              onClick={() => handleRoleSelection("user")}
+              className="w-full flex items-center p-3 hover:bg-gray-50 rounded-md transition-colors text-left"
+            >
+              <div className="w-10 h-10 mr-3 bg-red-100 rounded-full flex items-center justify-center">
+                <Apple className="h-6 w-6 text-red-600" />
+              </div>
+              <div>
+                <div className="font-medium text-gray-800">Patient</div>
+                <div className="text-sm text-gray-500">Sign In as Patient</div>
+              </div>
+            </button>
+            
+            <button 
+              onClick={() => handleRoleSelection("dietitian")}
+              className="w-full flex items-center p-3 hover:bg-gray-50 rounded-md transition-colors text-left"
+            >
+              <div className="w-10 h-10 mr-3 bg-green-100 rounded-full flex items-center justify-center">
+                <Leaf className="h-6 w-6 text-green-600" />
+              </div>
+              <div>
+                <div className="font-medium text-gray-800">Dietitian</div>
+                <div className="text-sm text-gray-500">Sign In as Dietitian</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

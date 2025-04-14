@@ -2,7 +2,6 @@
 import { useInView } from 'react-intersection-observer';
 import { cn } from "@/lib/utils";
 import { Activity, DollarSign, BarChart2, LineChart, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const BenefitsSection = () => {
   const { ref, inView } = useInView({
@@ -46,13 +45,17 @@ const BenefitsSection = () => {
                 Working with a dietitian can significantly improve your health
               </h2>
               
-              <div className="mt-8">
-                <img 
-                  src="/lovable-uploads/ab80068f-64c3-45ff-9a71-f01ee99a4c32.png" 
-                  alt="Green vegetable icon" 
-                  className="w-32 h-auto"
-                />
-              </div>
+              <p className="text-white/90 mb-4 text-lg">
+                Research demonstrates that nutritional counseling from registered dietitians leads to measurable improvements in health outcomes across various conditions.
+              </p>
+              
+              <p className="text-white/90 mb-4">
+                Our dietitians create personalized nutrition plans based on your unique health profile, food preferences, and lifestyle factors. These evidence-based interventions address both immediate concerns and long-term wellness goals.
+              </p>
+              
+              <p className="text-white/90">
+                Many insurance plans cover medical nutrition therapy with minimal or no out-of-pocket costs, making professional nutrition care accessible to those who need it most.
+              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

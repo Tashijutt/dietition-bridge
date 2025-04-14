@@ -30,7 +30,7 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
     <div 
       ref={ref}
       className={cn(
-        "flex flex-col items-center p-6 text-center glass-card",
+        "flex flex-col p-8 rounded-xl shadow-md bg-white border border-gray-100 hover:shadow-lg transition-all duration-300",
         inView ? "animate-fade-up" : "opacity-0"
       )}
       style={{ animationDelay: `${delay}ms` }}
@@ -61,30 +61,30 @@ const Features = () => {
           )}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            What We Can Help With
+            Professional Dietitian Services
           </h2>
           <p className="text-xl text-gray-600">
-            Our professional dietitians provide expert guidance for a wide range of nutritional needs
+            Our registered dietitians provide evidence-based nutrition counseling for a variety of health conditions
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <Feature
             icon={<Weight className="w-7 h-7" />}
-            title="Weight Loss"
-            description="Personalized programs for sustainable and healthy weight management"
+            title="Weight Management"
+            description="Personalized plans for healthy, sustainable weight control through proper nutrition and lifestyle changes"
             delay={100}
           />
           <Feature
             icon={<Wheat className="w-7 h-7" />}
-            title="Food Allergies"
-            description="Specialized diet plans for those with food sensitivities and allergies"
+            title="Food Allergies & Intolerances"
+            description="Expert guidance on managing food allergies, celiac disease, and intolerances while maintaining nutritional balance"
             delay={200}
           />
           <Feature
             icon={<Utensils className="w-7 h-7" />}
-            title="Digestive Issues"
-            description="Nutrition strategies to improve gut health and digestive wellness"
+            title="Digestive Disorders"
+            description="Specialized nutrition therapy for IBS, IBD, GERD, and other digestive health conditions"
             delay={300}
           />
         </div>
@@ -92,20 +92,20 @@ const Features = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <Feature
             icon={<Baby className="w-7 h-7" />}
-            title="Pregnancy Diets"
-            description="Nutritional guidance for maternal and fetal health during pregnancy"
+            title="Prenatal & Pediatric Nutrition"
+            description="Comprehensive nutrition support for expecting mothers and children's developmental needs"
             delay={400}
           />
           <Feature
             icon={<Apple className="w-7 h-7" />}
-            title="Diabetes"
-            description="Blood sugar management through proper nutrition and meal planning"
+            title="Diabetes Management"
+            description="Evidence-based meal planning and carbohydrate management to control blood sugar levels"
             delay={500}
           />
           <Feature
             icon={<HeartPulse className="w-7 h-7" />}
-            title="High Blood Pressure"
-            description="Dietary approaches to reduce hypertension and improve heart health"
+            title="Cardiovascular Health"
+            description="Heart-healthy dietary strategies to manage cholesterol, blood pressure, and overall cardiac wellness"
             delay={600}
           />
         </div>
@@ -114,19 +114,19 @@ const Features = () => {
           <Feature
             icon={<Dumbbell className="w-7 h-7" />}
             title="Sports Nutrition"
-            description="Optimized nutrition plans for athletic performance and recovery"
+            description="Performance-focused nutrition plans for athletes at all levels to optimize training and recovery"
             delay={700}
           />
           <Feature
             icon={<Salad className="w-7 h-7" />}
-            title="Vegetarian/Vegan Diets"
-            description="Balanced plant-based meal plans ensuring complete nutrition"
+            title="Plant-Based Nutrition"
+            description="Guidance for vegetarian, vegan, and plant-forward eating patterns with complete nutritional adequacy"
             delay={800}
           />
           <Feature
             icon={<Activity className="w-7 h-7" />}
-            title="Pediatric Nutrition"
-            description="Age-appropriate nutrition guidance for children's healthy development"
+            title="Medical Nutrition Therapy"
+            description="Therapeutic nutrition interventions for chronic disease management and recovery support"
             delay={900}
           />
         </div>
