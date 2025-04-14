@@ -15,7 +15,7 @@ const PricingPlans = () => {
   const plans = [
     {
       name: "Basic Plan",
-      price: isAnnual ? 200 : 250,
+      price: isAnnual ? 2000 : 2500,
       priceId: "price_basic",
       description: "Essential nutrition guidance for beginners",
       features: [
@@ -37,7 +37,7 @@ const PricingPlans = () => {
     },
     {
       name: "Regular Plan",
-      price: isAnnual ? 400 : 450,
+      price: isAnnual ? 4000 : 4500,
       priceId: "price_regular",
       description: "Complete nutrition and fitness guidance",
       features: [
@@ -58,7 +58,7 @@ const PricingPlans = () => {
     },
     {
       name: "Lifetime Plan",
-      price: isAnnual ? 800 : 850,
+      price: isAnnual ? 8000 : 8500,
       priceId: "price_lifetime",
       description: "Ultimate personalized nutrition experience",
       features: [
@@ -140,7 +140,7 @@ const PricingPlans = () => {
                 
                 <div className="mb-6">
                   <div className="flex items-end">
-                    <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
+                    <span className="text-4xl font-bold text-gray-900">Rs. {plan.price}</span>
                     <span className="text-gray-500 ml-2 mb-1">{isAnnual ? '/year' : '/month'}</span>
                   </div>
                 </div>

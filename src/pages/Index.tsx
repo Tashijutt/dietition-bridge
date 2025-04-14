@@ -56,12 +56,6 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <Features />
-        <BenefitsSection />
-        <WeightLossTips />
-        <ReadyToChangeSection />
-        <HealthySteps />
-        <PricingPlans />
-        <HomeFAQ />
         <HomeDietitianSection limit={3} />
         
         {/* View All Dietitians CTA */}
@@ -73,6 +67,12 @@ const Index = () => {
             View All Dietitians
           </Link>
         </div>
+        <BenefitsSection />
+        <WeightLossTips />
+        <ReadyToChangeSection />
+        <HealthySteps />
+        <PricingPlans />
+        <HomeFAQ />
       </main>
       <Footer />
     </div>

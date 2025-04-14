@@ -53,21 +53,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Logo & Description */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center space-x-2 text-xl font-bold">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-8 h-8"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#FF9E15" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="flex items-center">
+                <img
+                  src="/lovable-uploads/dd607c1a-a2f2-410f-974d-5920f94bab84.png"
+                  alt="Dietitian Bridge Logo"
+                  className="h-12 w-auto"
+                />
+              </div>
               <span className="ml-2 text-xl font-bold text-white">
                 Dietitian Bridge
               </span>
@@ -97,7 +90,7 @@ const Footer = () => {
               <li><Link to="/about" className="text-gray-400 hover:text-secondary transition-colors inline-block py-1">About Us</Link></li>
               <li><Link to="/dietitians" className="text-gray-400 hover:text-secondary transition-colors inline-block py-1">Find a Dietitian</Link></li>
               <li><Link to="/blog" className="text-gray-400 hover:text-secondary transition-colors inline-block py-1">Blog</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-secondary transition-colors inline-block py-1">FAQs</Link></li>
+              <li><Link to="/faqs" className="text-gray-400 hover:text-secondary transition-colors inline-block py-1">FAQs</Link></li>
             </ul>
           </div>
           

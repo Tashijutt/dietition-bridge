@@ -109,7 +109,7 @@ const Blog = () => {
               headingInView ? "animate-fade-up" : "opacity-0"
             )}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">NutriCare Blog</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">Dietitian Bridge Blog</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Discover evidence-based nutrition articles, diet tips, and health insights tailored for Pakistani health needs.
             </p>

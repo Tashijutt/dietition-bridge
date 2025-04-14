@@ -86,7 +86,7 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
                 <Video className="w-4 h-4 text-primary mr-2" />
                 <span className="text-sm font-medium">Online Video Consultation</span>
               </div>
-              <span className="text-sm font-medium">{dietitian.fee}</span>
+              <span className="text-sm font-medium">Rs. {dietitian.fee.replace('$', '')}</span>
             </div>
             <div className="flex items-center mb-3">
               <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
@@ -183,7 +183,7 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
                     <Video className="w-4 h-4 text-primary mr-2" />
                     <span className="text-sm font-medium">Online Video Consultation</span>
                   </div>
-                  <span className="text-sm font-medium">{dietitian.fee}</span>
+                  <span className="text-sm font-medium">Rs. {dietitian.fee.replace('$', '')}</span>
                 </div>
                 <div className="flex items-center">
                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>

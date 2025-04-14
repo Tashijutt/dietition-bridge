@@ -30,11 +30,12 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
     <div 
       ref={ref}
       className={cn(
-        "flex flex-col items-center p-8 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300",
+        "flex flex-col items-center p-8 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300 relative overflow-hidden",
         inView ? "animate-fade-up" : "opacity-0"
       )}
       style={{ animationDelay: `${delay}ms` }}
     >
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/70 to-primary"></div>
       <div className="w-16 h-16 flex items-center justify-center rounded-full bg-primary/10 text-primary mb-5">
         {icon}
       </div>
@@ -60,6 +61,7 @@ const Features = () => {
             inView ? "animate-fade-up" : "opacity-0"
           )}
         >
+          <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full mb-3">Our Services</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             What Can We Help You With?
           </h2>

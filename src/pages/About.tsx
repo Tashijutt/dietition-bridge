@@ -26,7 +26,7 @@ const About = () => {
     {
       name: "Dr. Sadia Khan",
       role: "Founder & Chief Nutritionist",
-      bio: "With over 15 years of experience in nutritional sciences, Dr. Sadia founded NutriCare to bridge the gap between patients and qualified dietitians in Pakistan.",
+      bio: "With over 15 years of experience in nutritional sciences, Dr. Sadia founded Dietitian Bridge to bridge the gap between patients and qualified dietitians in Pakistan.",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
     },
     {
@@ -57,7 +57,7 @@ const About = () => {
         {/* Hero Section */}
         <div className="bg-gradient-to-b from-nutrition-50 to-white py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">About NutriCare Pakistan</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">About Dietitian Bridge Pakistan</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We're on a mission to improve health outcomes across Pakistan through personalized nutrition guidance and expert dietitian connections.
             </p>
@@ -78,7 +78,7 @@ const About = () => {
                 <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full">Our Mission</span>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Empowering Healthier Lives Through Nutrition</h2>
                 <p className="text-lg text-gray-600">
-                  In Pakistan, many individuals struggle with diet-related health conditions without access to professional guidance. NutriCare was founded to bridge this gap by connecting patients with qualified dietitians and providing AI-powered nutritional advice.
+                  In Pakistan, many individuals struggle with diet-related health conditions without access to professional guidance. Dietitian Bridge was founded to bridge this gap by connecting patients with qualified dietitians and providing AI-powered nutritional advice.
                 </p>
                 <p className="text-lg text-gray-600">
                   We believe everyone deserves access to personalized nutrition advice tailored to their specific health needs, cultural context, and dietary preferences.
@@ -126,7 +126,7 @@ const About = () => {
             >
               <span className="inline-block px-3 py-1 text-xs font-medium text-nutrition-600 bg-nutrition-50 rounded-full mb-3">Our Team</span>
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-                Meet the Experts Behind NutriCare
+                Meet the Experts Behind Dietitian Bridge
               </h2>
               <p className="text-xl text-gray-600">
                 Our team combines expertise in nutrition, healthcare, and technology to deliver the best solutions for your dietary needs.
