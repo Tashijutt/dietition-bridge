@@ -49,7 +49,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
     { time: "03:00 PM", available: true },
     { time: "03:30 PM", available: true },
     { time: "04:00 PM", available: true },
-    { time: "04:30 PM", available: true },
+    { time: "04:30 PM", available: false },
   ];
   
   const eveningSlots: TimeSlot[] = [
@@ -93,9 +93,8 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const formatPhoneForDisplay = (phone: string) => {
-    // Only show last 10 digits with asterisks for privacy
-    if (phone.length <= 10) return phone;
-    return phone.slice(0, 3) + "****" + phone.slice(-4);
+    // Only show full number with partial masking for privacy
+    return phone ? "0" + phone : "";
   };
 
   // Conditionally render content based on current step
@@ -146,12 +145,15 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 {afternoonSlots.map((slot, index) => (
                   <button
                     key={index}
-                    onClick={() => handleTimeSelect(slot.time)}
+                    disabled={!slot.available}
+                    onClick={() => slot.available && handleTimeSelect(slot.time)}
                     className={cn(
                       "py-2 text-center border rounded-md text-sm transition-colors",
                       selectedTime === slot.time
                         ? "border-primary bg-primary/5 text-primary"
-                        : "border-gray-200 hover:border-primary hover:text-primary"
+                        : slot.available
+                        ? "border-gray-200 hover:border-primary hover:text-primary"
+                        : "border-gray-100 text-gray-300 cursor-not-allowed"
                     )}
                   >
                     {slot.time}
@@ -171,12 +173,15 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 {eveningSlots.map((slot, index) => (
                   <button
                     key={index}
-                    onClick={() => handleTimeSelect(slot.time)}
+                    disabled={!slot.available}
+                    onClick={() => slot.available && handleTimeSelect(slot.time)}
                     className={cn(
                       "py-2 text-center border rounded-md text-sm transition-colors",
                       selectedTime === slot.time
                         ? "border-primary bg-primary/5 text-primary"
-                        : "border-gray-200 hover:border-primary hover:text-primary"
+                        : slot.available
+                        ? "border-gray-200 hover:border-primary hover:text-primary"
+                        : "border-gray-100 text-gray-300 cursor-not-allowed"
                     )}
                   >
                     {slot.time}
@@ -189,7 +194,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
       case "enter-phone":
         return (
-          <div className="p-4">
+          <div className="p-6">
             <h2 className="text-xl font-semibold text-center mb-2">Enter your Phone Number</h2>
             <p className="text-sm text-gray-500 text-center mb-6">We share this information with the doctor</p>
             
@@ -244,11 +249,16 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
       case "verify-otp":
         return (
-          <div className="p-4">
+          <div className="p-6">
             <h2 className="text-xl font-semibold text-center mb-2">Verify OTP code</h2>
             <p className="text-sm text-gray-500 text-center mb-6">
-              A message has been sent to: {formatPhoneForDisplay(phoneNumber)} 
-              <button className="text-primary ml-1">(Edit)</button>
+              A message has been sent to: {formatPhoneForDisplay(phoneNumber)}
+              <button 
+                className="text-primary ml-1"
+                onClick={() => setStep("enter-phone")}
+              >
+                (Edit)
+              </button>
             </p>
             
             <div className="flex justify-center mb-4">

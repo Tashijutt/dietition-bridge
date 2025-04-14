@@ -94,8 +94,8 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
   };
 
   const handleVideoConsultation = (dietitian) => {
-    // In a real application, this would redirect to a video call interface
-    window.open(`tel:${dietitian.contact.phone}`, '_blank');
+    setSelectedDietitian(dietitian);
+    setAppointmentDialogOpen(true);
   };
 
   return (

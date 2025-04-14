@@ -30,18 +30,16 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
     <div 
       ref={ref}
       className={cn(
-        "flex items-start p-6 bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-sm border-[0.5px] border-gray-100 hover:shadow-md transition-all duration-300",
+        "flex flex-col items-center p-8 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300",
         inView ? "animate-fade-up" : "opacity-0"
       )}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-4 flex-shrink-0">
+      <div className="w-16 h-16 flex items-center justify-center rounded-full bg-primary/10 text-primary mb-5">
         {icon}
       </div>
-      <div>
-        <h3 className="text-xl font-semibold mb-2 text-gray-900">{title}</h3>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
-      </div>
+      <h3 className="text-xl font-semibold mb-3 text-center text-gray-900">{title}</h3>
+      <p className="text-gray-600 text-center leading-relaxed">{description}</p>
     </div>
   );
 };
@@ -53,7 +51,7 @@ const Features = () => {
   });
 
   return (
-    <section id="services" className="py-20 bg-gray-50">
+    <section id="services" className="py-24 bg-gray-50">
       <div className="container mx-auto px-4">
         <div 
           ref={ref}
@@ -63,70 +61,64 @@ const Features = () => {
           )}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Professional Dietitian Services
+            What Can We Help You With?
           </h2>
           <p className="text-xl text-gray-600">
             Our registered dietitians provide evidence-based nutrition counseling for a variety of health conditions
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Feature
-            icon={<Weight className="w-7 h-7" />}
+            icon={<Weight className="w-8 h-8" />}
             title="Weight Management"
             description="Personalized plans for healthy, sustainable weight control through proper nutrition and lifestyle changes"
             delay={100}
           />
           <Feature
-            icon={<Wheat className="w-7 h-7" />}
+            icon={<Wheat className="w-8 h-8" />}
             title="Food Allergies & Intolerances"
             description="Expert guidance on managing food allergies, celiac disease, and intolerances while maintaining nutritional balance"
             delay={200}
           />
           <Feature
-            icon={<Utensils className="w-7 h-7" />}
+            icon={<Utensils className="w-8 h-8" />}
             title="Digestive Disorders"
             description="Specialized nutrition therapy for IBS, IBD, GERD, and other digestive health conditions"
             delay={300}
           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Feature
-            icon={<Baby className="w-7 h-7" />}
+            icon={<Baby className="w-8 h-8" />}
             title="Prenatal & Pediatric Nutrition"
             description="Comprehensive nutrition support for expecting mothers and children's developmental needs"
             delay={400}
           />
           <Feature
-            icon={<Apple className="w-7 h-7" />}
+            icon={<Apple className="w-8 h-8" />}
             title="Diabetes Management"
             description="Evidence-based meal planning and carbohydrate management to control blood sugar levels"
             delay={500}
           />
           <Feature
-            icon={<HeartPulse className="w-7 h-7" />}
+            icon={<HeartPulse className="w-8 h-8" />}
             title="Cardiovascular Health"
             description="Heart-healthy dietary strategies to manage cholesterol, blood pressure, and overall cardiac wellness"
             delay={600}
           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Feature
-            icon={<Dumbbell className="w-7 h-7" />}
+            icon={<Dumbbell className="w-8 h-8" />}
             title="Sports Nutrition"
             description="Performance-focused nutrition plans for athletes at all levels to optimize training and recovery"
             delay={700}
           />
           <Feature
-            icon={<Salad className="w-7 h-7" />}
+            icon={<Salad className="w-8 h-8" />}
             title="Plant-Based Nutrition"
             description="Guidance for vegetarian, vegan, and plant-forward eating patterns with complete nutritional adequacy"
             delay={800}
           />
           <Feature
-            icon={<Activity className="w-7 h-7" />}
+            icon={<Activity className="w-8 h-8" />}
             title="Medical Nutrition Therapy"
             description="Therapeutic nutrition interventions for chronic disease management and recovery support"
             delay={900}

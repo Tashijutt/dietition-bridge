@@ -1,4 +1,3 @@
-
 import { MapPin, Star, Award, Video, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +22,7 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
   };
   
   const handleVideoConsultation = () => {
-    window.open(`tel:${dietitian.contact.phone}`, '_blank');
+    openAppointmentDialog(); // Use the same dialog for both video and in-person
   };
 
   if (viewMode === 'grid') {
