@@ -8,7 +8,7 @@ import WeightLossTips from "@/components/WeightLossTips";
 import HealthySteps from "@/components/HealthySteps";
 import PricingPlans from "@/components/PricingPlans";
 import HomeFAQ from "@/components/HomeFAQ";
-import ReadyToChangeSection from "@/components/ReadyToChangeSection"; // Import the new component
+import ReadyToChangeSection from "@/components/ReadyToChangeSection";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";

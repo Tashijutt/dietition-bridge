@@ -4,16 +4,28 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dietitian } from "./dietitianTypes";
+import { useState } from "react";
+import AppointmentDialog from "../appointment/AppointmentDialog";
 
 interface DietitianCardProps {
   dietitian: Dietitian;
   viewMode: 'grid' | 'list';
-  handleBookAppointment: (dietitian: Dietitian) => void;
+  handleBookAppointment?: (dietitian: Dietitian) => void;
   index: number;
   inView: boolean;
 }
 
-const DietitianCard = ({ dietitian, viewMode, handleBookAppointment, index, inView }: DietitianCardProps) => {
+const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProps) => {
+  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
+  
+  const openAppointmentDialog = () => {
+    setAppointmentDialogOpen(true);
+  };
+  
+  const handleVideoConsultation = () => {
+    window.open(`tel:${dietitian.contact.phone}`, '_blank');
+  };
+
   if (viewMode === 'grid') {
     return (
       <div 
@@ -85,14 +97,14 @@ const DietitianCard = ({ dietitian, viewMode, handleBookAppointment, index, inVi
               <Button
                 variant="outline"
                 className="w-full border-primary text-primary hover:bg-primary/5"
-                onClick={() => window.open(`tel:${dietitian.contact.phone}`, '_blank')}
+                onClick={handleVideoConsultation}
               >
                 <Video className="w-4 h-4 mr-2" />
                 Video Consultation
               </Button>
               <Button
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={() => handleBookAppointment(dietitian)}
+                onClick={openAppointmentDialog}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Book Appointment
@@ -100,6 +112,13 @@ const DietitianCard = ({ dietitian, viewMode, handleBookAppointment, index, inVi
             </div>
           </div>
         </div>
+        
+        {/* Appointment Dialog */}
+        <AppointmentDialog
+          open={appointmentDialogOpen}
+          onOpenChange={setAppointmentDialogOpen}
+          dietitian={dietitian}
+        />
       </div>
     );
   } else {
@@ -179,14 +198,14 @@ const DietitianCard = ({ dietitian, viewMode, handleBookAppointment, index, inVi
               <Button
                 variant="outline"
                 className="w-full md:w-auto px-6 py-2.5 border-primary text-primary hover:bg-primary/5"
-                onClick={() => window.open(`tel:${dietitian.contact.phone}`, '_blank')}
+                onClick={handleVideoConsultation}
               >
                 <Video className="h-4 w-4 mr-1.5" />
                 Video Consultation
               </Button>
               <Button
                 className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white"
-                onClick={() => handleBookAppointment(dietitian)}
+                onClick={openAppointmentDialog}
               >
                 <Calendar className="h-4 w-4 mr-1.5" />
                 Book Appointment
@@ -194,6 +213,13 @@ const DietitianCard = ({ dietitian, viewMode, handleBookAppointment, index, inVi
             </div>
           </div>
         </div>
+        
+        {/* Appointment Dialog */}
+        <AppointmentDialog
+          open={appointmentDialogOpen}
+          onOpenChange={setAppointmentDialogOpen}
+          dietitian={dietitian}
+        />
       </div>
     );
   }

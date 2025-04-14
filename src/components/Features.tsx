@@ -1,4 +1,6 @@
 
+import { useInView } from 'react-intersection-observer';
+import { cn } from "@/lib/utils";
 import { 
   Utensils, 
   Activity, 
@@ -10,8 +12,6 @@ import {
   Wheat, 
   Dumbbell 
 } from "lucide-react";
-import { useInView } from 'react-intersection-observer';
-import { cn } from "@/lib/utils";
 
 interface FeatureProps {
   icon: React.ReactNode;
@@ -30,16 +30,18 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
     <div 
       ref={ref}
       className={cn(
-        "flex flex-col p-8 rounded-xl shadow-md bg-white border border-gray-100 hover:shadow-lg transition-all duration-300",
+        "flex items-start p-6 bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-sm border-[0.5px] border-gray-100 hover:shadow-md transition-all duration-300",
         inView ? "animate-fade-up" : "opacity-0"
       )}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-secondary/20 text-secondary mb-5">
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-4 flex-shrink-0">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <div>
+        <h3 className="text-xl font-semibold mb-2 text-gray-900">{title}</h3>
+        <p className="text-gray-600 leading-relaxed">{description}</p>
+      </div>
     </div>
   );
 };
@@ -68,7 +70,7 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Feature
             icon={<Weight className="w-7 h-7" />}
             title="Weight Management"
@@ -89,7 +91,7 @@ const Features = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Feature
             icon={<Baby className="w-7 h-7" />}
             title="Prenatal & Pediatric Nutrition"
@@ -110,7 +112,7 @@ const Features = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Feature
             icon={<Dumbbell className="w-7 h-7" />}
             title="Sports Nutrition"
