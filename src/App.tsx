@@ -11,6 +11,7 @@ import Dietitians from "./pages/Dietitians";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 import WeightLossTips from "./pages/WeightLossTips";
@@ -35,7 +36,6 @@ import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
 
 const queryClient = new QueryClient();
 
-// ScrollToTop component to ensure pages start from the top
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
@@ -46,7 +46,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// RouterContent component to conditionally show MacOSDock and ChatWidgetWrapper
 const RouterContent = () => {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
@@ -66,10 +65,10 @@ const RouterContent = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/weight-loss-tips" element={<WeightLossTips />} />
         
-        {/* Admin Routes */}
         <Route 
           path="/admin" 
           element={
@@ -111,7 +110,6 @@ const RouterContent = () => {
           } 
         />
         
-        {/* User Dashboard Routes */}
         <Route 
           path="/dashboard" 
           element={
@@ -153,7 +151,6 @@ const RouterContent = () => {
           } 
         />
 
-        {/* Dietitian Dashboard Routes */}
         <Route 
           path="/dietitian/dashboard" 
           element={
@@ -195,11 +192,9 @@ const RouterContent = () => {
           } 
         />
         
-        {/* Catch-all route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       
-      {/* Only show ChatWidgetWrapper when not on specific pages */}
       {!isChatPage && !isSignInPage && !isPlansPage && <ChatWidgetWrapper />}
     </>
   );

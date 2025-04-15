@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
@@ -14,7 +13,6 @@ const About = () => {
   const { ref: statsRef, inView: statsInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
-    // Add a slight delay to ensure smooth page entrance animation
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);
@@ -24,21 +22,15 @@ const About = () => {
 
   const team = [
     {
-      name: "Dr. Sadia Khan",
-      role: "Founder & Chief Nutritionist",
-      bio: "With over 15 years of experience in nutritional sciences, Dr. Sadia founded Dietitian Bridge to bridge the gap between patients and qualified dietitians in Pakistan.",
+      name: "Bushra Shafique",
+      role: "CEO & Managing Director",
+      bio: "With extensive experience in nutrition and healthcare management, Bushra leads Dietitian Bridge's mission to revolutionize nutrition care in Pakistan.",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
     },
     {
-      name: "Umar Ahmed",
-      role: "Technology Director",
-      bio: "Umar leads our tech initiatives, ensuring our platform leverages cutting-edge technology to provide personalized nutrition advice across Pakistan.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      name: "Aisha Malik",
-      role: "Clinical Research Head",
-      bio: "Specializing in diabetes and cardiovascular health, Aisha ensures all dietary advice on our platform is scientifically validated and evidence-based.",
+      name: "Kalsoom Tahir",
+      role: "General Manager & Chief Financial Officer",
+      bio: "Kalsoom brings her expertise in healthcare operations and financial management to ensure Dietitian Bridge delivers exceptional value to our clients.",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
     }
   ];
