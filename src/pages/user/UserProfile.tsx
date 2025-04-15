@@ -161,7 +161,7 @@ const UserProfile = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
@@ -188,19 +188,44 @@ const UserProfile = () => {
       }
       
       setUploading(true);
-      uploadProfileImage(file, (imageUrl) => {
-        // Update user profile with new image
+      
+      try {
+        const formData = new FormData();
+        formData.append('profilePicture', file);
+        
+        const response = await fetch(`${apiUrl}/api/users/${user._id}/profile-picture`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+  
+        const data = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to upload profile picture');
+        }
+        
+        // Update user profile with new image path
         updateUserProfile && updateUserProfile({
           ...user,
-          profileImage: imageUrl
+          profilePicture: data.profilePicture
         });
         
-        setUploading(false);
         toast({
-          title: "Profile Photo Updated",
-          description: "Your profile photo has been updated successfully."
+          title: "Success",
+          description: data.message || "Your profile photo has been updated successfully."
         });
-      });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: error instanceof Error ? error.message : "Failed to upload profile picture. Please try again.",
+          variant: "destructive"
+        });
+      } finally {
+        setUploading(false);
+      }
     }
   };
 
@@ -245,20 +270,23 @@ const UserProfile = () => {
               <CardContent>
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="flex flex-col items-center">
-                    <Avatar 
-                      className="w-24 h-24 mb-4 cursor-pointer relative" 
-                      onClick={handleProfilePhotoClick}
-                    >
-                      {uploading && (
-                        <div className="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                        </div>
-                      )}
-                      <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
-                      <AvatarFallback className="bg-nutrition-100 text-nutrition-800 text-2xl">
-                        {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
-                      </AvatarFallback>
-                    </Avatar>
+                  <Avatar 
+                    className="w-24 h-24 mb-4 cursor-pointer relative" 
+                    onClick={handleProfilePhotoClick}
+                  >
+                    {uploading && (
+                      <div className="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                      </div>
+                    )}
+                    <AvatarImage 
+                      src={user?.profilePicture ? `${apiUrl}/${user.profilePicture}` : undefined} 
+                      alt={user?.name || ""} 
+                    />
+                    <AvatarFallback className="bg-nutrition-100 text-nutrition-800 text-2xl">
+                      {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
                     <input
                       type="file"
                       ref={fileInputRef}

@@ -18,6 +18,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Plan {
   id: string;
   title: string;
@@ -138,7 +140,7 @@ const UserDashboard = () => {
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <Avatar className="h-20 w-20 border-4 border-white">
-                  <AvatarImage src={user?.profileImage} />
+                  <AvatarImage src={`${apiUrl}/${user?.profilePicture}`} />
                   <AvatarFallback className="bg-nutrition-100 text-nutrition-800 text-xl">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                   </AvatarFallback>

@@ -8,7 +8,7 @@ interface User {
   name: string;
   email: string;
   role: "admin" | "user" | "dietitian";
-  profileImage?: string;
+  profilePicture?: string;
   phone?: string;  // Added optional phone
   gender?: "male" | "female" | "other";  // Added optional gender
   age?: number;  // Added optional age
@@ -49,8 +49,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const parsedUser = parsedData.user;
         
         if (parsedUser) {
-          if (storedProfileImage && !parsedUser.profileImage) {
-            parsedUser.profileImage = storedProfileImage;
+          if (storedProfileImage && !parsedUser.profilePicture) {
+            parsedUser.profilePicture = storedProfileImage;
           }
           
           setUser(parsedUser);
@@ -157,8 +157,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     localStorage.setItem("userAuth", JSON.stringify(authData));
     
-    if (updatedUser.profileImage) {
-      localStorage.setItem("userProfileImage", updatedUser.profileImage);
+    if (updatedUser.profilePicture) {
+      localStorage.setItem("userProfileImage", updatedUser.profilePicture);
     }
   };
 

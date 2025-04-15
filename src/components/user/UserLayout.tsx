@@ -29,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 
+const apiUrl = import.meta.env.VITE_API_URL;
 interface UserLayoutProps {
   children: ReactNode;
   title: string;
@@ -111,7 +112,7 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-white border border-gray-200 rounded-full py-1.5 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
+                  <AvatarImage src={`${apiUrl}/${user?.profilePicture}`} alt={user?.name || ""} />
                   <AvatarFallback className="bg-primary/10 text-primary">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                   </AvatarFallback>
