@@ -26,7 +26,13 @@ const BlogPost = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Find the current article based on ID
   const article = articles.find(article => article.id === Number(id));
+
+  // Reset scroll position when article changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   // Find similar articles based on category
   const similarArticles = useMemo(() => {
@@ -149,10 +155,9 @@ const BlogPost = () => {
                 {similarArticles.map((similarArticle) => (
                   <Card 
                     key={similarArticle.id}
-                    className="bg-white hover:shadow-md transition-all border border-gray-100 overflow-hidden"
-                    onClick={() => navigate(`/blog/${similarArticle.id}`)}
+                    className="bg-white hover:shadow-md transition-all border border-gray-100 overflow-hidden cursor-pointer"
                   >
-                    <div className="h-40 overflow-hidden">
+                    <div className="h-40 overflow-hidden" onClick={() => navigate(`/blog/${similarArticle.id}`)}>
                       <img 
                         src={similarArticle.image} 
                         alt={similarArticle.title}
