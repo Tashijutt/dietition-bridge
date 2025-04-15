@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
@@ -31,7 +30,6 @@ const SignIn = () => {
   });
   
   useEffect(() => {
-    // Set role if it was passed via state
     if (locationState?.selectedRole) {
       setFormData(prev => ({
         ...prev,
@@ -55,13 +53,12 @@ const SignIn = () => {
     
     try {
       if (isSignUp) {
-        await register(formData.name, formData.email, formData.password, formData.role);
+        await register(formData.email, formData.password, formData.role);
         toast({
           title: "Account created successfully",
           description: `Welcome to Dietitian Bridge as a ${formData.role === 'dietitian' ? 'Dietitian' : 'User'}!`,
         });
         
-        // Redirect based on role
         if (formData.role === 'dietitian') {
           navigate("/dietitian/dashboard");
         } else {
@@ -73,9 +70,6 @@ const SignIn = () => {
           title: "Login successful",
           description: "Welcome back to Dietitian Bridge!",
         });
-        
-        // After login, the user will be redirected based on their role
-        // This is handled in the login function in AuthContext
       }
     } catch (error) {
       console.error("Auth error:", error);
@@ -90,12 +84,10 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    // Redirect if already logged in
     if (isAuthenticated) {
       navigate("/dashboard");
     }
     
-    // Add a slight delay to ensure smooth page entrance animation
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);

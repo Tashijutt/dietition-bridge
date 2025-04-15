@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Calendar, User, Tag, Clock, Search } from "lucide-react";
 import { articles } from "@/data/blogData";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
   const [isLoaded, setIsLoaded] = useState(false);
