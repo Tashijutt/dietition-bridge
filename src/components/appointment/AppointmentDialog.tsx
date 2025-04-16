@@ -1,9 +1,9 @@
 
-import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Clock, CalendarIcon } from "lucide-react";
-import { format, addDays, isWeekend } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -24,68 +24,6 @@ interface TimeSlot {
   available: boolean;
 }
 
-// Generate time slots based on selected date
-const generateTimeSlots = (date: Date): { afternoon: TimeSlot[], evening: TimeSlot[] } => {
-  // This is a simplified example - in a real application, 
-  // you would fetch availability from an API based on the selected date
-  
-  // Using the date to create some variation in availability
-  const dayOfMonth = date.getDate();
-  const isEvenDay = dayOfMonth % 2 === 0;
-  
-  const afternoonSlots: TimeSlot[] = [
-    { time: "12:00 PM", available: isEvenDay },
-    { time: "12:30 PM", available: !isEvenDay },
-    { time: "1:00 PM", available: true },
-    { time: "1:30 PM", available: isEvenDay },
-    { time: "2:00 PM", available: true },
-    { time: "2:30 PM", available: !isEvenDay },
-    { time: "3:00 PM", available: isEvenDay },
-    { time: "3:30 PM", available: true }
-  ];
-
-  const eveningSlots: TimeSlot[] = [
-    { time: "4:00 PM", available: true },
-    { time: "4:30 PM", available: !isEvenDay },
-    { time: "5:00 PM", available: isEvenDay },
-    { time: "5:30 PM", available: true },
-    { time: "6:00 PM", available: isEvenDay },
-    { time: "6:30 PM", available: !isEvenDay },
-    { time: "7:00 PM", available: isEvenDay },
-    { time: "7:30 PM", available: true }
-  ];
-
-  return { afternoon: afternoonSlots, evening: eveningSlots };
-};
-
-const getNextWorkingDay = (date: Date): Date => {
-  let nextDay = addDays(date, 1);
-  while (isWeekend(nextDay)) {
-    nextDay = addDays(nextDay, 1);
-  }
-  return nextDay;
-};
-
-const getWorkingDays = (startDate: Date): Date[] => {
-  const days: Date[] = [];
-  let currentDate = startDate;
-
-  // If start date is weekend, move to next working day
-  while (isWeekend(currentDate)) {
-    currentDate = addDays(currentDate, 1);
-  }
-
-  days.push(currentDate);
-
-  // Get next 4 working days (total 5 days including start date)
-  while (days.length < 5) {
-    currentDate = getNextWorkingDay(currentDate);
-    days.push(currentDate);
-  }
-
-  return days;
-};
-
 const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogProps) => {
   const [step, setStep] = useState<Step>("select-date");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -94,34 +32,30 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   const [otpValue, setOtpValue] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
-  const [workingDays, setWorkingDays] = useState<Date[]>([]);
-  const [currentDateIndex, setCurrentDateIndex] = useState(0);
-  const [timeSlots, setTimeSlots] = useState<{ afternoon: TimeSlot[], evening: TimeSlot[] }>({
-    afternoon: [],
-    evening: []
-  });
   
-  // Initialize working days and time slots when dialog opens
-  useEffect(() => {
-    if (open) {
-      // Initialize workingDays with 5 working days starting from today
-      const today = new Date();
-      const days = getWorkingDays(today);
-      setWorkingDays(days);
-      setSelectedDate(days[0]);
-      setCurrentDateIndex(0);
-      
-      // Generate time slots for the selected date
-      const slots = generateTimeSlots(days[0]);
-      setTimeSlots(slots);
-    }
-  }, [open]);
-
-  // Update time slots when selected date changes
-  useEffect(() => {
-    const slots = generateTimeSlots(selectedDate);
-    setTimeSlots(slots);
-  }, [selectedDate]);
+  // Mock data for dates and time slots
+  const dates = [
+    { label: "Today, 14", value: new Date() },
+    { label: "Apr. 15", value: new Date(2025, 3, 15) },
+    { label: "Apr. 16", value: new Date(2025, 3, 16) },
+    { label: "Apr. 17", value: new Date(2025, 3, 17) },
+  ];
+  
+  const afternoonSlots: TimeSlot[] = [
+    { time: "01:00 PM", available: true },
+    { time: "01:30 PM", available: true },
+    { time: "02:00 PM", available: true },
+    { time: "02:30 PM", available: true },
+    { time: "03:00 PM", available: true },
+    { time: "03:30 PM", available: true },
+    { time: "04:00 PM", available: true },
+    { time: "04:30 PM", available: false },
+  ];
+  
+  const eveningSlots: TimeSlot[] = [
+    { time: "05:00 PM", available: true },
+    { time: "05:30 PM", available: true },
+  ];
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
@@ -129,8 +63,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handlePhoneSubmit = () => {
+    // In a real app, this would trigger an API call to send OTP
     setStep("verify-otp");
     
+    // Start countdown for resend code
     const interval = setInterval(() => {
       setResendTimer((prev) => {
         if (prev <= 1) {
@@ -143,10 +79,12 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handleVerifyOtp = () => {
+    // In a real app, this would verify the OTP with an API
     setStep("success");
   };
 
   const handleClose = () => {
+    // Reset states when closing
     setStep("select-date");
     setSelectedTime(null);
     setPhoneNumber("");
@@ -155,80 +93,48 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const formatPhoneForDisplay = (phone: string) => {
+    // Only show full number with partial masking for privacy
     return phone ? "0" + phone : "";
   };
 
-  const handleNextDates = () => {
-    if (currentDateIndex < workingDays.length - 5) {
-      setCurrentDateIndex(prev => prev + 1);
-    } else {
-      // Get the next set of working days
-      const lastDate = workingDays[workingDays.length - 1];
-      const nextDay = getNextWorkingDay(lastDate);
-      const newWorkingDays = getWorkingDays(nextDay);
-      
-      // Add next set of working days
-      setWorkingDays(prev => [...prev, ...newWorkingDays]);
-      setCurrentDateIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePrevDates = () => {
-    if (currentDateIndex > 0) {
-      setCurrentDateIndex(prev => prev - 1);
-    }
-  };
-
+  // Conditionally render content based on current step
   const renderContent = () => {
     switch (step) {
       case "select-date":
         return (
-          <div className="p-4">
-            <DialogTitle className="text-xl font-semibold text-center mb-6">
-              Select Appointment Time
-            </DialogTitle>
-            
+          <div className="p-2">
+            {/* Date Slider */}
             <div className="flex items-center justify-between mb-6 border-b pb-4">
-              <button 
-                className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
-                onClick={handlePrevDates}
-                disabled={currentDateIndex === 0}
-              >
+              <button className="p-2 hover:bg-gray-100 rounded-full">
                 <ChevronLeft className="w-5 h-5 text-gray-500" />
               </button>
               
-              <div className="flex space-x-5 overflow-x-hidden">
-                {workingDays.slice(currentDateIndex, currentDateIndex + 5).map((date, index) => {
-                  const isToday = new Date().toDateString() === date.toDateString();
-                  return (
-                    <button
-                      key={date.toISOString()}
-                      onClick={() => setSelectedDate(date)}
-                      className={cn(
-                        "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
-                        selectedDate.toDateString() === date.toDateString() 
-                          ? "text-primary font-bold" 
-                          : "text-gray-600 hover:text-primary"
-                      )}
-                    >
-                      {isToday ? "Today" : format(date, "EEE")}
-                      <div className="text-sm font-normal">{format(date, "MMM d")}</div>
-                      {selectedDate.toDateString() === date.toDateString() && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
-                      )}
-                    </button>
-                  );
-                })}
+              <div className="flex space-x-5 overflow-x-auto no-scrollbar">
+                {dates.map((date, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedDate(date.value)}
+                    className={cn(
+                      "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
+                      selectedDate.toDateString() === date.value.toDateString() 
+                        ? "text-primary" 
+                        : "text-gray-600 hover:text-primary"
+                    )}
+                  >
+                    {date.label}
+                    {selectedDate.toDateString() === date.value.toDateString() && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                    )}
+                  </button>
+                ))}
               </div>
               
-              <button 
-                className="p-2 hover:bg-gray-100 rounded-full"
-                onClick={handleNextDates}
-              >
+              <button className="p-2 hover:bg-gray-100 rounded-full">
                 <ChevronRight className="w-5 h-5 text-gray-500" />
               </button>
             </div>
             
+            {/* Afternoon Slots */}
             <div className="mb-6">
               <div className="flex items-center mb-3">
                 <span className="text-amber-500 mr-2">☀️</span>
@@ -236,7 +142,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
               
               <div className="grid grid-cols-4 gap-2">
-                {timeSlots.afternoon.map((slot, index) => (
+                {afternoonSlots.map((slot, index) => (
                   <button
                     key={index}
                     disabled={!slot.available}
@@ -256,6 +162,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
             </div>
             
+            {/* Evening Slots */}
             <div>
               <div className="flex items-center mb-3">
                 <span className="text-blue-500 mr-2">🌙</span>
@@ -263,7 +170,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
               
               <div className="grid grid-cols-4 gap-2">
-                {timeSlots.evening.map((slot, index) => (
+                {eveningSlots.map((slot, index) => (
                   <button
                     key={index}
                     disabled={!slot.available}
@@ -282,34 +189,13 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 ))}
               </div>
             </div>
-
-            {dietitian && (
-              <div className="mt-6 pt-4 border-t border-gray-100">
-                <h3 className="text-sm font-medium text-gray-500 mb-2">Appointment with</h3>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                    <img 
-                      src={dietitian.image} 
-                      alt={dietitian.name}
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800">{dietitian.name}</p>
-                    <p className="text-xs text-gray-500">{dietitian.qualifications}</p>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         );
 
       case "enter-phone":
         return (
           <div className="p-6">
-            <DialogTitle className="text-xl font-semibold text-center mb-2">
-              Enter your Phone Number
-            </DialogTitle>
+            <h2 className="text-xl font-semibold text-center mb-2">Enter your Phone Number</h2>
             <p className="text-sm text-gray-500 text-center mb-6">We share this information with the doctor</p>
             
             <div className="flex mb-6">
@@ -364,9 +250,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
       case "verify-otp":
         return (
           <div className="p-6">
-            <DialogTitle className="text-xl font-semibold text-center mb-2">
-              Verify OTP code
-            </DialogTitle>
+            <h2 className="text-xl font-semibold text-center mb-2">Verify OTP code</h2>
             <p className="text-sm text-gray-500 text-center mb-6">
               A message has been sent to: {formatPhoneForDisplay(phoneNumber)}
               <button 
@@ -427,11 +311,11 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-md p-0">
         {step !== "select-date" && step !== "success" && (
           <button 
             onClick={() => setStep(step === "verify-otp" ? "enter-phone" : "select-date")}
-            className="absolute left-4 top-4 p-1 rounded-full hover:bg-gray-100 z-10"
+            className="absolute left-4 top-4 p-1 rounded-full hover:bg-gray-100"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
