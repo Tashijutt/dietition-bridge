@@ -53,7 +53,7 @@ const SignIn = () => {
     
     try {
       if (isSignUp) {
-        await register(formData.email, formData.password, formData.role);
+        await register(formData.name, formData.email, formData.password);
         toast({
           title: "Account created successfully",
           description: `Welcome to Dietitian Bridge as a ${formData.role === 'dietitian' ? 'Dietitian' : 'User'}!`,
