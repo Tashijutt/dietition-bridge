@@ -1,4 +1,3 @@
-
 import { useInView } from 'react-intersection-observer';
 import { cn } from "@/lib/utils";
 import { Check, X } from "lucide-react";
@@ -79,6 +78,19 @@ const PricingPlans = () => {
     }
   ];
 
+  const handlePlanSelection = (planId: string) => {
+    const plan = plans.find(p => p.priceId === planId);
+    if (!plan) return;
+
+    const searchParams = new URLSearchParams({
+      plan: planId,
+      price: plan.price.toString(),
+      duration: isAnnual ? 'annual' : 'monthly'
+    });
+
+    window.location.href = `/signin?${searchParams.toString()}`;
+  };
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -152,6 +164,7 @@ const PricingPlans = () => {
                       ? "bg-nutrition-600 text-white hover:bg-nutrition-700" 
                       : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                   )}
+                  onClick={() => handlePlanSelection(plan.priceId)}
                 >
                   {plan.cta}
                 </button>

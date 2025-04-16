@@ -1,9 +1,8 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Clock, CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { format, addDays, isWeekend } from "date-fns";
 import { cn } from "@/lib/utils";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -19,10 +18,34 @@ interface AppointmentDialogProps {
 
 type Step = "select-date" | "enter-phone" | "verify-otp" | "success";
 
-interface TimeSlot {
-  time: string;
-  available: boolean;
-}
+// Get next working day
+const getNextWorkingDay = (date: Date): Date => {
+  let nextDay = addDays(date, 1);
+  while (isWeekend(nextDay)) {
+    nextDay = addDays(nextDay, 1);
+  }
+  return nextDay;
+};
+
+// Generate next 5 working days
+const getWorkingDays = (startDate: Date): Date[] => {
+  const days: Date[] = [];
+  let currentDate = startDate;
+
+  // If start date is weekend, move to next working day
+  while (isWeekend(currentDate)) {
+    currentDate = addDays(currentDate, 1);
+  }
+
+  days.push(currentDate);
+
+  while (days.length < 5) {
+    currentDate = getNextWorkingDay(currentDate);
+    days.push(currentDate);
+  }
+
+  return days;
+};
 
 const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogProps) => {
   const [step, setStep] = useState<Step>("select-date");
@@ -32,30 +55,17 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   const [otpValue, setOtpValue] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
+  const [workingDays, setWorkingDays] = useState<Date[]>([]);
+  const [currentDateIndex, setCurrentDateIndex] = useState(0);
   
-  // Mock data for dates and time slots
-  const dates = [
-    { label: "Today, 14", value: new Date() },
-    { label: "Apr. 15", value: new Date(2025, 3, 15) },
-    { label: "Apr. 16", value: new Date(2025, 3, 16) },
-    { label: "Apr. 17", value: new Date(2025, 3, 17) },
-  ];
-  
-  const afternoonSlots: TimeSlot[] = [
-    { time: "01:00 PM", available: true },
-    { time: "01:30 PM", available: true },
-    { time: "02:00 PM", available: true },
-    { time: "02:30 PM", available: true },
-    { time: "03:00 PM", available: true },
-    { time: "03:30 PM", available: true },
-    { time: "04:00 PM", available: true },
-    { time: "04:30 PM", available: false },
-  ];
-  
-  const eveningSlots: TimeSlot[] = [
-    { time: "05:00 PM", available: true },
-    { time: "05:30 PM", available: true },
-  ];
+  useEffect(() => {
+    // Initialize working days when dialog opens
+    if (open) {
+      const days = getWorkingDays(new Date());
+      setWorkingDays(days);
+      setSelectedDate(days[0]);
+    }
+  }, [open]);
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
@@ -97,7 +107,23 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
     return phone ? "0" + phone : "";
   };
 
-  // Conditionally render content based on current step
+  const handleNextDates = () => {
+    if (currentDateIndex + 5 < workingDays.length) {
+      setCurrentDateIndex(prev => prev + 1);
+    } else {
+      const lastDate = workingDays[workingDays.length - 1];
+      const nextWorkingDays = getWorkingDays(getNextWorkingDay(lastDate));
+      setWorkingDays([...workingDays, ...nextWorkingDays]);
+      setCurrentDateIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePrevDates = () => {
+    if (currentDateIndex > 0) {
+      setCurrentDateIndex(prev => prev - 1);
+    }
+  };
+
   const renderContent = () => {
     switch (step) {
       case "select-date":
@@ -105,31 +131,38 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
           <div className="p-2">
             {/* Date Slider */}
             <div className="flex items-center justify-between mb-6 border-b pb-4">
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              <button 
+                className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
+                onClick={handlePrevDates}
+                disabled={currentDateIndex === 0}
+              >
                 <ChevronLeft className="w-5 h-5 text-gray-500" />
               </button>
               
               <div className="flex space-x-5 overflow-x-auto no-scrollbar">
-                {dates.map((date, index) => (
+                {workingDays.slice(currentDateIndex, currentDateIndex + 5).map((date, index) => (
                   <button
-                    key={index}
-                    onClick={() => setSelectedDate(date.value)}
+                    key={date.toISOString()}
+                    onClick={() => setSelectedDate(date)}
                     className={cn(
                       "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
-                      selectedDate.toDateString() === date.value.toDateString() 
+                      selectedDate.toDateString() === date.toDateString() 
                         ? "text-primary" 
                         : "text-gray-600 hover:text-primary"
                     )}
                   >
-                    {date.label}
-                    {selectedDate.toDateString() === date.value.toDateString() && (
+                    {index === 0 ? "Today" : format(date, "MMM d")}
+                    {selectedDate.toDateString() === date.toDateString() && (
                       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
                     )}
                   </button>
                 ))}
               </div>
               
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              <button 
+                className="p-2 hover:bg-gray-100 rounded-full"
+                onClick={handleNextDates}
+              >
                 <ChevronRight className="w-5 h-5 text-gray-500" />
               </button>
             </div>
