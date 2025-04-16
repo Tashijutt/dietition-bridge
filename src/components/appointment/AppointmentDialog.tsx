@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -57,12 +58,14 @@ const getWorkingDays = (startDate: Date): Date[] => {
   const days: Date[] = [];
   let currentDate = startDate;
 
+  // If start date is weekend, move to next working day
   while (isWeekend(currentDate)) {
     currentDate = addDays(currentDate, 1);
   }
 
   days.push(currentDate);
 
+  // Get next 4 working days (total 5 days including start date)
   while (days.length < 5) {
     currentDate = getNextWorkingDay(currentDate);
     days.push(currentDate);
@@ -84,9 +87,12 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   
   useEffect(() => {
     if (open) {
-      const days = getWorkingDays(new Date());
+      // Initialize workingDays with 5 working days starting from today
+      const today = new Date();
+      const days = getWorkingDays(today);
       setWorkingDays(days);
       setSelectedDate(days[0]);
+      setCurrentDateIndex(0);
     }
   }, [open]);
 
@@ -129,9 +135,13 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
     if (currentDateIndex + 5 < workingDays.length) {
       setCurrentDateIndex(prev => prev + 1);
     } else {
+      // Get the next set of working days
       const lastDate = workingDays[workingDays.length - 1];
-      const nextWorkingDays = getWorkingDays(getNextWorkingDay(lastDate));
-      setWorkingDays([...workingDays, ...nextWorkingDays]);
+      const nextDay = getNextWorkingDay(lastDate);
+      const nextWorkingDays = getWorkingDays(nextDay);
+      
+      // Add next set of working days
+      setWorkingDays(prev => [...prev, ...nextWorkingDays]);
       setCurrentDateIndex(prev => prev + 1);
     }
   };
@@ -157,23 +167,26 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </button>
               
               <div className="flex space-x-5 overflow-x-auto no-scrollbar">
-                {workingDays.slice(currentDateIndex, currentDateIndex + 5).map((date, index) => (
-                  <button
-                    key={date.toISOString()}
-                    onClick={() => setSelectedDate(date)}
-                    className={cn(
-                      "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
-                      selectedDate.toDateString() === date.toDateString() 
-                        ? "text-primary" 
-                        : "text-gray-600 hover:text-primary"
-                    )}
-                  >
-                    {index === 0 ? "Today" : format(date, "MMM d")}
-                    {selectedDate.toDateString() === date.toDateString() && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
-                    )}
-                  </button>
-                ))}
+                {workingDays.slice(currentDateIndex, currentDateIndex + 5).map((date, index) => {
+                  const isToday = new Date().toDateString() === date.toDateString();
+                  return (
+                    <button
+                      key={date.toISOString()}
+                      onClick={() => setSelectedDate(date)}
+                      className={cn(
+                        "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
+                        selectedDate.toDateString() === date.toDateString() 
+                          ? "text-primary" 
+                          : "text-gray-600 hover:text-primary"
+                      )}
+                    >
+                      {isToday ? "Today" : format(date, "MMM d")}
+                      {selectedDate.toDateString() === date.toDateString() && (
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
               
               <button 
