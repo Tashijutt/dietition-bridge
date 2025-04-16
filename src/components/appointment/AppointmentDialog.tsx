@@ -18,7 +18,33 @@ interface AppointmentDialogProps {
 
 type Step = "select-date" | "enter-phone" | "verify-otp" | "success";
 
-// Get next working day
+interface TimeSlot {
+  time: string;
+  available: boolean;
+}
+
+const afternoonSlots: TimeSlot[] = [
+  { time: "12:00 PM", available: true },
+  { time: "12:30 PM", available: false },
+  { time: "1:00 PM", available: true },
+  { time: "1:30 PM", available: true },
+  { time: "2:00 PM", available: true },
+  { time: "2:30 PM", available: false },
+  { time: "3:00 PM", available: true },
+  { time: "3:30 PM", available: true }
+];
+
+const eveningSlots: TimeSlot[] = [
+  { time: "4:00 PM", available: true },
+  { time: "4:30 PM", available: false },
+  { time: "5:00 PM", available: true },
+  { time: "5:30 PM", available: true },
+  { time: "6:00 PM", available: true },
+  { time: "6:30 PM", available: false },
+  { time: "7:00 PM", available: false },
+  { time: "7:30 PM", available: true }
+];
+
 const getNextWorkingDay = (date: Date): Date => {
   let nextDay = addDays(date, 1);
   while (isWeekend(nextDay)) {
@@ -27,12 +53,10 @@ const getNextWorkingDay = (date: Date): Date => {
   return nextDay;
 };
 
-// Generate next 5 working days
 const getWorkingDays = (startDate: Date): Date[] => {
   const days: Date[] = [];
   let currentDate = startDate;
 
-  // If start date is weekend, move to next working day
   while (isWeekend(currentDate)) {
     currentDate = addDays(currentDate, 1);
   }
@@ -59,7 +83,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   const [currentDateIndex, setCurrentDateIndex] = useState(0);
   
   useEffect(() => {
-    // Initialize working days when dialog opens
     if (open) {
       const days = getWorkingDays(new Date());
       setWorkingDays(days);
@@ -73,10 +96,8 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handlePhoneSubmit = () => {
-    // In a real app, this would trigger an API call to send OTP
     setStep("verify-otp");
     
-    // Start countdown for resend code
     const interval = setInterval(() => {
       setResendTimer((prev) => {
         if (prev <= 1) {
@@ -89,12 +110,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handleVerifyOtp = () => {
-    // In a real app, this would verify the OTP with an API
     setStep("success");
   };
 
   const handleClose = () => {
-    // Reset states when closing
     setStep("select-date");
     setSelectedTime(null);
     setPhoneNumber("");
@@ -103,7 +122,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const formatPhoneForDisplay = (phone: string) => {
-    // Only show full number with partial masking for privacy
     return phone ? "0" + phone : "";
   };
 
@@ -129,7 +147,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
       case "select-date":
         return (
           <div className="p-2">
-            {/* Date Slider */}
             <div className="flex items-center justify-between mb-6 border-b pb-4">
               <button 
                 className="p-2 hover:bg-gray-100 rounded-full disabled:opacity-50"
@@ -167,7 +184,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </button>
             </div>
             
-            {/* Afternoon Slots */}
             <div className="mb-6">
               <div className="flex items-center mb-3">
                 <span className="text-amber-500 mr-2">☀️</span>
@@ -195,7 +211,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
             </div>
             
-            {/* Evening Slots */}
             <div>
               <div className="flex items-center mb-3">
                 <span className="text-blue-500 mr-2">🌙</span>
