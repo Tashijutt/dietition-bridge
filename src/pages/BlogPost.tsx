@@ -59,13 +59,8 @@ const BlogPost = () => {
     );
   }
 
-  // Handle navigation to similar article
-  const handleSimilarArticleClick = (articleId: number) => {
-    navigate(`/blog/${articleId}`);
-  };
-
   return (
-    <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
+    <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : ''}`}>
       <Header />
       <main className="flex-grow pt-24 pb-16">
         {/* Article Header */}
@@ -112,7 +107,7 @@ const BlogPost = () => {
           ref={contentRef}
           className={cn(
             "container mx-auto px-4 max-w-4xl py-8",
-            contentInView ? "animate-fade-up" : "opacity-0"
+            contentInView ? "animate-fade-up" : ""
           )}
         >
           <div className="prose prose-lg max-w-none">
@@ -161,7 +156,7 @@ const BlogPost = () => {
                   <Card 
                     key={similarArticle.id}
                     className="bg-white hover:shadow-md transition-all border border-gray-100 overflow-hidden cursor-pointer"
-                    onClick={() => handleSimilarArticleClick(similarArticle.id)}
+                    onClick={() => navigate(`/blog/${similarArticle.id}`)}
                   >
                     <div className="h-40 overflow-hidden">
                       <img 

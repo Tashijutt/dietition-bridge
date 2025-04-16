@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
@@ -307,9 +308,9 @@ const SignIn = () => {
             
             <p className="text-center text-sm text-gray-500 mt-6">
               By continuing, you agree to Dietitian Bridge's
-              <Link to="#" className="text-blue-600 hover:text-blue-700 mx-1">Terms of Service</Link>
+              <Link to="/terms" className="text-blue-600 hover:text-blue-700 mx-1">Terms of Service</Link>
               and
-              <Link to="#" className="text-blue-600 hover:text-blue-700 ml-1">Privacy Policy</Link>
+              <Link to="/privacy" className="text-blue-600 hover:text-blue-700 ml-1">Privacy Policy</Link>
             </p>
           </div>
         </div>

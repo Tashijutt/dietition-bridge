@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,6 +34,9 @@ import DietitianAppointments from "./pages/dietitian/DietitianAppointments";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import FAQs from "./pages/FAQs";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +72,9 @@ const RouterContent = () => {
         <Route path="/blog/:id" element={<BlogPost />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/weight-loss-tips" element={<WeightLossTips />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/faqs" element={<FAQs />} />
         
         <Route 
           path="/admin" 
