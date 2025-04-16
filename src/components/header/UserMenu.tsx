@@ -71,7 +71,7 @@ const UserMenu = () => {
           <Button variant="ghost" className="relative h-9 w-9 rounded-full">
             <Avatar className="h-9 w-9">
               <AvatarImage
-                src={user?.profileImage}
+                src={user?.profilePicture}
                 alt={user?.name || "User"}
               />
               <AvatarFallback className="bg-blue-100 text-blue-600">

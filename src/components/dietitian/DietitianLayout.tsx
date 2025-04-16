@@ -116,7 +116,7 @@ const DietitianLayout = ({ children, title }: DietitianLayoutProps) => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-white border border-gray-200 rounded-full py-1.5 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
+                  <AvatarImage src={user?.profilePicture} alt={user?.name || ""} />
                   <AvatarFallback className="bg-blue-100 text-blue-600">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "D"}
                   </AvatarFallback>

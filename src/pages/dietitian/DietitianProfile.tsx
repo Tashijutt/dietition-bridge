@@ -69,7 +69,7 @@ const DietitianProfile = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-16 w-16 border-2 border-blue-100">
-                  <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
+                  <AvatarImage src={user?.profilePicture} alt={user?.name || ""} />
                   <AvatarFallback className="bg-blue-100 text-blue-600 text-lg">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "D"}
                   </AvatarFallback>

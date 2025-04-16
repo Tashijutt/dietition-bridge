@@ -129,7 +129,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-primary/70 border border-white/20 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-primary/80 focus:outline-none transition duration-150 ease-in-out">
                 <Avatar className="h-8 w-8 mr-2 border border-white/30">
-                  <AvatarImage src={user?.profileImage} alt={user?.name || ""} />
+                  <AvatarImage src={user?.profilePicture} alt={user?.name || ""} />
                   <AvatarFallback className="bg-secondary text-white">
                     {user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "A"}
                   </AvatarFallback>
