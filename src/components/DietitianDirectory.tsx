@@ -1,12 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { useInView } from 'react-intersection-observer';
-import { User } from "lucide-react";
 import { DIETITIANS } from "./dietitians/dietitianData";
 import DietitianFilters from "./dietitians/DietitianFilters";
 import DietitianCard from "./dietitians/DietitianCard";
 import NoResultsFound from "./dietitians/NoResultsFound";
-import AppointmentDialog from "./dietitians/AppointmentDialog";
 import { Dietitian } from "./dietitians/dietitianTypes";
 import { cn } from "@/lib/utils";
 
@@ -16,8 +13,6 @@ const DietitianDirectory = () => {
   const [selectedCategory, setSelectedCategory] = useState(""); 
   const [filteredDietitians, setFilteredDietitians] = useState(DIETITIANS);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list'); // Default to list view
-  const [appointmentDialogOpen, setAppointmentDialogOpen] = useState(false);
-  const [selectedDietitian, setSelectedDietitian] = useState<Dietitian | null>(null);
   
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -53,11 +48,6 @@ const DietitianDirectory = () => {
     
     setFilteredDietitians(filtered);
   }, [searchTerm, selectedCity, selectedCategory]);
-
-  const handleBookAppointment = (dietitian: Dietitian) => {
-    setSelectedDietitian(dietitian);
-    setAppointmentDialogOpen(true);
-  };
   
   const clearFilters = () => {
     setSearchTerm("");
@@ -105,7 +95,6 @@ const DietitianDirectory = () => {
                   key={dietitian.id}
                   dietitian={dietitian}
                   viewMode="grid"
-                  handleBookAppointment={handleBookAppointment}
                   index={index}
                   inView={inView}
                 />
@@ -122,7 +111,6 @@ const DietitianDirectory = () => {
                   key={dietitian.id}
                   dietitian={dietitian}
                   viewMode="list"
-                  handleBookAppointment={handleBookAppointment}
                   index={index}
                   inView={inView}
                 />
@@ -133,13 +121,6 @@ const DietitianDirectory = () => {
           </div>
         )}
       </div>
-      
-      {/* Appointment Booking Dialog */}
-      <AppointmentDialog
-        open={appointmentDialogOpen}
-        onOpenChange={setAppointmentDialogOpen}
-        dietitian={selectedDietitian}
-      />
     </section>
   );
 };

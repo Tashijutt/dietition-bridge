@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Clock, CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
@@ -120,7 +121,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
     return phone ? "0" + phone : "";
   };
 
-  const modalBaseClass = "rounded-2xl shadow-xl border border-gray-100 bg-white p-0 relative max-w-full sm:max-w-md animate-fade-in";
+  const modalBaseClass = "rounded-2xl shadow-xl border border-gray-100 bg-white p-0 relative max-w-full sm:max-w-md";
   const headerFont = "font-semibold text-[1.25rem] leading-tight text-primary mb-2";
   const outerPad = "px-6 pt-7 pb-3";
 
@@ -369,6 +370,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className={modalBaseClass + " w-full max-w-[420px]"}>
+        <DialogTitle className="sr-only">Book an Appointment</DialogTitle>
         <button
           className="absolute right-4 top-4 rounded-full p-2 border border-gray-200 bg-white shadow hover:bg-gray-50 transition"
           onClick={handleClose}
