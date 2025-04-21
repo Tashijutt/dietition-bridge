@@ -164,7 +164,7 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
   }
 
   return (
-    <section id="dietitians" className="py-20 bg-gray-50">
+    <section id="dietitians" className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <div 
           ref={ref}
@@ -280,7 +280,7 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
 
         {/* View All Link */}
         {limit && displayedDietitians.length < dietitians.length && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link 
               to="/dietitians"
               className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-all duration-300"

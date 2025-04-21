@@ -369,7 +369,7 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={modalBaseClass + " w-full max-w-[420px]"}>
+      <DialogContent className={modalBaseClass + " w-full max-w-[420px] fixed"}>
         <DialogTitle className="sr-only">Book an Appointment</DialogTitle>
         <button
           className="absolute right-4 top-4 rounded-full p-2 border border-gray-200 bg-white shadow hover:bg-gray-50 transition"

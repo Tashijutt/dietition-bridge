@@ -12,6 +12,7 @@ const Hero = () => {
       const headingElement = containerRef.current?.querySelector('h1') as HTMLElement | null;
       const subheadingElement = containerRef.current?.querySelector('p') as HTMLElement | null;
       const ctaElement = containerRef.current?.querySelector('.cta-container') as HTMLElement | null;
+      const featuresElement = containerRef.current?.querySelector('.feature-container') as HTMLElement | null;
       
       if (headingElement) {
         headingElement.classList.add('animate-fade-up');
@@ -31,6 +32,12 @@ const Hero = () => {
           ctaElement.style.opacity = '1';
         }
       }, 400);
+      setTimeout(() => {
+        if (featuresElement) {
+          featuresElement.classList.add('animate-fade-in');
+          featuresElement.style.opacity = '1';
+        }
+      }, 1000);
     };
     
     animateElements();
@@ -91,7 +98,7 @@ const Hero = () => {
             </Link>
           </div>
           
-          <div className="flex flex-wrap justify-center items-center gap-8 mt-12 opacity-0 animate-fade-in" style={{ animationDelay: '600ms' }}>
+          <div className="feature-container flex flex-wrap justify-center items-center gap-8 mt-12 opacity-0">
             {['Diabetic Diets', 'Hypertension Management', 'Weight Control', 'Balanced Nutrition'].map((item, index) => (
               <div key={index} className="flex items-center">
                 <div className="w-2 h-2 rounded-full bg-nutrition-500 mr-2"></div>
