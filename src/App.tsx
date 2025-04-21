@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,6 +36,7 @@ import ChatWidgetWrapper from "./components/ChatWidgetWrapper";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import FAQs from "./pages/FAQs";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 const queryClient = new QueryClient();
 
@@ -216,6 +216,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <RouterContent />
+          <ScrollToTopButton />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

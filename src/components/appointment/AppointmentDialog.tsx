@@ -1,8 +1,7 @@
-
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Clock, CalendarIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
@@ -24,37 +23,27 @@ interface TimeSlot {
   available: boolean;
 }
 
-const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogProps) => {
-  const [step, setStep] = useState<Step>("select-date");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpValue, setOtpValue] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [resendTimer, setResendTimer] = useState(30);
-  
-  // Generate next 5 working days (Mon-Fri) starting from today
-  const getNextWorkingDays = (count: number) => {
-    const days = [];
-    let date = new Date();
-    while (days.length < count) {
-      const day = date.getDay();
-      if (day !== 0 && day !== 6) { // 0 = Sunday, 6 = Saturday
-        days.push({
-          label:
-            days.length === 0
-              ? `Today, ${date.getDate()}`
-              : `${date.toLocaleString("default", { month: "short" })}. ${date.getDate()}`,
-          value: new Date(date),
-        });
-      }
-      date.setDate(date.getDate() + 1);
+const getNextWorkingDays = (startDate: Date, count: number) => {
+  const days = [];
+  let date = new Date(startDate);
+  while (days.length < count) {
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      days.push({
+        label:
+          days.length === 0
+            ? `Today, ${date.getDate()}`
+            : `${date.toLocaleString("default", { month: "short" })}. ${date.getDate()}`,
+        value: new Date(date),
+      });
     }
-    return days;
-  };
-  const dates = getNextWorkingDays(5);
-  
-  const afternoonSlots: TimeSlot[] = [
+    date.setDate(date.getDate() + 1);
+  }
+  return days;
+};
+
+const getDefaultSlots = () => ({
+  afternoonSlots: [
     { time: "01:00 PM", available: true },
     { time: "01:30 PM", available: true },
     { time: "02:00 PM", available: true },
@@ -63,12 +52,38 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
     { time: "03:30 PM", available: true },
     { time: "04:00 PM", available: true },
     { time: "04:30 PM", available: false },
-  ];
-  
-  const eveningSlots: TimeSlot[] = [
+  ],
+  eveningSlots: [
     { time: "05:00 PM", available: true },
     { time: "05:30 PM", available: true },
-  ];
+  ],
+});
+
+const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogProps) => {
+  const [step, setStep] = useState<Step>("select-date");
+  const [sliderStart, setSliderStart] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpValue, setOtpValue] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [resendTimer, setResendTimer] = useState(30);
+
+  const dates = getNextWorkingDays(sliderStart, 5);
+
+  const { afternoonSlots, eveningSlots } = getDefaultSlots();
+
+  useEffect(() => {
+    if (dates.length > 0 && !dates.find(d => d.value.toDateString() === selectedDate.toDateString())) {
+      setSelectedDate(dates[0].value);
+      setSelectedTime(null);
+    }
+  }, [sliderStart]);
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const sliderCanGoPrev = sliderStart > today;
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
@@ -76,12 +91,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handlePhoneSubmit = () => {
-    // In a real app, this would trigger an API call to send OTP
     setStep("verify-otp");
-    
-    // Start countdown for resend code
+    setResendTimer(30);
     const interval = setInterval(() => {
-      setResendTimer((prev) => {
+      setResendTimer(prev => {
         if (prev <= 1) {
           clearInterval(interval);
           return 0;
@@ -92,12 +105,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const handleVerifyOtp = () => {
-    // In a real app, this would verify the OTP with an API
     setStep("success");
   };
 
   const handleClose = () => {
-    // Reset states when closing
     setStep("select-date");
     setSelectedTime(null);
     setPhoneNumber("");
@@ -106,138 +117,150 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   };
 
   const formatPhoneForDisplay = (phone: string) => {
-    // Only show full number with partial masking for privacy
     return phone ? "0" + phone : "";
   };
 
-  // Conditionally render content based on current step
+  const modalBaseClass = "rounded-2xl shadow-xl border border-gray-100 bg-white p-0 relative max-w-full sm:max-w-md animate-fade-in";
+  const headerFont = "font-semibold text-[1.25rem] leading-tight text-primary mb-2";
+  const outerPad = "px-6 pt-7 pb-3";
+
   const renderContent = () => {
     switch (step) {
       case "select-date":
         return (
-          <div className="p-2">
-            {/* Date Slider */}
-            <div className="flex items-center justify-between mb-6 border-b pb-4 relative">
-              {/* Left scroll button - only visible when there are items to scroll to */}
-              <div className="absolute left-0 z-10">
-                <button 
-                  className="p-2 hover:bg-gray-100 rounded-full flex-shrink-0 transition-opacity duration-200"
-                  onClick={() => {
-                    const container = document.getElementById('date-slider');
-                    if (container) {
-                      container.scrollBy({ left: -100, behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  <ChevronLeft className="w-5 h-5 text-gray-500" />
-                </button>
+          <div className={outerPad}>
+            <div className="mb-7">
+              <h3 className={headerFont}>Book an Appointment</h3>
+              <p className="text-gray-500 mb-2 text-[0.98rem]">{dietitian?.name}</p>
+              <div className="flex items-center mb-4 gap-2">
+                <div className="rounded-full w-10 h-10 overflow-hidden border border-primary flex-shrink-0">
+                  <img src={dietitian?.image} className="w-full h-full object-cover" alt={dietitian?.name} />
+                </div>
+                <span className="text-sm text-gray-600">{dietitian?.qualifications}</span>
               </div>
-              
-              <div 
-                id="date-slider"
-                className="flex space-x-4 overflow-x-auto scrollbar-hide mx-10 w-full" 
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            </div>
+            <div className="relative flex items-center justify-between gap-2 mb-6">
+              <Button
+                size="icon"
+                variant="ghost"
+                disabled={!sliderCanGoPrev}
+                className={cn(
+                  "p-2 h-10 w-10 border border-gray-200 bg-white shadow-sm rounded-full transition disabled:opacity-40 absolute left-0 z-10",
+                  { "opacity-60 cursor-not-allowed": !sliderCanGoPrev }
+                )}
+                onClick={() => {
+                  if (!sliderCanGoPrev) return;
+                  const newStart = new Date(sliderStart);
+                  do {
+                    newStart.setDate(newStart.getDate() - 1);
+                  } while (
+                    newStart.getDay() === 0 || newStart.getDay() === 6
+                  );
+                  setSliderStart(newStart);
+                }}
+                aria-label="Previous days"
               >
-                {dates.map((date, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedDate(date.value)}
-                    className={cn(
-                      "px-3 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
-                      selectedDate.toDateString() === date.value.toDateString() 
-                        ? "text-primary" 
-                        : "text-gray-600 hover:text-primary"
-                    )}
-                  >
-                    {date.label}
-                    {selectedDate.toDateString() === date.value.toDateString() && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
-                    )}
-                  </button>
-                ))}
+                <ChevronLeft className="w-5 h-5" />
+              </Button>
+              <div className="flex-1 flex justify-center">
+                <div className="flex w-full max-w-xs mx-auto gap-1 justify-center" style={{ minWidth: 0 }}>
+                  {dates.map((date, idx) => (
+                    <button
+                      key={date.value.toISOString()}
+                      onClick={() => {
+                        setSelectedDate(date.value);
+                        setSelectedTime(null);
+                      }}
+                      className={cn(
+                        "px-3 py-1.5 min-w-[70px] rounded-[7px] text-center font-medium text-[0.97rem] border transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary",
+                        selectedDate.toDateString() === date.value.toDateString()
+                          ? "bg-primary text-white border-primary shadow-card"
+                          : "border-gray-200 text-gray-600 bg-white hover:bg-primary/5"
+                      )}
+                      aria-current={selectedDate.toDateString() === date.value.toDateString()}
+                      style={{ fontFamily: "Inter, sans-serif" }}
+                    >
+                      {date.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              
-              {/* Right scroll button - only visible when there are items to scroll to */}
-              <div className="absolute right-0 z-10">
-                <button 
-                  className="p-2 hover:bg-gray-100 rounded-full flex-shrink-0 transition-opacity duration-200"
-                  onClick={() => {
-                    const container = document.getElementById('date-slider');
-                    if (container) {
-                      container.scrollBy({ left: 100, behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  <ChevronRight className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                disabled={true}
+                className="p-2 h-10 w-10 border border-gray-200 bg-white shadow-sm rounded-full opacity-40 absolute right-0 z-10"
+                aria-label="Next days"
+                tabIndex={-1}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Button>
             </div>
-            
-            {/* Afternoon Slots */}
-            <div className="mb-6">
-              <div className="flex items-center mb-3">
-                <span className="text-amber-500 mr-2">☀️</span>
-                <h3 className="text-sm font-medium text-gray-600">Afternoon Slots</h3>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-2">
-                {afternoonSlots.map((slot, index) => (
-                  <button
-                    key={index}
-                    disabled={!slot.available}
-                    onClick={() => slot.available && handleTimeSelect(slot.time)}
-                    className={cn(
-                      "py-2 px-1 text-center border rounded-md text-sm transition-colors whitespace-nowrap overflow-hidden text-ellipsis",
-                      selectedTime === slot.time
-                        ? "border-primary bg-primary/5 text-primary"
-                        : slot.available
-                        ? "border-gray-200 hover:border-primary hover:text-primary"
-                        : "border-gray-100 text-gray-300 cursor-not-allowed"
-                    )}
-                  >
-                    {slot.time}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Evening Slots */}
             <div>
-              <div className="flex items-center mb-3">
-                <span className="text-blue-500 mr-2">🌙</span>
-                <h3 className="text-sm font-medium text-gray-600">Evening Slots</h3>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-2">
-                {eveningSlots.map((slot, index) => (
-                  <button
-                    key={index}
-                    disabled={!slot.available}
-                    onClick={() => slot.available && handleTimeSelect(slot.time)}
-                    className={cn(
-                      "py-2 px-1 text-center border rounded-md text-sm transition-colors whitespace-nowrap overflow-hidden text-ellipsis",
-                      selectedTime === slot.time
-                        ? "border-primary bg-primary/5 text-primary"
-                        : slot.available
-                        ? "border-gray-200 hover:border-primary hover:text-primary"
-                        : "border-gray-100 text-gray-300 cursor-not-allowed"
-                    )}
-                  >
-                    {slot.time}
-                  </button>
-                ))}
+              <h4 className="font-medium text-gray-700 text-[1.05rem] mb-2">Available Slots</h4>
+              <div>
+                <div>
+                  <div className="flex items-center mb-1 gap-2">
+                    <span className="text-amber-500">☀️</span>
+                    <span className="text-gray-600 text-sm">Afternoon</span>
+                  </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-5">
+                    {afternoonSlots.map((slot, idx) => (
+                      <button
+                        key={slot.time}
+                        disabled={!slot.available}
+                        onClick={() => slot.available && handleTimeSelect(slot.time)}
+                        className={cn(
+                          "w-full px-2.5 py-2 rounded-md border text-sm select-none transition disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-100 disabled:cursor-not-allowed",
+                          selectedTime === slot.time
+                            ? "bg-primary text-white border-primary shadow"
+                            : slot.available
+                            ? "bg-white border-gray-200 text-gray-700 hover:bg-primary/10 hover:text-primary"
+                            : "opacity-60"
+                        )}
+                        style={{ fontFamily: "Inter, sans-serif", minWidth: "75px" }}
+                      >
+                        {slot.time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center mb-1 gap-2">
+                    <span className="text-blue-500">🌙</span>
+                    <span className="text-gray-600 text-sm">Evening</span>
+                  </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {eveningSlots.map((slot, idx) => (
+                      <button
+                        key={slot.time}
+                        disabled={!slot.available}
+                        onClick={() => slot.available && handleTimeSelect(slot.time)}
+                        className={cn(
+                          "w-full px-2.5 py-2 rounded-md border text-sm select-none transition disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-100 disabled:cursor-not-allowed",
+                          selectedTime === slot.time
+                            ? "bg-primary text-white border-primary shadow"
+                            : slot.available
+                            ? "bg-white border-gray-200 text-gray-700 hover:bg-primary/10 hover:text-primary"
+                            : "opacity-60"
+                        )}
+                        style={{ fontFamily: "Inter, sans-serif", minWidth: "75px" }}
+                      >
+                        {slot.time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         );
-
       case "enter-phone":
         return (
-          <div className="p-6">
-            <h2 className="text-xl font-semibold text-center mb-2">Enter your Phone Number</h2>
-            <p className="text-sm text-gray-500 text-center mb-6">We share this information with the doctor</p>
-            
-            <div className="flex mb-6">
+          <div className="px-8 pt-7 pb-6">
+            <h2 className={headerFont + " text-center"}>Enter your Phone Number</h2>
+            <p className="text-sm text-gray-500 text-center mb-5 mt-1">We share this information with the doctor</p>
+            <div className="flex mb-5">
               <div className="bg-gray-100 border border-gray-200 rounded-l-md px-3 flex items-center text-sm">
                 +92
               </div>
@@ -252,11 +275,11 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
             </div>
             
             {dietitian && selectedTime && (
-              <div className="mb-8">
+              <div className="mb-7">
                 <h3 className="text-sm font-medium text-gray-500 mb-2">Your appointment</h3>
-                <div className="flex items-center justify-between bg-gray-50 p-4 rounded-md">
+                <div className="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-100">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                    <div className="w-8 h-8 rounded-full overflow-hidden mr-2 border border-primary/40">
                       <img 
                         src={dietitian.image} 
                         alt={dietitian.name}
@@ -274,33 +297,32 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 </div>
               </div>
             )}
-            
             <Button 
               className="w-full bg-orange-500 hover:bg-orange-600 text-white"
               onClick={handlePhoneSubmit}
               disabled={phoneNumber.length < 10}
+              style={{ borderRadius: "8px", fontWeight: 600, fontSize: "1rem" }}
             >
               Continue 
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         );
-
       case "verify-otp":
         return (
-          <div className="p-6">
-            <h2 className="text-xl font-semibold text-center mb-2">Verify OTP code</h2>
+          <div className="px-8 pt-7 pb-6">
+            <h2 className={headerFont + " text-center"}>Verify OTP code</h2>
             <p className="text-sm text-gray-500 text-center mb-6">
               A message has been sent to: {formatPhoneForDisplay(phoneNumber)}
               <button 
-                className="text-primary ml-1"
+                className="text-primary ml-1 font-medium"
                 onClick={() => setStep("enter-phone")}
+                tabIndex={0}
               >
                 (Edit)
               </button>
             </p>
-            
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-3">
               <InputOTP
                 value={otpValue}
                 onChange={setOtpValue}
@@ -316,12 +338,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 </InputOTPGroup>
               </InputOTP>
             </div>
-            
-            <p className="text-sm text-center mb-8">
+            <p className="text-sm text-center mb-7">
               Resend verification code in {resendTimer > 0 ? `0:${resendTimer.toString().padStart(2, '0')}` : 'now'}
             </p>
-            
-            <div className="flex items-center mb-5">
+            <div className="flex items-center mb-4">
               <Checkbox 
                 id="remember" 
                 checked={rememberMe} 
@@ -329,20 +349,18 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               />
               <label htmlFor="remember" className="ml-2 text-sm">Remember me</label>
             </div>
-            
             <Button 
               className="w-full bg-orange-500 hover:bg-orange-600 text-white"
               onClick={handleVerifyOtp}
               disabled={otpValue.length < 6}
+              style={{ borderRadius: "8px", fontWeight: 600, fontSize: "1rem" }}
             >
               Verify & Login
             </Button>
           </div>
         );
-
       case "success":
         return <AppointmentSuccess dietitian={dietitian} selectedDate={selectedDate} selectedTime={selectedTime} onClose={handleClose} />;
-
       default:
         return null;
     }
@@ -350,16 +368,24 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 max-h-[90vh] overflow-y-auto overflow-x-hidden rounded-lg shadow-lg">
+      <DialogContent className={modalBaseClass + " w-full max-w-[420px]"}>
+        <button
+          className="absolute right-4 top-4 rounded-full p-2 border border-gray-200 bg-white shadow hover:bg-gray-50 transition"
+          onClick={handleClose}
+          tabIndex={0}
+          aria-label="Close"
+          style={{ zIndex: 10 }}
+        >
+          <X className="w-5 h-5 text-gray-500" />
+        </button>
         {step !== "select-date" && step !== "success" && (
           <button 
             onClick={() => setStep(step === "verify-otp" ? "enter-phone" : "select-date")}
-            className="absolute right-4 top-4 p-1 rounded-full hover:bg-gray-100"
+            className="absolute left-4 top-4 p-1 rounded-full hover:bg-gray-100"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-5 w-5" />
           </button>
         )}
-        
         {renderContent()}
       </DialogContent>
     </Dialog>
