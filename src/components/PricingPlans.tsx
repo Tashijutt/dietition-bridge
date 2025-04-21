@@ -152,6 +152,12 @@ const PricingPlans = () => {
                       ? "bg-nutrition-600 text-white hover:bg-nutrition-700" 
                       : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                   )}
+                  onClick={() => {
+                    // Handle plan selection
+                    const planName = plan.name.toLowerCase().replace(' ', '-');
+                    // Redirect to the plans page with the plan pre-selected
+                    window.location.href = `/contact?selected=${planName}&pricing=${isAnnual ? 'annual' : 'monthly'}`;
+                  }}
                 >
                   {plan.cta}
                 </button>

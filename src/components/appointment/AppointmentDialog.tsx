@@ -33,13 +33,26 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   const [rememberMe, setRememberMe] = useState(false);
   const [resendTimer, setResendTimer] = useState(30);
   
-  // Mock data for dates and time slots
-  const dates = [
-    { label: "Today, 14", value: new Date() },
-    { label: "Apr. 15", value: new Date(2025, 3, 15) },
-    { label: "Apr. 16", value: new Date(2025, 3, 16) },
-    { label: "Apr. 17", value: new Date(2025, 3, 17) },
-  ];
+  // Generate next 5 working days (Mon-Fri) starting from today
+  const getNextWorkingDays = (count: number) => {
+    const days = [];
+    let date = new Date();
+    while (days.length < count) {
+      const day = date.getDay();
+      if (day !== 0 && day !== 6) { // 0 = Sunday, 6 = Saturday
+        days.push({
+          label:
+            days.length === 0
+              ? `Today, ${date.getDate()}`
+              : `${date.toLocaleString("default", { month: "short" })}. ${date.getDate()}`,
+          value: new Date(date),
+        });
+      }
+      date.setDate(date.getDate() + 1);
+    }
+    return days;
+  };
+  const dates = getNextWorkingDays(5);
   
   const afternoonSlots: TimeSlot[] = [
     { time: "01:00 PM", available: true },
@@ -104,18 +117,33 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
         return (
           <div className="p-2">
             {/* Date Slider */}
-            <div className="flex items-center justify-between mb-6 border-b pb-4">
-              <button className="p-2 hover:bg-gray-100 rounded-full">
-                <ChevronLeft className="w-5 h-5 text-gray-500" />
-              </button>
+            <div className="flex items-center justify-between mb-6 border-b pb-4 relative">
+              {/* Left scroll button - only visible when there are items to scroll to */}
+              <div className="absolute left-0 z-10">
+                <button 
+                  className="p-2 hover:bg-gray-100 rounded-full flex-shrink-0 transition-opacity duration-200"
+                  onClick={() => {
+                    const container = document.getElementById('date-slider');
+                    if (container) {
+                      container.scrollBy({ left: -100, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <ChevronLeft className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
               
-              <div className="flex space-x-5 overflow-x-auto no-scrollbar">
+              <div 
+                id="date-slider"
+                className="flex space-x-4 overflow-x-auto scrollbar-hide mx-10 w-full" 
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
                 {dates.map((date, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedDate(date.value)}
                     className={cn(
-                      "px-4 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
+                      "px-3 py-2 text-sm font-medium text-center flex-shrink-0 transition-colors relative",
                       selectedDate.toDateString() === date.value.toDateString() 
                         ? "text-primary" 
                         : "text-gray-600 hover:text-primary"
@@ -129,9 +157,20 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 ))}
               </div>
               
-              <button className="p-2 hover:bg-gray-100 rounded-full">
-                <ChevronRight className="w-5 h-5 text-gray-500" />
-              </button>
+              {/* Right scroll button - only visible when there are items to scroll to */}
+              <div className="absolute right-0 z-10">
+                <button 
+                  className="p-2 hover:bg-gray-100 rounded-full flex-shrink-0 transition-opacity duration-200"
+                  onClick={() => {
+                    const container = document.getElementById('date-slider');
+                    if (container) {
+                      container.scrollBy({ left: 100, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <ChevronRight className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
             </div>
             
             {/* Afternoon Slots */}
@@ -141,14 +180,14 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 <h3 className="text-sm font-medium text-gray-600">Afternoon Slots</h3>
               </div>
               
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {afternoonSlots.map((slot, index) => (
                   <button
                     key={index}
                     disabled={!slot.available}
                     onClick={() => slot.available && handleTimeSelect(slot.time)}
                     className={cn(
-                      "py-2 text-center border rounded-md text-sm transition-colors",
+                      "py-2 px-1 text-center border rounded-md text-sm transition-colors whitespace-nowrap overflow-hidden text-ellipsis",
                       selectedTime === slot.time
                         ? "border-primary bg-primary/5 text-primary"
                         : slot.available
@@ -169,14 +208,14 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                 <h3 className="text-sm font-medium text-gray-600">Evening Slots</h3>
               </div>
               
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {eveningSlots.map((slot, index) => (
                   <button
                     key={index}
                     disabled={!slot.available}
                     onClick={() => slot.available && handleTimeSelect(slot.time)}
                     className={cn(
-                      "py-2 text-center border rounded-md text-sm transition-colors",
+                      "py-2 px-1 text-center border rounded-md text-sm transition-colors whitespace-nowrap overflow-hidden text-ellipsis",
                       selectedTime === slot.time
                         ? "border-primary bg-primary/5 text-primary"
                         : slot.available
@@ -311,11 +350,11 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0">
+      <DialogContent className="sm:max-w-md p-0 max-h-[90vh] overflow-y-auto overflow-x-hidden rounded-lg shadow-lg">
         {step !== "select-date" && step !== "success" && (
           <button 
             onClick={() => setStep(step === "verify-otp" ? "enter-phone" : "select-date")}
-            className="absolute left-4 top-4 p-1 rounded-full hover:bg-gray-100"
+            className="absolute right-4 top-4 p-1 rounded-full hover:bg-gray-100"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>

@@ -1,6 +1,6 @@
 
 import { Star } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Dietitian } from "./dietitianTypes";
 
@@ -15,10 +15,10 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <div className="p-2">
+      <DialogContent className="max-w-[380px] w-full p-0 rounded-2xl shadow-xl border-0 bg-white relative overflow-visible">
+        <DialogTitle className="sr-only">Book an Appointment</DialogTitle>
+        <div className="px-8 pt-8 pb-6 text-center">
           <h3 className="text-xl font-semibold mb-4">Book an Appointment</h3>
-          
           <div className="flex items-center space-x-4 mb-4">
             <div className="rounded-full overflow-hidden w-16 h-16 border-2 border-primary">
               <img 
@@ -37,7 +37,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
             </div>
           </div>
-          
           <div className="mb-4">
             <h4 className="text-base font-medium mb-1">Available Slots</h4>
             <div className="grid grid-cols-3 gap-2 mb-4">
@@ -61,13 +60,11 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </button>
             </div>
           </div>
-          
           <div className="mb-4">
             <h4 className="text-base font-medium mb-1">Fee Information</h4>
             <p className="text-sm mb-1"><span className="font-medium">Consultation Fee:</span> {dietitian.fee}</p>
             <p className="text-sm text-gray-600">The fee covers a 30-minute consultation session.</p>
           </div>
-          
           <div className="mt-6 flex justify-end space-x-3">
             <Button
               variant="outline"
