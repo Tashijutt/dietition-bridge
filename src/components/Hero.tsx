@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showNotification, setShowNotification] = useState(false);
   
   useEffect(() => {
     const animateElements = () => {
@@ -41,20 +40,6 @@ const Hero = () => {
     };
     
     animateElements();
-    
-    // Show notification after a delay
-    const notificationTimer = setTimeout(() => {
-      setShowNotification(true);
-      
-      // Hide notification after 5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
-    }, 3000);
-    
-    return () => {
-      clearTimeout(notificationTimer);
-    };
   }, []);
 
   return (
@@ -108,21 +93,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      
-      {/* Success Notification Popup */}
-      {showNotification && (
-        <div className="fixed bottom-24 right-6 bg-white rounded-lg shadow-lg p-4 animate-fade-in z-50 max-w-xs">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-nutrition-100 flex items-center justify-center mr-3">
-              <span className="text-nutrition-600 font-bold">A</span>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-900">Amanda just started her personalized diet plan!</p>
-              <p className="text-xs text-gray-500">2 minutes ago</p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

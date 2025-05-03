@@ -3,7 +3,7 @@ import { Search, MapPin, Grid, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Cities for the filter
-const CITIES = ["All Cities", "Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "Multan"];
+const CITIES = ["All Cities", "Faisalabad",  "Karachi", "Lahore", "Islamabad", "Peshawar", "Quetta", "Multan"];
 
 // Filter categories based on the reference image
 const FILTER_CATEGORIES = [
@@ -12,9 +12,6 @@ const FILTER_CATEGORIES = [
   { id: "experienced", label: "Most Experienced" },
   { id: "lowest_fee", label: "Lowest Fee" },
   { id: "highest_rated", label: "Highest Rated" },
-  { id: "today", label: "Available Today" },
-  { id: "discounts", label: "Discounts" },
-  { id: "video", label: "Video Consultation" },
 ];
 
 interface DietitianFiltersProps {

@@ -2,9 +2,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  padding-bottom: 6rem; /* Adding extra padding for the dock */
-  text-align: center;
 }
 
 .logo {

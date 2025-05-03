@@ -25,31 +25,6 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Show success notification
-  useEffect(() => {
-    if (isLoaded) {
-      const timer = setTimeout(() => {
-        const notification = document.createElement('div');
-        notification.className = 'fixed top-24 right-4 bg-white shadow-lg rounded-lg px-4 py-3 flex items-center z-50 animate-fade-in';
-        notification.innerHTML = `
-          <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
-          <p class="text-sm font-medium">Fatima just started her personalized diet plan!</p>
-        `;
-        document.body.appendChild(notification);
-        
-        // Remove notification after 5 seconds
-        setTimeout(() => {
-          notification.classList.add('animate-fade-out');
-          setTimeout(() => {
-            document.body.removeChild(notification);
-          }, 500);
-        }, 5000);
-      }, 3000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isLoaded]);
-
   return (
     <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
       <Header />

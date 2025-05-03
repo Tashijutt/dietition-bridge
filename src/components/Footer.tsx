@@ -27,8 +27,8 @@ const Footer = () => {
       // For now, we'll simulate a successful subscription
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Send email to mtahseen1122@gmail.com (this would happen server-side in reality)
-      console.log(`New subscriber: ${email} - to be sent to mtahseen1122@gmail.com`);
+      // Send email to support@dietitianbridge.com (this would happen server-side in reality)
+      console.log(`New subscriber: ${email} - to be sent to support@dietitianbridge.com`);
       
       toast({
         title: "Subscription Successful!",
@@ -56,7 +56,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center space-x-2">
               <div className="flex items-center">
                 <img
-                  src="/lovable-uploads/dd607c1a-a2f2-410f-974d-5920f94bab84.png"
+                  src="/db-uploads/dd607c1a-a2f2-410f-974d-5920f94bab84.png"
                   alt="Dietitian Bridge Logo"
                   className="h-12 w-auto"
                 />
@@ -100,7 +100,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-secondary mr-2 mt-0.5" />
-                <span className="text-gray-400">mtahseen1122@gmail.com</span>
+                <span className="text-gray-400">support@dietitianbridge.com</span>
               </li>
               <li className="flex items-start">
                 <MessageCircle className="h-5 w-5 text-secondary mr-2 mt-0.5" />

@@ -42,7 +42,8 @@ const Contact = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-4">Call Us</h3>
                 <p className="text-gray-600 mb-4">Our team is available during business hours</p>
-                <a href="tel:+923001234567" className="text-nutrition-600 font-medium hover:underline">+92 300 123 4567</a>
+                <a href="tel:+923001234567" className="text-nutrition-600 font-medium hover:underline">+92 303 7999 327</a>
+                <a href="tel:+923001234567" className="text-nutrition-600 font-medium hover:underline">+92 310 1471 448</a>
               </div>
 
               <div className="bg-white rounded-xl shadow-soft p-8 flex flex-col items-center text-center">
@@ -51,7 +52,8 @@ const Contact = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-4">Email Us</h3>
                 <p className="text-gray-600 mb-4">Send us an email and we'll respond shortly</p>
-                <a href="mailto:mtahseen1122@gmail.com" className="text-nutrition-600 font-medium hover:underline">mtahseen1122@gmail.com</a>
+                <a href="mailto:mtahseen1122@gmail.com" className="text-nutrition-600 font-medium hover:underline">bushrashafique280@gmail.com</a>
+                <a href="mailto:mtahseen1122@gmail.com" className="text-nutrition-600 font-medium hover:underline">kalsoomtahir447@gmail.com</a>
               </div>
 
               <div className="bg-white rounded-xl shadow-soft p-8 flex flex-col items-center text-center">
