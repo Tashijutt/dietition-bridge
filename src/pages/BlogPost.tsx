@@ -11,7 +11,7 @@ import ArticleContent from "@/components/blog/ArticleContent";
 import SimilarArticles from "@/components/blog/SimilarArticles";
 
 const BlogPost = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
@@ -22,12 +22,19 @@ const BlogPost = () => {
   }, []);
 
   // Find the current article based on ID
-  const article = articles.find(article => article.id === Number(id));
+  // Convert the slug to a number if it's numeric, otherwise use it as a string
+  const article = articles.find(article => {
+    if (!isNaN(Number(slug))) {
+      return article.id === Number(slug);
+    }
+    // Convert both to strings for comparison to ensure type matching
+    return String(article.id) === slug;
+  });
 
   // Reset scroll position when article changes
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [slug]);
 
   // Find similar articles based on category
   const similarArticles = useMemo(() => {
@@ -36,7 +43,7 @@ const BlogPost = () => {
     return articles
       .filter(a => a.id !== article.id && a.category === article.category)
       .slice(0, 3);
-  }, [article, id]);
+  }, [article, slug]);
 
   if (!article) {
     return (

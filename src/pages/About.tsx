@@ -13,6 +13,9 @@ const About = () => {
   const { ref: statsRef, inView: statsInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);

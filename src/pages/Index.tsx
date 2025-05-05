@@ -17,6 +17,9 @@ const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
     // Add a slight delay to ensure smooth page entrance animation
     const timer = setTimeout(() => {
       setIsLoaded(true);

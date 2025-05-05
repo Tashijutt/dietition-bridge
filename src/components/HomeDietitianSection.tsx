@@ -241,10 +241,6 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
                     
                     <div className="border-t border-gray-100 pt-3">
                       <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center">
-                          <Video className="w-4 h-4 text-primary mr-2" />
-                          <span className="text-sm font-medium">Online Video Consultation</span>
-                        </div>
                         <span className="text-sm font-medium">{dietitian.fee}</span>
                       </div>
                       <div className="flex items-center">
@@ -256,14 +252,6 @@ const HomeDietitianSection = ({ limit }: HomeDietitianSectionProps) => {
                   
                   {/* Right Section - Actions */}
                   <div className="md:w-1/3 flex flex-col justify-center items-end gap-3 mt-4 md:mt-0">
-                    <Button
-                      variant="outline"
-                      className="w-full md:w-auto px-6 py-2.5 border-primary text-primary hover:bg-primary/5"
-                      onClick={() => handleVideoConsultation(dietitian)}
-                    >
-                      <Video className="h-4 w-4 mr-1.5" />
-                      Video Consultation
-                    </Button>
                     <Button
                       className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white"
                       onClick={() => handleBookAppointment(dietitian)}

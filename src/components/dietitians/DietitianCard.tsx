@@ -82,10 +82,6 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
           {/* Appointment Option */}
           <div className="border-t border-gray-200 mt-3 pt-3">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center">
-                <Video className="w-4 h-4 text-primary mr-2" />
-                <span className="text-sm font-medium">Online Video Consultation</span>
-              </div>
               <span className="text-sm font-medium">Rs. {dietitian.fee.replace('$', '')}</span>
             </div>
             <div className="flex items-center mb-3">
@@ -93,14 +89,6 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
               <span className="text-sm text-gray-600">{dietitian.availability}</span>
             </div>
             <div className="flex flex-col space-y-2">
-              <Button
-                variant="outline"
-                className="w-full border-primary text-primary hover:bg-primary/5"
-                onClick={handleVideoConsultation}
-              >
-                <Video className="w-4 h-4 mr-2" />
-                Video Consultation
-              </Button>
               <Button
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white"
                 onClick={openAppointmentDialog}
@@ -179,11 +167,7 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
               
               <div className="border-t border-gray-100 pt-3">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <Video className="w-4 h-4 text-primary mr-2" />
-                    <span className="text-sm font-medium">Online Video Consultation</span>
-                  </div>
-                  <span className="text-sm font-medium">Rs. {dietitian.fee.replace('$', '')}</span>
+                  <span className="text-sm font-medium">{dietitian.fee.replace('$', '')}</span>
                 </div>
                 <div className="flex items-center">
                   <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
@@ -194,14 +178,6 @@ const DietitianCard = ({ dietitian, viewMode, index, inView }: DietitianCardProp
             
             {/* Right Section - Actions */}
             <div className="md:w-1/3 flex flex-col justify-center items-end gap-3 mt-4 md:mt-0">
-              <Button
-                variant="outline"
-                className="w-full md:w-auto px-6 py-2.5 border-primary text-primary hover:bg-primary/5"
-                onClick={handleVideoConsultation}
-              >
-                <Video className="h-4 w-4 mr-1.5" />
-                Video Consultation
-              </Button>
               <Button
                 className="w-full md:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white"
                 onClick={openAppointmentDialog}

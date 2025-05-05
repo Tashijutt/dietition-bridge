@@ -16,6 +16,7 @@ import Privacy from "@/pages/Privacy";
 import WeightLossTips from "@/pages/WeightLossTips";
 import Chat from "@/pages/Chat";
 import ChatWidgetWrapper from "@/components/ChatWidgetWrapper";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import "./App.css";
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
         
         {/* Chat Widget that appears on all pages */}
         <ChatWidgetWrapper />
+        
+        {/* Scroll to top button */}
+        <ScrollToTopButton />
         
         <Toaster />
       </Router>

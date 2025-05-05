@@ -194,7 +194,7 @@ const ChatWidget = ({ onClose }: ChatWidgetProps) => {
       {/* Header */}
       <div className="bg-indigo-900 text-white p-3 flex justify-between shadow-md rounded-t-xl">
         <div className="flex">
-          <div className="w-8 h-8 rounded-full bg-green-500 flex text-white mr-2">
+          <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white mr-2">
             <span className="text-sm font-bold">DB</span>
           </div>
           <div>
@@ -267,7 +267,7 @@ const ChatWidget = ({ onClose }: ChatWidgetProps) => {
                     <div className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity flex justify-end space-x-1">
                       <button
                         onClick={() => handleCopy(msg.content)}
-                        className="p-1 rounded hover:bg-gray-200 text-gray-500"
+                        className="p-1 rounded hover:bg-gray-500 text-white"
                         title="Copy"
                       >
                         <Copy className="w-3 h-3" />
@@ -275,7 +275,7 @@ const ChatWidget = ({ onClose }: ChatWidgetProps) => {
                       {msg.type === 'user' && (
                         <button
                           onClick={() => handleEdit(index, msg.content)}
-                          className="p-1 rounded hover:bg-gray-200 text-gray-500"
+                          className="p-1 rounded hover:bg-gray-500 text-white"
                           title="Edit"
                         >
                           <Edit2 className="w-3 h-3" />

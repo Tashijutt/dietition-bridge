@@ -44,7 +44,7 @@ const dietPlans = [
     dietitianName: "Dr. Farhan Ahmed",
     dietitianCredentials: "Specialist in Diabetic Care",
     popularity: 4.9,
-    image: "https://images.unsplash.com/photo-1605493725784-84d97448829d?q=80&w=1974&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop",
     preview: [
       "Breakfast: Egg whites with whole wheat toast",
       "Lunch: Chicken tikka with brown rice and salad",
@@ -178,7 +178,7 @@ const Plans = () => {
                         </div>
                         
                         <div className="flex items-center mb-4">
-                          <Avatar className="h-6 w-6 mr-2">
+                          <Avatar className="h-8 w-8 mr-2">
                             <AvatarFallback className="text-xs bg-primary/10 text-primary">
                               {plan.dietitianName.split(' ').map(n => n[0]).join('')}
                             </AvatarFallback>

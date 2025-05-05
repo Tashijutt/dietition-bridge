@@ -141,28 +141,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
               </div>
             </div>
             <div className="relative flex items-center justify-between gap-2 mb-6">
-              <Button
-                size="icon"
-                variant="ghost"
-                disabled={!sliderCanGoPrev}
-                className={cn(
-                  "p-2 h-10 w-10 border border-gray-200 bg-white shadow-sm rounded-full transition disabled:opacity-40 absolute left-0 z-10",
-                  { "opacity-60 cursor-not-allowed": !sliderCanGoPrev }
-                )}
-                onClick={() => {
-                  if (!sliderCanGoPrev) return;
-                  const newStart = new Date(sliderStart);
-                  do {
-                    newStart.setDate(newStart.getDate() - 1);
-                  } while (
-                    newStart.getDay() === 0 || newStart.getDay() === 6
-                  );
-                  setSliderStart(newStart);
-                }}
-                aria-label="Previous days"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </Button>
               <div className="flex-1 flex justify-center">
                 <div className="flex w-full max-w-xs mx-auto gap-1 justify-center" style={{ minWidth: 0 }}>
                   {dates.map((date, idx) => (
@@ -186,16 +164,6 @@ const AppointmentDialog = ({ open, onOpenChange, dietitian }: AppointmentDialogP
                   ))}
                 </div>
               </div>
-              <Button
-                size="icon"
-                variant="ghost"
-                disabled={true}
-                className="p-2 h-10 w-10 border border-gray-200 bg-white shadow-sm rounded-full opacity-40 absolute right-0 z-10"
-                aria-label="Next days"
-                tabIndex={-1}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </Button>
             </div>
             <div>
               <h4 className="font-medium text-gray-700 text-[1.05rem] mb-2">Available Slots</h4>
