@@ -2,7 +2,7 @@
 // AI service for handling chat functionality
 
 // Deepseek API key
-const DIETITIAN_API_KEY = "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";
+const DIETITIAN_API_KEY = "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";
 
 /**
  * Get AI response from Deepseek API
