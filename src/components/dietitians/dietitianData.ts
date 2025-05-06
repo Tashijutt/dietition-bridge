@@ -7,7 +7,7 @@ export const DIETITIANS: Dietitian[] = [
     id: 1,
     name: "Dr. Farah Khan",
     qualifications: "PhD Nutrition Sciences",
-    city: "Karachi",
+    city: "Faisalabad",
     specializations: ["Diabetes", "Weight Management"],
     contact: {
       email: "farah.khan@example.com",
@@ -27,7 +27,7 @@ export const DIETITIANS: Dietitian[] = [
     id: 2,
     name: "Ahmad Malik",
     qualifications: "MSc Clinical Nutrition",
-    city: "Lahore",
+    city: "Faisalabad",
     specializations: ["Hypertension", "Heart Health"],
     contact: {
       email: "ahmad.malik@example.com",
