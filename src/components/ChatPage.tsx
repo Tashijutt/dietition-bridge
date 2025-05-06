@@ -180,22 +180,17 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="min-h-[60vh] bg-white from-gray-100 to-blue-50">
-      <div className="max-w-4xl mx-auto h-[60vh] flex flex-col">
+    <div className="min-h-[calc(100vh-7rem)] bg-white from-gray-100 to-blue-50">
+      <div className="mx-auto h-[calc(100vh-7rem)] flex flex-col">
         {/* Header */}
         <div className="bg-indigo-900 text-white p-3 flex items-center justify-between shadow-md rounded-t-xl">
           <div className="flex items-center">
-            <Link to="/" className="mr-3">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white mr-2">
-                <span className="text-sm font-bold">DB</span>
-              </div>
-              <div>
-                <div className="font-semibold">Dr. Nasreen Ahmed</div>
-                <div className="text-xs opacity-80">Online</div>
-              </div>
+            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white mr-2">
+              <span className="text-sm font-bold">DB</span>
+            </div>
+            <div>
+              <div className="font-semibold">Dr. Nasreen Ahmed</div>
+              <div className="text-xs opacity-80">Online</div>
             </div>
           </div>
           <button className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md">
