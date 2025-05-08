@@ -1,6 +1,6 @@
 
 import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Loader2 } from "lucide-react";
 
@@ -15,7 +15,8 @@ const ProtectedRoute = ({
   requireAdmin = false,
   requireDietitian = false
 }: ProtectedRouteProps) => {
-  const { isAuthenticated, isAdmin, isDietitian, user, loading } = useAuth();
+  const { isAuthenticated, isAdmin, isDietitian, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -46,7 +47,12 @@ const ProtectedRoute = ({
   }
 
   // For user dashboards, redirect dietitians to their dashboard unless they are admins
-  if (location.pathname.startsWith('/dashboard') && isDietitian && !isAdmin) {
+  if (location.pathname.startsWith('/user/dashboard') && isDietitian && !isAdmin) {
+    return <Navigate to="/dietitian/dashboard" replace />;
+  }
+  
+  // NEW CONDITION: Redirect dietitians to their dashboard when accessing the main dashboard route
+  if (location.pathname === '/dashboard' && isDietitian && !isAdmin) {
     return <Navigate to="/dietitian/dashboard" replace />;
   }
 

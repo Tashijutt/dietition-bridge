@@ -18,7 +18,7 @@ const SignIn = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, register, isAuthenticated } = useAuth();
+  const { login, register, isAuthenticated, user, isAdmin, isDietitian } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state as LocationState | null;
@@ -86,7 +86,15 @@ const SignIn = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      // Check user role and redirect accordingly
+      debugger;
+      if (isAdmin) {
+        navigate("/admin/dashboard");
+      } else if (isDietitian) {
+        navigate("/dietitian/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     }
     
     const timer = setTimeout(() => {
@@ -94,7 +102,7 @@ const SignIn = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, isAdmin, isDietitian]);
 
   return (
     <div className={`min-h-screen flex flex-col ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>

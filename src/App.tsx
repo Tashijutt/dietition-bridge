@@ -17,6 +17,21 @@ import WeightLossTips from "@/pages/WeightLossTips";
 import Chat from "@/pages/Chat";
 import ChatWidgetWrapper from "@/components/ChatWidgetWrapper";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+// Import dashboard components
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminPlans from "@/pages/admin/AdminPlans";
+import AdminChats from "@/pages/admin/AdminChats";
+import AdminDietitians from "@/pages/admin/AdminDietitians";
+import DietitianDashboard from "@/pages/dietitian/DietitianDashboard";
+import DietitianProfile from "@/pages/dietitian/DietitianProfile";
+import DietitianPlans from "@/pages/dietitian/DietitianPlans";
+import DietitianAppointments from "@/pages/dietitian/DietitianAppointments";
+import UserDashboard from "@/pages/user/UserDashboard";
+import UserProfile from "@/pages/user/UserProfile";
+import UserPlans from "@/pages/user/UserPlans";
+import UserDietitians from "@/pages/user/UserDietitians";
+import DietPlanView from "@/pages/user/DietPlanView";
 import "./App.css";
 
 function App() {
@@ -37,6 +52,31 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/weight-loss-tips" element={<WeightLossTips />} />
           <Route path="/chat" element={<Chat />} />
+          
+          {/* Admin Dashboard Routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/plans" element={<AdminPlans />} />
+          <Route path="/admin/chats" element={<AdminChats />} />
+          <Route path="/admin/dietitians" element={<AdminDietitians />} />
+          
+          {/* Dietitian Dashboard Routes */}
+          <Route path="/dietitian" element={<DietitianDashboard />} />
+          <Route path="/dietitian/dashboard" element={<DietitianDashboard />} />
+          <Route path="/dietitian/profile" element={<DietitianProfile />} />
+          <Route path="/dietitian/plans" element={<DietitianPlans />} />
+          <Route path="/dietitian/patients" element={<DietitianDashboard />} />
+          <Route path="/dietitian/appointments" element={<DietitianAppointments />} />
+          
+          {/* User Dashboard Routes */}
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/dashboard/profile" element={<UserProfile />} />
+          <Route path="/dashboard/plans" element={<UserPlans />} />
+          <Route path="/dashboard/plans/:id" element={<DietPlanView />} />
+          <Route path="/dashboard/dietitians" element={<UserDietitians />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
         
