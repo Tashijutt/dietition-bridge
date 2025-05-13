@@ -1,4 +1,4 @@
-
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, User, Phone, Mail, Star, Grid3X3, List, MapPin } from "lucide-react";
@@ -26,6 +26,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface Dietitian {
   id: string;
   name: string;
@@ -50,65 +52,80 @@ const UserDietitians = () => {
   const [selectedDietitian, setSelectedDietitian] = useState<Dietitian | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    // In a real app, this would be an API call
-    // For demo purposes, we'll use mock data
-    const mockDietitians: Dietitian[] = [
-      {
-        id: "1",
-        name: "Dr. Ayesha Ahmed",
-        title: "Registered Dietitian",
-        city: "Karachi",
-        specialization: ["Diabetes Management", "Weight Loss"],
-        rating: 4.8,
-        reviewCount: 24,
-        phone: "+92 300 1234567",
-        email: "dr.ayesha@example.com",
-        bio: "Specialized in helping patients with diabetes maintain a balanced diet while enjoying traditional Pakistani cuisine. Over 10 years of experience in nutritional counseling.",
-        isSaved: true
-      },
-      {
-        id: "2",
-        name: "Dr. Fatima Khan",
-        title: "Clinical Nutritionist",
-        city: "Lahore",
-        specialization: ["Weight Management", "Sports Nutrition"],
-        rating: 4.6,
-        reviewCount: 18,
-        phone: "+92 321 9876543",
-        email: "fatima.khan@example.com",
-        bio: "Expert in weight management strategies tailored for South Asian body types and dietary patterns. Passionate about helping clients achieve sustainable weight loss.",
-        isSaved: true
-      },
-      {
-        id: "3",
-        name: "Dr. Muhammad Ali",
-        title: "Nutrition Specialist",
-        city: "Islamabad",
-        specialization: ["Heart Health", "General Wellness"],
-        rating: 4.9,
-        reviewCount: 32,
-        phone: "+92 333 4567890",
-        email: "m.ali@example.com",
-        bio: "Focuses on heart-healthy diets that incorporate local Pakistani ingredients and cooking methods to reduce the risk of cardiovascular disease while preserving cultural food preferences.",
-        isSaved: false
-      },
-      {
-        id: "4",
-        name: "Dr. Saima Malik",
-        title: "Sports Nutritionist",
-        city: "Karachi",
-        specialization: ["Sports Nutrition", "Fitness Planning"],
-        rating: 4.7,
-        reviewCount: 21,
-        phone: "+92 312 5678901",
-        email: "saima@example.com",
-        bio: "Specializes in nutrition for athletes and active individuals. Helps clients optimize their performance through scientifically-backed nutrition strategies.",
-        isSaved: false
-      }
-    ];
+  // useEffect(() => {
+  //   // In a real app, this would be an API call
+  //   // For demo purposes, we'll use mock data
+  //   const mockDietitians: Dietitian[] = [
+  //     {
+  //       id: "1",
+  //       name: "Dr. Ayesha Ahmed",
+  //       title: "Registered Dietitian",
+  //       city: "Karachi",
+  //       specialization: ["Diabetes Management", "Weight Loss"],
+  //       rating: 4.8,
+  //       reviewCount: 24,
+  //       phone: "+92 300 1234567",
+  //       email: "dr.ayesha@example.com",
+  //       bio: "Specialized in helping patients with diabetes maintain a balanced diet while enjoying traditional Pakistani cuisine. Over 10 years of experience in nutritional counseling.",
+  //       isSaved: true
+  //     },
+  //     {
+  //       id: "2",
+  //       name: "Dr. Fatima Khan",
+  //       title: "Clinical Nutritionist",
+  //       city: "Lahore",
+  //       specialization: ["Weight Management", "Sports Nutrition"],
+  //       rating: 4.6,
+  //       reviewCount: 18,
+  //       phone: "+92 321 9876543",
+  //       email: "fatima.khan@example.com",
+  //       bio: "Expert in weight management strategies tailored for South Asian body types and dietary patterns. Passionate about helping clients achieve sustainable weight loss.",
+  //       isSaved: true
+  //     },
+  //     {
+  //       id: "3",
+  //       name: "Dr. Muhammad Ali",
+  //       title: "Nutrition Specialist",
+  //       city: "Islamabad",
+  //       specialization: ["Heart Health", "General Wellness"],
+  //       rating: 4.9,
+  //       reviewCount: 32,
+  //       phone: "+92 333 4567890",
+  //       email: "m.ali@example.com",
+  //       bio: "Focuses on heart-healthy diets that incorporate local Pakistani ingredients and cooking methods to reduce the risk of cardiovascular disease while preserving cultural food preferences.",
+  //       isSaved: false
+  //     },
+  //     {
+  //       id: "4",
+  //       name: "Dr. Saima Malik",
+  //       title: "Sports Nutritionist",
+  //       city: "Karachi",
+  //       specialization: ["Sports Nutrition", "Fitness Planning"],
+  //       rating: 4.7,
+  //       reviewCount: 21,
+  //       phone: "+92 312 5678901",
+  //       email: "saima@example.com",
+  //       bio: "Specializes in nutrition for athletes and active individuals. Helps clients optimize their performance through scientifically-backed nutrition strategies.",
+  //       isSaved: false
+  //     }
+  //   ];
     
-    setDietitians(mockDietitians);
+  //   setDietitians(mockDietitians);
+  // }, []);
+
+  useEffect(() => {
+    const fetchDietitians = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/dietitians`);
+        const data = await response.json();
+        console.log('Received data:', data); // Debug log
+        setDietitians(data.dietitians || []); // Assuming data is wrapped in a dietitians property
+      } catch (error) {
+        console.error('Error fetching dietitians:', error);
+        setDietitians([]); // Set empty array on error
+      }
+    };
+    fetchDietitians();
   }, []);
 
   const filteredDietitians = dietitians.filter(dietitian => {
@@ -182,7 +199,7 @@ const UserDietitians = () => {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {savedDietitians.map((dietitian) => (
+                      {savedDietitians.map((dietitian: Dietitian) => (
                         <div 
                           key={dietitian.id}
                           className="bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-md overflow-hidden"

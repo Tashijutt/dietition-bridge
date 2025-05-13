@@ -44,8 +44,11 @@ const SignIn = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleRoleChange = (value: string) => {
-    setFormData(prev => ({ ...prev, role: value as "user" | "dietitian" }));
+  const handleRoleChange = (value: "user" | "dietitian") => {
+    setFormData(prev => {
+      const newData = { ...prev, role: value };
+      return newData;
+    });
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,7 +57,7 @@ const SignIn = () => {
     
     try {
       if (isSignUp) {
-        await register(formData.name, formData.email, formData.password);
+        await register(formData.name, formData.email, formData.password, formData.role);
         toast({
           title: "Account created successfully",
           description: `Welcome to Dietitian Bridge as a ${formData.role === 'dietitian' ? 'Dietitian' : 'User'}!`,
@@ -87,7 +90,6 @@ const SignIn = () => {
   useEffect(() => {
     if (isAuthenticated) {
       // Check user role and redirect accordingly
-      debugger;
       if (isAdmin) {
         navigate("/admin/dashboard");
       } else if (isDietitian) {
