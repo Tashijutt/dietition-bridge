@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { ChevronRight, Activity, Heart, Salad, MessageSquare, UserCheck, LineChart, Calendar } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import BMICalculator from "@/components/BMICalculator";
 import {
   Card,
   CardContent,
@@ -131,6 +132,20 @@ const UserDashboard = () => {
     setUpcomingAppointment(appointmentDate);
   }, []);
 
+  const handlePlanSaved = (planId: string) => {
+    // Refresh plans list or show notification
+    // For now, we'll just add a dummy plan to the list
+    const newPlan: Plan = {
+      id: planId,
+      title: "New Diet Plan",
+      date: new Date().toISOString().split('T')[0],
+      type: "custom",
+      completionRate: 0
+    };
+    
+    setRecentPlans(prev => [newPlan, ...prev]);
+  };
+
   return (
     <ProtectedRoute>
       <UserLayout title={`Welcome back, ${user?.name?.split(' ')[0] || 'User'}`}>
@@ -205,6 +220,11 @@ const UserDashboard = () => {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+              
+              {/* BMI Calculator Button */}
+              <div className="mt-6 flex justify-center">
+                {user && <BMICalculator userId={user.id} onPlanSaved={handlePlanSaved} />}
               </div>
             </CardContent>
           </Card>
