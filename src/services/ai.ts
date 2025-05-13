@@ -2,7 +2,8 @@
 // AI service for handling chat functionality
 
 // OpenRouter API key for Claude AI
-const DIETITIAN_API_KEY = "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";
+const DIETITIAN_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+console.log("API KEY", DIETITIAN_API_KEY);
 
 // Simple conversation history to maintain context
 let conversationHistory = {
