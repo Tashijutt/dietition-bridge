@@ -198,7 +198,7 @@ const ChatWidget = ({ onClose }: ChatWidgetProps) => {
             <span className="text-sm font-bold">DB</span>
           </div>
           <div>
-            <div className="font-semibold">Dr. Nasreen Ahmed</div>
+            <div className="font-semibold">Dr. Nasreen Fatima</div>
             <div className="text-xs opacity-80">Online</div>
           </div>
         </div>

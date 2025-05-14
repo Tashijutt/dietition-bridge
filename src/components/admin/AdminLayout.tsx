@@ -29,6 +29,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import NotificationPopover from "@/components/NotificationPopover";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -121,10 +122,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
               <Home className="h-5 w-5" />
             </Link>
             
-            <button className="text-white hover:text-gray-200 relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
-            </button>
+            <NotificationPopover />
             
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-primary/70 border border-white/20 rounded-full py-1.5 px-3 text-sm font-medium text-white hover:bg-primary/80 focus:outline-none transition duration-150 ease-in-out">

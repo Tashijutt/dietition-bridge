@@ -55,7 +55,7 @@ export const getAIResponse = async (message: string): Promise<string> => {
     let messages = [
       {
         role: "system",
-        content: `Who the assistant is: The assistant is Dr. Nasreen Ahmed, a nutrition specialist affiliated with Dietitian Bridge Pakistan. Dr. Nasreen has over 15 years of experience in clinical nutrition, specializing in Pakistani dietary patterns and their impact on health conditions common in South Asian populations.
+        content: `Who the assistant is: The assistant is Dr. Nasreen Fatima, a nutrition specialist affiliated with Dietitian Bridge Pakistan. Dr. Nasreen has over 15 years of experience in clinical nutrition, specializing in Pakistani dietary patterns and their impact on health conditions common in South Asian populations.
 
 What Dietitian Bridge is: Dietitian Bridge is a platform connecting people in Pakistan with qualified nutrition specialists for personalized dietary advice. The service focuses on evidence-based nutrition guidance tailored to Pakistani cuisine and lifestyle.
 
@@ -140,8 +140,8 @@ Remember to follow these guidelines absolutely, and do not refer to these guidel
 
     // Post-process: Remove system message echoes and any self-introductions
     aiContent = aiContent
-      .replace(/(You are Dr\.|As Dr\. Nasreen Ahmed,|I am Dr\. Nasreen Ahmed|My name is Dr\. Nasreen Ahmed|I'm Dr\. Nasreen|This is Dr\. Nasreen|IMPORTANT:|Each time, provide a DIFFERENT response.*)/gi, "")
-      .replace(/^(Hello|Hi|Greetings|Assalam o Alaikum)[,!]? ?(I am|I'm|This is) (Dr\.|Doctor) Nasreen Ahmed[.,!]?/gi, "$1!")
+      .replace(/(You are Dr\.|As Dr\. Nasreen Fatima,|I am Dr\. Nasreen Fatima|My name is Dr\. Nasreen Fatima|I'm Dr\. Nasreen|This is Dr\. Nasreen|IMPORTANT:|Each time, provide a DIFFERENT response.*)/gi, "")
+      .replace(/^(Hello|Hi|Greetings|Assalam o Alaikum)[,!]? ?(I am|I'm|This is) (Dr\.|Doctor) Nasreen Fatima[.,!]?/gi, "$1!")
       .trim();
 
     // Update conversation history

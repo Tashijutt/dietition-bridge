@@ -32,7 +32,7 @@ interface BMIFormData {
   height: string;
   bmi: string;
   healthConditions: string[];
-  dietaryPreference: string;
+  dietaryPreference: string[]; // Change from string to string[]
   allergies: string[];
   mealsPerDay: string;
   snacksPerDay: string;
@@ -52,13 +52,14 @@ const BMICalculator = ({ userId, onPlanSaved }: BMICalculatorProps) => {
   const [aiPrompt, setAiPrompt] = useState("");
   const [typedPlan, setTypedPlan] = useState("");
   const [fullPlan, setFullPlan] = useState("");
+  const [isTypingDone, setIsTypingDone] = useState(false); // <-- Add this line
   const [bmiForm, setBmiForm] = useState<BMIFormData>({
     age: "",
     weight: "",
     height: "",
     bmi: "",
     healthConditions: [],
-    dietaryPreference: "",
+    dietaryPreference: [], // Change from "" to []
     allergies: [],
     mealsPerDay: "",
     snacksPerDay: ""
@@ -97,7 +98,7 @@ const BMICalculator = ({ userId, onPlanSaved }: BMICalculatorProps) => {
     }));
   };
 
-  const handleMultiSelect = (field: "healthConditions" | "allergies", value: string) => {
+  const handleMultiSelect = (field: "healthConditions" | "allergies" | "dietaryPreference", value: string) => {
     setBmiForm((prev) => {
       let arr = [...prev[field]];
       if (arr.includes(value)) {
@@ -125,13 +126,17 @@ const BMICalculator = ({ userId, onPlanSaved }: BMICalculatorProps) => {
     bmiForm.mealsPerDay &&
     bmiForm.snacksPerDay;
 
+  const [isPlanReady, setIsPlanReady] = useState(false); // Add this state
+
   const handleCreateDietPlan = async () => {
     setIsGenerating(true);
     setTypedPlan("");
     setFullPlan("");
+    setIsTypingDone(false);
+    setIsPlanReady(false); // Reset plan ready state
     setBmiDialogOpen(false);
-    setDietPlanDialogOpen(true);
-    
+    setDietPlanDialogOpen(true); // Open dialog immediately to show loader
+  
     // Compose prompt for AI
     const prompt = `
 Create a personalized diet plan based on the following information:
@@ -164,29 +169,39 @@ Format the plan professionally with clear sections and headings.
     try {
       const response = await getAIResponse(prompt);
       setFullPlan(response);
-      // Typing effect
+      setIsPlanReady(true); // Plan is ready, start typing effect
+      // Typing effect will be started in useEffect below
+      localStorage.setItem("dietPlanProfile", JSON.stringify(bmiForm));
+    } catch (error) {
+      setIsGenerating(false);
+      setTypedPlan("Sorry, there was an error generating your diet plan. Please try again.");
+      setIsTypingDone(true);
+      setIsPlanReady(true);
+    }
+  };
+  
+  // Add this useEffect to start typing as soon as plan is ready
+  useEffect(() => {
+    if (isPlanReady && fullPlan) {
+      setIsGenerating(false); // Hide loader
       let i = 0;
       setTypedPlan("");
       if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
       typingIntervalRef.current = setInterval(() => {
         setTypedPlan((prev) => {
-          if (i >= response.length) {
+          if (i >= fullPlan.length) {
             if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
-            setIsGenerating(false);
-            setGeneratedPlan(response); // Save for "Save" and "Add" buttons
-            return response;
+            setGeneratedPlan(fullPlan);
+            setIsTypingDone(true);
+            return fullPlan;
           }
-          const next = prev + response[i];
+          const next = prev + fullPlan[i];
           i++;
           return next;
         });
       }, 18);
-      localStorage.setItem("dietPlanProfile", JSON.stringify(bmiForm));
-    } catch (error) {
-      setIsGenerating(false);
-      setTypedPlan("Sorry, there was an error generating your diet plan. Please try again.");
     }
-  };
+  }, [isPlanReady, fullPlan]);
 
   const handleSaveDietPlan = async () => {
     if (!generatedPlan) return;
@@ -356,26 +371,16 @@ Format the plan professionally with clear sections and headings.
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="veg"
-                    checked={bmiForm.dietaryPreference === "Vegetarian"}
-                    onCheckedChange={() =>
-                      handleBmiFormChange(
-                        "dietaryPreference",
-                        bmiForm.dietaryPreference === "Vegetarian" ? "" : "Vegetarian"
-                      )
-                    }
+                    checked={bmiForm.dietaryPreference.includes("Vegetarian")}
+                    onCheckedChange={() => handleMultiSelect("dietaryPreference", "Vegetarian")}
                   />
                   <Label htmlFor="veg">Vegetarian</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="nonveg"
-                    checked={bmiForm.dietaryPreference === "Non-Vegetarian"}
-                    onCheckedChange={() =>
-                      handleBmiFormChange(
-                        "dietaryPreference",
-                        bmiForm.dietaryPreference === "Non-Vegetarian" ? "" : "Non-Vegetarian"
-                      )
-                    }
+                    checked={bmiForm.dietaryPreference.includes("Non-Vegetarian")}
+                    onCheckedChange={() => handleMultiSelect("dietaryPreference", "Non-Vegetarian")}
                   />
                   <Label htmlFor="nonveg">Non-Vegetarian</Label>
                 </div>
@@ -462,7 +467,7 @@ Format the plan professionally with clear sections and headings.
           </DialogHeader>
           {isGenerating ? (
             <div className="flex flex-col items-center justify-center py-16">
-              {/* Animated dots loader */}
+              {/* Loader */}
               <div className="flex space-x-2 mt-8">
                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0s" }}></div>
                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0.2s" }}></div>
@@ -475,15 +480,7 @@ Format the plan professionally with clear sections and headings.
           ) : (
             <div className="space-y-4 px-8 pb-8">
               <div className="prose max-w-none whitespace-pre-wrap text-gray-900 text-base leading-relaxed">
-                {fullPlan && (
-                  <TypingEffect
-                    text={
-                      // Remove any trailing "undefined" or similar artifacts
-                      (fullPlan || "").replace(/undefined\s*$/gi, "").trim()
-                    }
-                    speed={18}
-                  />
-                )}
+                {typedPlan}
               </div>
               <div className="flex justify-end space-x-2 pt-4">
                 <Button variant="outline" onClick={() => setDietPlanDialogOpen(false)}>
@@ -491,7 +488,7 @@ Format the plan professionally with clear sections and headings.
                 </Button>
                 <Button
                   onClick={handleAddDietitianPlan}
-                  disabled={isSaving}
+                  disabled={!isTypingDone || isSaving}
                   className="bg-blue-600 text-white"
                 >
                   Add Dietitian Plan

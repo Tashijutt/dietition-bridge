@@ -35,32 +35,6 @@ const UserProfile = () => {
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  // const [profileData, setProfileData] = useState({
-  //   name: user?.name || "",
-  //   email: user?.email || "",
-  //   phone: "+92 300 1234567",
-  //   gender: "female" as const,
-  //   age: "32",
-  //   weight: "65",
-  //   height: "165",
-  //   healthConditions: ["Diabetes", "High Blood Pressure"],
-  //   bio: "I'm interested in improving my diet to better manage my diabetes and blood pressure. Looking for meal plans that are both healthy and delicious.",
-  //   dietaryPreferences: "No beef, prefer chicken and fish. Vegetarian options welcomed."
-  // });
-
-  // const [profileData, setProfileData] = useState({
-  //   name: user?.name || "",
-  //   email: user?.email || "",
-  //   phone: user?.phone || "",
-  //   gender: user?.gender || "other" as const,
-  //   age: user?.age?.toString() || "",
-  //   weight: user?.weight?.toString() || "",
-  //   height: user?.height?.toString() || "",
-  //   healthConditions: user?.healthConditions || [],
-  //   bio: user?.bio || "",
-  //   dietaryPreferences: user?.dietaryPreferences || ""
-  // });
-  
   // Define profileData state first
   const [profileData, setProfileData] = useState({
     name: user?.name || "",
@@ -108,20 +82,6 @@ const UserProfile = () => {
       [name]: value
     });
   };
-
-  // const handleProfileUpdate = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   // In a real app, this would call an API
-  //   updateUserProfile && updateUserProfile({
-  //     ...user,
-  //     name: profileData.name
-  //   });
-    
-  //   toast({
-  //     title: "Profile Updated",
-  //     description: "Your profile has been updated successfully."
-  //   });
-  // };
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -11,7 +11,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState<Array<{ type: 'user' | 'bot', content: string }>>([
     {
       type: 'bot',
-      content: 'Assalam o Alaikum! I\'m Dr. Nasreen Ahmed, a nutrition specialist with Dietitian Bridge Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
+      content: 'Assalam o Alaikum! I\'m Dr. Nasreen Fatima, a nutrition specialist with Dietitian Bridge Pakistan. I specialize in providing information about Pakistani nutrition, diet plans for specific health conditions, and can help you adapt traditional Pakistani cuisine for conditions like diabetes, hypertension, or weight management. How can I assist you today?'
     }
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -189,7 +189,7 @@ const ChatPage = () => {
               <span className="text-sm font-bold">DB</span>
             </div>
             <div>
-              <div className="font-semibold">Dr. Nasreen Ahmed</div>
+              <div className="font-semibold">Dr. Nasreen Fatima</div>
               <div className="text-xs opacity-80">Online</div>
             </div>
           </div>

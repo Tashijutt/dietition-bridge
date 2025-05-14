@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { ChevronRight, Activity, Heart, Salad, MessageSquare, UserCheck, LineChart, Calendar } from "lucide-react";
+import { ChevronRight, Activity, Heart, Salad, MessageSquare, UserCheck, LineChart, Calendar, Weight } from "lucide-react";
 import UserLayout from "@/components/user/UserLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BMICalculator from "@/components/BMICalculator";
@@ -95,33 +95,21 @@ const UserDashboard = () => {
     setHealthMetrics([
       {
         name: "Current Weight",
-        value: 65.5,
+        value: user?.weight ?? 0,
         unit: "kg",
         icon: <Activity className="h-5 w-5 text-blue-600" />,
-        change: {
-          type: "decrease",
-          value: 0.8
-        }
       },
       {
         name: "BMI",
-        value: 22.3,
+        value: Math.round((user?.weight || 0) / (((user?.height || 0) / 100) ** 2)),
         unit: "",
-        icon: <LineChart className="h-5 w-5 text-green-600" />,
-        change: {
-          type: "decrease",
-          value: 0.2
-        }
+        icon: <LineChart className="h-5 w-5 text-blue-600" />,
       },
       {
-        name: "Calories",
-        value: 1850,
-        unit: "kcal/day",
-        icon: <Heart className="h-5 w-5 text-red-600" />,
-        change: {
-          type: "decrease",
-          value: 120
-        }
+        name: "Ideal Weight",
+        value: Math.round(18.5 * ((user?.height || 0) / 100) ** 2), // Use a single number for value
+        unit: "kg",
+        icon: <Weight className="h-5 w-5 text-blue-600" />,
       }
     ]);
 

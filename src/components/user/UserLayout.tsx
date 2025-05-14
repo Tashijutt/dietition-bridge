@@ -28,6 +28,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import NotificationPopover from "@/components/NotificationPopover";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 interface UserLayoutProps {
@@ -104,10 +105,7 @@ const UserLayout = ({ children, title }: UserLayoutProps) => {
               <Home className="h-5 w-5" />
             </Link>
             
-            <button className="text-gray-600 hover:text-primary relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">2</span>
-            </button>
+            <NotificationPopover />
             
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center bg-white border border-gray-200 rounded-full py-1.5 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition duration-150 ease-in-out">
